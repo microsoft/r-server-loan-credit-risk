@@ -2,7 +2,12 @@
 layout: default
 title: PowerShell Instructions
 ---
-
+<div class="alert alert-success" role="alert"> This page describes the 
+<strong>
+{{ site.cig_text }} or {{ site.onp_text }}
+</strong>
+solution.
+</div> 
 
 ## PowerShell Instructions
 ---------------------------
@@ -19,7 +24,7 @@ title: PowerShell Instructions
     </div>
     <div class="col-md-6">
         If you have deployed a VM through the  
-        <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="CIG_Workflow.html">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
+        <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?path=onp">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
     </div>
 </div>
 
@@ -28,7 +33,7 @@ If you are configuring your own server, continue with the steps below to run the
 ## Setup
 -----------
 
-First, make sure you have set up your SQL Server by following the instructions in <a href="START_HERE.html">START HERE</a>.  Then proceed with the steps below to run the solution template using the automated PowerShell files. 
+First, make sure you have set up your SQL Server by <a href="SetupSQL.html">following these instruction</a>.  Then proceed with the steps below to run the solution template using the automated PowerShell files. 
 
 ## Execute PowerShell Script
 ----------------------------
@@ -56,7 +61,7 @@ Running this PowerShell script will create stored procedures for the the operati
 
 4.  Now CD to the **{{ site.folder_name }}/SQLR** directory and run one of the two following commands, inserting your server name (or "." if you are on the same machine as the SQL server), database name, username, and password.
 
-    * XXXIF UNINTERRUPTED MODE: Run with no prompts: XXXCHECK PROMPTS!
+    *  Run with no prompts:
     
         ```
         .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -uninterrupted "Y"  
@@ -73,7 +78,7 @@ Running this PowerShell script will create stored procedures for the the operati
         .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -uninterrupted "Y"  
         ```
 
-5.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.
+5.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables
 
 6.  You can also optionally add the parameter -dataPath "your path\to\csv files".  If you omit this, it defaults to the Data folder in the current directory.
 

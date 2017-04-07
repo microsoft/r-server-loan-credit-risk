@@ -4,16 +4,15 @@ author:
 description: Use SQL Server 2016 + R Services to build and deploy a machine learning model XXXFINISH THIS SENTENCE.
 
 # site variables
-solution_name: PUT NAME HERE
-folder_name: FOLDERNAME
-db_name: DBNAME
-ps1_name: PSNAME.ps1
+solution_name: Loan Classification 
+folder_name: Loans
+db_name: Loans
+ps1_name: Loan_Credit_Risk.ps1
 
 # urls, etc
-code_url: "https://github.com/sdgilley/webtemplate"
-code: "github.com/sdgilley/webtemplate"
-website_url: "https://sdgilley.github.io/webtemplate"  
-dashboard_url: "https://sdgilley.github.io/webtemplate"
-aka_url: "http://aka.ms/campaignoptimization" 
+code_url: "https://github.com/Microsoft/r-server-loan-credit-risk"
+website_url: "https://microsoft.github.io/r-server-loan-credit-risk"  
+dashboard_url: "LINKHERE"
+aka_url: "http://aka.ms/loanclassification" 
 
 

@@ -2,6 +2,13 @@
 layout: default
 title: Using a Jupyter Notebook
 ---
+<div class="alert alert-success" role="alert"> This page describes the 
+<strong>
+{{ site.cig_text }}
+</strong>
+solution.
+</div> 
+
 ## Using a Jupyter Notebook
 
 You can view and execute the R code for this solution in a Jupyter Notebook on the VM by following these instructions. 
@@ -18,9 +25,8 @@ Once the server is running, open the Mozilla Firefox web browser.  Type the foll
 
     https://localhost:9999
 
-You will get a security warning, hit the "Advanced" button and add this to your exceptions to access the Jupyter session.
+You will get a security warning; hit the "Advanced" button and add this to your exceptions to access the Jupyter session.
 
- There are a number of samples available on the VM server.  You can add the **{{ site.solution_name }} R Notebook** by moving or copying it from **Desktop/{{ site.folder_name }}/R** into **C:/`machinename`/notebooks** (for example, if your machinename is "dsvm" the path is **C:/dsvm/notebooks**).  XXXMAYBE ALSO COPY DATA FILES? .
 
  Once the Jupyter server is running on your VM, you can also connect to it from another computer by using the Public IP address in the url:
 

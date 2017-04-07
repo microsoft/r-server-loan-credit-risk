@@ -2,7 +2,12 @@
 layout: default
 title: Using R Tools for Visual Studio with R Server
 ---
-
+<div class="alert alert-success" role="alert"> This page describes the 
+<strong>
+{{ site.cig_text }} 
+</strong>
+solution.
+</div> 
 
 ## Set Up Visual Studio for R Server
 
@@ -10,6 +15,7 @@ Visual Studio needs to use R Server for the code for this solution.  Follow the 
 <div class = "label label-info">
 On the VM deployed from <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a> you may see an alert that the path for R is no longer found. There is no need to install R Client, simply update the path as shown below.
 </div>
+<p></p>
 <ol>
 <li>Launch Visual Studio.</li>
 <li> Update the path to R.</li>

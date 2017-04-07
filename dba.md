@@ -2,6 +2,13 @@
 layout: default
 title: For the Database Analyst
 ---
+<div class="alert alert-success" role="alert"> This page describes the 
+<strong>
+<span class="sql">{{ site.cig_text }}</span>
+<span class="sql">{{ site.onp_text }}</span>
+</strong>
+solution.
+</div> 
 
 ## For the Database Analyst
 ------------------------------
