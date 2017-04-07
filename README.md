@@ -1,4 +1,4 @@
-<img src="Resources/images/loan.jpg" align="right">
+<img src="Resources/images/loan.jpg" align="right" width="50%">
 
 # Loan Credit Risk 
 ## Implemented on SQL Server 2016 R Services
