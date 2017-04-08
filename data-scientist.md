@@ -2,41 +2,40 @@
 layout: default
 title: For the Data Scientist
 ---
-
 <div class="alert alert-success" role="alert"> This page describes the 
 <strong>
 <span class="cig">{{ site.cig_text }}</span>
-<span class="onp">{ site.onp_text }}</span>
+<span class="onp">{{ site.onp_text }}</span>
 <span class="hdi">{{ site.hdi_text }}</span> 
 </strong>
 solution.
 </div> 
 
-## For the Data Scientist
+## For the Data Scientist - Develop with R
 ----------------------------
 
 <div class="row">
     <div class="col-md-6">
         <div class="toc">
-            <li><a href="#first">{{ site.solution_name }}</a></li>
+            <li><a href="#campaign-optimization">Campaign Optimization</a></li>
             <li><a href="#analytical-dataset-preprocessing-and-feature-engineering">Analytical Dataset Preprocessing and Feature Engineering</a></li>
             <li><a href="#model-development">Model Development</a></li>
-            <li><a href="#scoring">Scoring</a></li>
+            <li><a href="#computing-recommendations">Computing Recommendations</a></li>
             <li><a href="#deploy-and-visualize-results">Deploy and Visualize Results</a></li>
-            <li><a href="#system-requirements">System Requirements</a></li>
+            <li class="sql"><a href="#requirements">System Requirements</a></li>
             <li><a href="#template-contents">Template Contents</a></li>
         </div>
     </div>
     <div class="col-md-6">
         <div class="sql">
         SQL Server R Services takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. 
-        <p>
-        XXXREVIEW THIS: This solution package shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the SQL Server machine. </p>
+        <p></p>
+        This solution package shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the SQL Server machine. 
         </div>
         <div class="hdi">
         HDInsight is a cloud Spark and Hadoop service for the enterprise.  HDInsight is also the only managed cloud Hadoop solution with integration to Microsoft R Server.
         <p></p>
-         XXXREVIEW THIS: This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on an HDInsight Spark cluster with Microsoft R Server. 
+        This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on an HDInsight Spark cluster with Microsoft R Server. 
         </div>
     </div>
 </div>
@@ -48,91 +47,44 @@ Data scientists who are testing and developing solutions can work from the conve
 Data scientists who are testing and developing solutions can work from the browser-based Open Source Edition of RStudio Server on the HDInsight Spark cluster edge node, while <a href="https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-r-server-compute-contexts">using a compute context</a> to control whether computation will be performed locally on the edge node, or whether it will be distributed across the nodes in the HDInsight Spark cluster. 
 </div>
 
-<a name="first">
+
 ## {{ site.solution_name }}
 --------------------------
 
-This template is focused on XXXDESCRIBE HIGH LEVEL WHAT THIS DOES. 
+This template is XXX
 
-Among the key variables to learn from data are XXXDESCRIBE.  
+Among the key variables to learn from data are XXX
 
 <div class="sql">
 <p></p>
-In this solution, the final scored database table in SQL Server contains XXXDESCRIBE. This data is then visualized in PowerBI. 
+In this solution, the final scored database table in SQL Server XXX.  This data is then visualized in PowerBI. 
 <p></p>
 </div>
 <div class="hdi">
 <p></p>
-In this solution, an Apache Hive table will be created to show XXXDESCRIBE. This data is then visualized in PowerBI. 
+In this solution, an Apache Hive table will be created to show predicted recommendations for how and when to contact each lead. This data is then visualized in PowerBI. 
 <p></p>
 </div>
 
-To try this out yourself, see the [Quick Start](START_HERE.html) section on the main page.  
+To try this out yourself, visit the [Quick Start](START_HERE.html) page.  
 
-This page describes what happens in each of the steps: dataset creation, model development, recommendations, and deployment in more detail.
-
-
+Below is a description of what happens in each of the steps: dataset creation, model development, prediction, and deployment in more detail.
 
 
-
-##  Analytical Dataset Preprocessing and Feature Engineering
------------------------------------------------------------
-
-This part simulates input data and performs preprocessing and feature engineering to create the analytical dataset. 
-<div class="sql">
-The <strong>R</strong> code to perform these steps can be run from an R client with the following scripts:
-</div>
-<div class="hdi">
-One of the key functions used is the <code>rxExec</code> function. This function is similar to the <code>foreach</code> function in open source R, while it can parallel computation across different nodes under the Spark compute context. In this implementation, we split the whole data set into multiple subsets by <code>Lead_ID</code> and apply transformation functions to each subset with the <code>rxExec</code> function. The computational time is significantly reduced since the computation is fully paralleled across nodes and cores on the cluster.
-<p></p>
-The script <strong>XXX.R</strong> is used to run each of the scripts step1*-step4*, described in the sections below.
-</div>
-
-### filename.R
-
-This script XXXDESCRIBE
-
-
-## Model Development
---------------------
-
-Two models, Random Forest and Gradient Boosting are developed to model Campaign Responses.  The **R** code to develop these models is included in the **step3_training_evaluation.R script**
-
-
-### filename.R
-
-This script XXXDESCRIBE
-
-<img  src="images/model.png">
-
-##  Scoring
---------------
-
-#### filename.R
-
-This script XXXDESCRIBE
-
-<div class="sql">
-The corresponding <strong>SQL</strong> stored procedures can be run manually in <strong>XXXfilename.sql</strong>. 
-</div>
-<div class="hdi">
-The script <strong>XXXfilename.R</strong> can be used to score new data - it goes through step1_data_processing, step2_feature_engineering, and step4_campaign_recommendations to create recommendations for the new data.
-</div>
-
-<img  src="images/model_score.png">
+XXXInsert description
 
   
 ##  Deploy and Visualize Results
 --------------------------------
 <div class="sql">
-The deployed data resides in a newly created database table, showing XXXDESCRIBE.  The final step of this solution visualizes XXXDESCRIBE. 
+The deployed data resides in a newly created database table, showing XXX.  The final step of this solution visualizes these scores and XXX
 </div>
 <div class="hdi">
 <h2>Deploy</h2>
-The script <strong>XXXfilename.R </strong> creates and tests a analytic web service.  The web service can then be used from another application to score future data.  The file <strong>XXXfilename</strong> can be downloaded to invoke this web service locally on any computer with Microsoft R Server 9.0.1 installed. 
+XXXThe script <strong>campaign_deployment.R </strong> creates and tests a analytic web service.  The web service can then be used from another application to score future data.  The file <strong>web_scoring.R</strong> can be downloaded to invoke this web service locally on any computer with Microsoft R Server 9.0.1 installed. 
 <p></p>
 <div class="alert alert-info" role="alert">
-Before running  <strong>campaign_web_scoring.R</strong> on any computer, you must first connect to edge node from that computer.
+XXXBefore running  <strong>campaign_web_scoring.R</strong> on any computer, you must first connect to edge node from that computer.
 Once you have connected you can also use the web server admin utility to reconfigure or check on the status of the server.
 <p></p>
 Follow <a href="deployr.html">instructions here</a> to connect to the edge node and/or use the admin utility.
@@ -145,7 +97,7 @@ The final step of this solution visualizes these recommendations.
 
 <img  src="images/visualize.png">
 
-You can also explore the  [online version]({{ site.dashboard_url }}) of the dashboard.
+{% include pbix.md %}
 
 <div name="requirements" class="sql">
 <h2> System Requirements</h2>
@@ -153,8 +105,8 @@ You can also explore the  [online version]({{ site.dashboard_url }}) of the dash
 The following are required to run the scripts in this solution:
 <ul>
 <li>SQL Server 2016 with Microsoft R Server  (version 9.0.1) installed and configured.  </li>   
-<li>The SQL user name and password, and the user configured properly to execute R scripts in-memory;</li> 
-<li>SQL Database which the user has write permission and execute stored procedures;</li> 
+<li>The SQL user name and password, and the user configured properly to execute R scripts in-memory.</li> 
+<li>SQL Database which the user has write permission and execute stored procedures.</li> 
 <li>For more information about SQL server 2016 and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 
 </ul>
 </div>

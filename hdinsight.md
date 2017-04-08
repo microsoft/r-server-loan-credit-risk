@@ -12,9 +12,9 @@ solution.
 ## HDInsight Cluster Maintenance
 --------------------------------
 
-An initial cluster was created when you used the `Deploy` button from [Cortana Intelligence Gallery]({{ site.aka_url_hdi }}). Along with the cluster, a storage account was created.  This is where all data is stored.   
+An initial cluster was created when you used the `Deploy` button from [Cortana Intelligence Gallery]({{ site.deploy_url_hdi }}). Along with the cluster, a storage account was created.  This is where all data is stored.   
 
-When you are finished using the entire solution, you can delete all your resources on the [Cortana Intelligence Gallery]({{ site.aka_url_hdi }} Deployments page. 
+When you are finished using the entire solution, you can delete all your resources on the [Cortana Intelligence Gallery]({{ site.deploy_url_hdi }} Deployments page. 
 
 If you would like to continue using the solution, you can delete the cluster while  keeping the storage account. You can then re-use the storage account later on a new cluster. 
 

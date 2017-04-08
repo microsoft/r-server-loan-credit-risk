@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ## LOAN CREDIT RISK 
 
 This site contains information for multiple versions of a solution.  Currently, the three pathways it shows are:
@@ -70,15 +70,6 @@ There are two very important things to keep in mind when using HTML (such as the
 See more [ markdown info here](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#code).
 
 # Contributing
-=======
-# SITE UNDER CONSTRUCTION
-
-This is the future home of the Loan Classification Website
->>>>>>> origin/gh-pages-dev
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
- 
-
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
  

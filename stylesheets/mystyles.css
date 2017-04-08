@@ -13,10 +13,14 @@ img {
     list-style-type:none; 
     padding:0; 
     margin-left:0px; 
+    text-align: left;
+}
+code {
+    text-align: left;
 }
 .btn-info {
-    background-color: #227072;
-    border-color: #227072;
+    background-color: #0072C6;
+    border-color: #0072C6;
 }
 .btn {
     border:none;
@@ -28,7 +32,7 @@ img {
     border-radius:3px;
 }
 .teal {
-    color:  #004B50;
+    color:  #0072C6;
 }  
 h2 {
     font-size:1.8rem;
@@ -39,7 +43,7 @@ h3 {
     font-weight: 600;
 }
 a {
-    color: #008272;
+    color: #0072C6;
     font-weight: 600;
 }
 body {
@@ -58,4 +62,14 @@ body {
 }
 .center {
     text-align: center;
+}
+.alert-success {
+    background-color: #DAF0F5;
+    border-color: #bce8f1;
+    color: #0072C6;
+}
+.alert-info {
+    background-color: #fcf8e3;
+    border-color: #faf2cc;
+    color: #8a6d3b;
 }

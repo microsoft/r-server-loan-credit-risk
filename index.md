@@ -8,20 +8,20 @@ If we had a crystal ball, we would only loan money to someone we knew would pay 
 <h2>Select the method you wish to explore:</h2>
  <form style="margin-left:30px"> 
     <label class="radio">
-      <input type="radio" name="optradio" class="rb" value="cig" >{{ site.cig_text }}, deployed from <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a>
+      <input type="radio" name="optradio" class="rb" value="cig" > {{ site.cig_text }}, deployed from <a href="{{ site.deploy_url }}">Cortana Intelligence Gallery</a>
     </label>
     <label class="radio">
-      <input type="radio" name="optradio" class="rb" value="onp">{{ site.onp_text }}
+      <input type="radio" name="optradio" class="rb" value="onp"> {{ site.onp_text }}
     </label>
-   <label class="radio">
-      <input type="radio" name="optradio" class="rb" value="hdi">{{ site.hdi_text }}, deployed from <a href="{{ site.aka_url_hdi }}">Cortana Intelligence Gallery</a>
-    </label> 
+   <!--<label class="radio">
+      <input type="radio" name="optradio" class="rb" value="hdi"> {{ site.hdi_text }}, deployed from <a href="{{ site.deploy_url_hdi }}">Cortana Intelligence Gallery</a>
+    </label>  -->
 </form>
 </div>
 <p></p>
 
 <div class="cig">
-On the VM created for you from the <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>Campaign</code> contains all the data and results of the end-to-end modeling process.  
+On the VM created for you from the <a href="{{ site.deploy_url }}">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>Campaign</code> contains all the data and results of the end-to-end modeling process.  
 </div>
 
 <div class="onp">
@@ -29,7 +29,7 @@ For customers who prefer an on-premise solution, the implementation with SQL Ser
 </div>
 
 <div class="hdi">
-This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the  HDInsight Spark cluster with Microsoft R Server deployed from the <a href="{{ site.aka_url_hdi }}">Cortana Intelligence Gallery</a>.
+This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the  HDInsight Spark cluster with Microsoft R Server deployed from the <a href="{{ site.deploy_url_hdi }}">Cortana Intelligence Gallery</a>.
 <p></p>
 <strong>HDInsight Spark cluster billing starts once a cluster is created and stops when the cluster is deleted. See <a href="hdinsight.html"> these instructions for important information</a> about deleting a cluster and re-using your files on a new cluster.</strong>
 </div>

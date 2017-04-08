@@ -24,7 +24,7 @@ solution.
     </div>
     <div class="col-md-6">
         If you have deployed a VM through the  
-        <a href="{{ site.aka_url }}">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?path=onp">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
+        <a href="{{ site.deploy_url }}">Cortana Intelligence Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?path=onp">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
     </div>
 </div>
 
@@ -61,26 +61,37 @@ Running this PowerShell script will create stored procedures for the the operati
 
 4.  Now CD to the **{{ site.folder_name }}/SQLR** directory and run one of the two following commands, inserting your server name (or "." if you are on the same machine as the SQL server), database name, username, and password.
 
-    *  Run with no prompts:
+     * Run with no prompts: 
     
         ```
-        .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -uninterrupted "Y"  
+        .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -is_production "N" -uninterrupted "Y"  
         ```
+        
     * Run with prompts:
 
         ```
-        .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -uninterrupted "N"  
+        .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -is_production "N" -uninterrupted "N"  
         ```
 
-    * For example, uninterrupted mode for the rdemo user created by the createuser.sql script on your local machine, the command would be: 
+    * For example, uninterrupted mode for the <code>rdemo</code> user created by the <strong>create_user.sql</strong> script on your local machine, the command would be: 
 
         ```
-        .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -uninterrupted "Y"  
+        .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "N" -uninterrupted "Y"  
         ```
 
-5.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables
+5.  If running uninterrupted (`-uninterrupted "Y"`), default names are used and only the gradient boosted trees model (rxFastTrees) is trained and used for scoring.
 
-6.  You can also optionally add the parameter -dataPath "your path\to\csv files".  If you omit this, it defaults to the Data folder in the current directory.
+6.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables, and choose which models to train and use.
+
+7.  You can also optionally add the parameter -dataPath "your path\to\csv files".  If you omit this, it defaults to the Data folder in the current directory.
+
+<h2 id="score-production-data">Score Production Data</h2>
+<hr />
+<p>To score production data re-run the <a href="#runcmd">command from step 4</a> this time using <code class="highlighter-rouge">-is_production "Y"</code>.  For example, uninterrupted mode for the rdemo user on your local machine would use the code:</p>
+
+<p><code class="highlighter-rouge">
+.\{{ site.ps1_name }} -ServerName "localhost" -DBName "{[ site.db_name ]}" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y"  
+</code></p>
 
 
 ## Review Data
