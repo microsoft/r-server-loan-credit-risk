@@ -74,7 +74,10 @@ BEGIN
   }
   
   # We apply it in parallel accross cores with rxExec and the compute context set to Local Parallel.
-  rxOptions(numCoresToUse = -1) # use the maximum number of cores.
+  ## 3 cores will be used here so the code can run on servers with smaller RAM. 
+  ## You can increase numCoresToUse below in order to speed up the execution if using a larger server.
+  ## numCoresToUse = -1 will enable the use of the maximum number of cores.
+  rxOptions(numCoresToUse = 3) # use 3 cores.
   rxSetComputeContext("localpar")
   q <- rxExec(bins, name = rxElemArg(smb_buckets_names), data = InputDataSet)
   names(q) <- smb_buckets_names
@@ -143,7 +146,7 @@ buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome
     data <- data.frame(data)
     for(name in  buckets_names2){
       # Deal with the last bin.
-      name2 <- paste(name, "_bucket", sep = "")
+      name2 <- paste(name, "Bucket", sep = "")
       data[, name2] <- as.character(length(b2[[name]]) + 1)
       # Deal with the first bin. 
       rows <- which(data[, name] <= b2[[name]][[1]])
