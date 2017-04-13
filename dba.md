@@ -8,6 +8,7 @@ title: For the Database Analyst
 <span class="onp">{{ site.onp_text }}</span>
 </strong>
 solution.
+{% include sqlchoices.md %}
 </div> 
 
 ## For the Database Analyst - Operationalize with SQL

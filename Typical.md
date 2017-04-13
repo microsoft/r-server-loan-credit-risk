@@ -9,6 +9,7 @@ title: Typical Workflow
 <span class="hdi">{{ site.hdi_text }}</span> 
 </strong>
 solution.
+{% include choices.md %}
 </div> 
 
 ## Typical Workflow 

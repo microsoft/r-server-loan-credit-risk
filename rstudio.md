@@ -9,6 +9,7 @@ title: Using RStudio with R Server
 <span class="hdi">{{ site.hdi }}</span>
 </strong>
 solution.
+{% include choices.md %}
 </div> 
 
 ## Install RStudio

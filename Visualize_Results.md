@@ -4,17 +4,13 @@ title: Visualizing Results with PowerBI
 ---
 
 <div class="alert alert-success" role="alert"> This page describes the 
-<span class="sql">
 <strong>
-{{ site.cig_text }} or {{ site.onp_text }}
+<span class="cig">{{ site.cig_text }}</span>
+<span class="onp">{{ site.onp_text }}</span>
+<span class="hdi">{{ site.hdi_text }}</span> 
 </strong>
-</span>
-<span class="hdi">
-<strong>
-{{ site.hdi_text }} 
-</strong>
-</span>
 solution.
+{% include choices.md %}
 </div> 
 
 ## Visualizing Results with PowerBI

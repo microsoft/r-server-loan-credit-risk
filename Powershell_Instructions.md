@@ -4,9 +4,11 @@ title: PowerShell Instructions
 ---
 <div class="alert alert-success" role="alert"> This page describes the 
 <strong>
-{{ site.cig_text }} or {{ site.onp_text }}
+<span class="cig">{{ site.cig_text }}</span>
+<span class="onp">{{ site.onp_text }}</span>
 </strong>
 solution.
+{% include sqlchoices.md %}
 </div> 
 
 ## PowerShell Instructions

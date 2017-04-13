@@ -6,6 +6,20 @@ $(document).ready( function(){
 // or dropdown list choice. 
 
 
+// Get the cookie.  If no cookie, default to CIG and set the cookie.
+// XXX change the -sitename for each new website so the cookies don't overlap sites!
+// there are 7 occurrences of Cookies.get or .set in this script - change them all.
+    if (Cookies.get('platform-loans')) {
+        platform = (Cookies.get('platform-loans'));
+    } else {
+        platform = 'cig';
+        Cookies.set('platform-loans', platform );       
+    }
+    if (Cookies.get('platform-loans') != platform) {
+        // if cookies don't work, show the dropdown instead on pages which need it.
+        $('.choose').css("display","inline");
+    }
+
 // if commandline has a value, set the cookie 
 // note the name of the var is ignored, only the value specified after the "=" is important
 if ( window.location.search.split('=')[1]) {
@@ -13,19 +27,9 @@ if ( window.location.search.split('=')[1]) {
     console.log (" Argument is " + platform )
     // make sure the argument is a valid value  
     if ($.inArray( platform, [ "cig","onp", "hdi" ] ) > -1 ) {
-        Cookies.set('platform-loanclassification', platform ); 
+        Cookies.set('platform-loans', platform ); 
     }
 }
-
-// Get the cookie.  If no cookie, default to CIG and set the cookie.
-// XXX change the -sitename for each new website so the cookies don't overlap sites!
-// there are 6 occurrences of Cookies.get or .set in this script - change them all.
-    if (Cookies.get('platform-loanclassification')) {
-        platform = (Cookies.get('platform-loanclassification'));
-    } else {
-        platform = 'cig';
-        Cookies.set('platform-loanclassification', platform );       
-    }
  
     // initialize page - sets both radiobutton and dropdown whichever the page uses (or both!)
     setRb ( platform )
@@ -36,14 +40,14 @@ if ( window.location.search.split('=')[1]) {
     $('.ch-platform').change(function () {
         var newval = $('.ch-platform option:selected').val();
         changeVis ( newval );
-        Cookies.set ('platform-loanclassification', newval )
+        Cookies.set ('platform-loans', newval )
         setRb ( newval );
     });
 
     //changing the radiobutton changes visibility, cookie, and dl
     $('input[type=radio][name=optradio]').change(function(){
         changeVis( this.value );
-        Cookies.set('platform-loanclassification', this.value );
+        Cookies.set('platform-loans', this.value );
         setDl ( this.value );
     });
 
