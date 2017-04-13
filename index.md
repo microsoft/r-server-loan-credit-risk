@@ -3,7 +3,7 @@ layout: default
 title: HOME
 ---
 
-If we had a crystal ball, we would only loan money to someone we knew would pay us back. A lending institution can make use of predictive analytics to reduce number of loans they offer to those borrowers most likely to default, increasing the profitablity of their loan portfolio.   This solution uses simulated data for a small personal loan financial institution, building a model to help detect whether the borrower will default on a loan.
+If we had a crystal ball, we would only loan money to someone we knew would pay us back. A lending institution can make use of predictive analytics to reduce number of loans they offer to those borrowers most likely to default, increasing the profitablity of their loan portfolio.   This solution uses simulated data for a small personal loan financial institution and uses predictive analytics to help decide whether the borrower will default on a loan.
 <div class="alert alert-success">
 <h2>Select the method you wish to explore:</h2>
  <form style="margin-left:30px"> 

@@ -25,13 +25,12 @@ This solution package shows how to create and refine data, train R models, and p
 <div class="hdi">
 Microsoft R Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of R Server and Apache Spark. This solution demonstrates how to develop machine learning models for marketing campaign optimization (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft R Server on Azure HDInsight Spark clusters. 
 
-The final  table is saved to a Hive table containing XXX. This data is then visualized in Power BI.
+The final table is saved to a Hive table containing XXX. This data is then visualized in Power BI.
 </div>
 
 
 
-![Visualize](images/visualize.png?raw=true)
-
+<img src="XXX">
 
 {% include pbix.md %}
 
