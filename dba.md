@@ -69,7 +69,7 @@ Follow the [PowerShell instructions](Powershell_Instructions.html) to execute al
 
 The data sets Loan.csv and Borrower.csv are provided in the Data directory.
 
-In this step, we create two tables, “Loan” and "Borrower" in a SQL Server database, and the data is uploaded to these tables using bcp command in PowerShell. This is done through either Load_Data.ps1 or through running the beginning of Loan_Credit_Risk.ps1. 
+In this step, we create two tables, `Loan` and `Borrower` in a SQL Server database, and the data is uploaded to these tables using bcp command in PowerShell. This is done through either `Load_Data.ps1` or through running the beginning of `Loan_Credit_Risk.ps1`. 
 
 ### Input:
 
@@ -117,11 +117,11 @@ In this step, we create a stored procedure `[dbo].[splitting]` that splits the d
 
 * `Merged_Cleaned` View.
 
-## Output:
+### Output:
 
 * `Train_Id` table containing the loanId that will end in the training set.
 
-**Related files:**
+### Related files:
 
 * **step2a_splitting.sql**
 
@@ -184,8 +184,6 @@ Training a Logistic Regression for loan credit risk prediction is a standard pra
 
 <a name="step3b">
 
-## Step 3b: Training
-----------------------
 
 ## Step 3b: Scoring  
 -------------------------
@@ -241,11 +239,11 @@ In this step, we create two stored procedures `[dbo].[compute_operational_metric
 
 The first, `[dbo].[compute_operational_metrics]` will:
 
-1- Apply a sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1] and make them more interpretable. This sigmoid uses the average predicted score, so it is saved into the table "Scores_Average" for use in the Production pipeline. 
+1. Apply a sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1] and make them more interpretable. This sigmoid uses the average predicted score, so it is saved into the table `Scores_Average` for use in the Production pipeline. 
 
-2- Compute bins for the scores, based on quantiles (we compute the 1%-99% percentiles). 
+2. Compute bins for the scores, based on quantiles (we compute the 1%-99% percentiles). 
 
-3- Take each lower bound of each bin as a decision threshold for default loan classification, and compute the rate of bad loans among loans with a score higher than the threshold. 
+3. Take each lower bound of each bin as a decision threshold for default loan classification, and compute the rate of bad loans among loans with a score higher than the threshold. 
 
 It outputs the table `Operational_Scores`, which will also be used in the Production pipeline. It can be read in the following way: 
 If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449, this means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
@@ -259,7 +257,7 @@ The second, `[apply_score_transformation]` will:
 
 ## Input:
 
-* "Predictions_Logistic" table storing the predictions from the tested model.
+* `Predictions_Logistic` table storing the predictions from the tested model.
 
 ## Output:
 
