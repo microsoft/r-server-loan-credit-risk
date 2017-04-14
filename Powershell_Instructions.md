@@ -89,11 +89,11 @@ Running this PowerShell script will create stored procedures for the the operati
 
 <h2 id="score-production-data">Score Production Data</h2>
 <hr />
-<p>To score production data re-run the <a href="#runcmd">command from step 4</a> this time using <code class="highlighter-rouge">-is_production "Y"</code>.  For example, uninterrupted mode for the rdemo user on your local machine would use the code:</p>
+<p/>
+To score production data re-run the command from above, this time using `-is_production "Y"`.  You can also score production data in a different database by changing -DBName.  If you do use a different database, also add `-development_db`.  For example, the following will score into database `Loans_Prod` in uninterrupted mode for the rdemo user on your local machine:
 
-<p><code class="highlighter-rouge">
-.\{{ site.ps1_name }} -ServerName "localhost" -DBName "{[ site.db_name ]}" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y"  
-</code></p>
+        
+        .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y" -development_db "Loans"
 
 
 ## Review Data
@@ -105,7 +105,7 @@ Hit `Refresh` if necessary.
 
 [Click here](tables.html) to view more information about each of these tables.
 
-Right click on XXXSOMETABLE and select `View Top 1000 Rows` to preview the scored data.
+Right click on dbo.Scores and select `View Top 1000 Rows` to preview the scored data.
 
 [Click here](tables.html) to view the details all tables created in this solution.
 

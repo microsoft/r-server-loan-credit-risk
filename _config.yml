@@ -4,7 +4,7 @@ author:
 description: Use SQL Server 2016 + R Services to build and deploy a machine learning model for loan credit risk.
 
 # site variables
-solution_name: Loan_Credit_Risk 
+solution_name: Loan Credit Risk 
 folder_name: Loans
 db_name: Loans
 ps1_name: Loan_Credit_Risk.ps1
