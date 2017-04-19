@@ -31,10 +31,10 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-      When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it, and if so, what will be the interest rate. 
+When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  Find [more information](input_data.html) about the data here.
       <p/>
       <p>
-      Among the key variables to learn from data are XXXDESCRIBE
+      
       </p>
 
         </div>
@@ -90,11 +90,11 @@ In this step, we create two tables, `Loan` and `Borrower` in a SQL Server databa
 
 In this step, the two tables are first merged into "Merged" with an inner join on memberId. This is done through the stored procedure [dbo].[merging]. 
 
-Then, statistics (mode or mean) of "Merged" are computed and stored into a table called Stats. This table will be used for the Production pipeline (Scenarios 2 and 4). 
-This is done through the [dbo].[compute_stats] stored procedure. 
+Then, statistics (mode or mean) of "Merged" are computed and stored into a table called Stats. This table will be used for the Production pipeline. 
+This is done through the `[dbo].[compute_stats]` stored procedure. 
 
-The raw data is then cleaned. This assumes that the ID variables (loanId and memberId), the date and loanStatus (variable that will be used to create the label) do not contain blanks. 
-The stored procedure, [fill_NA_mode_mean], will replace the missing values with the mode (categorical variables) or mean (float variables).
+The raw data is then cleaned. This assumes that the ID variables (`loanId` and `memberId`), the `date` and `loanStatus` (Variables that will be used to create the label) do not contain blanks. 
+The stored procedure, `[fill_NA_mode_mean]`, will replace the missing values with the mode (categorical variables) or mean (float variables).
 
 ### Input:
 * 2 Tables filled with the raw data: `Loan` and `Borrower` (filled through PowerShell).
@@ -134,11 +134,11 @@ In this step, we create a stored procedure `[dbo].[splitting]` that splits the d
 For feature engineering, we want to design new features: 
 
 * Categorical versions of all the numeric variables. This is done for interpretability and is a standard practice in the Credit Score industry. 
-* `isBad`: the label, specifying whether the loan has been charged off or has defaulted (isBad = 1) or if it is in good standing (isBad = 0), based on loanStatus. 
+* `isBad`: the label, specifying whether the loan has been charged off or has defaulted (`isBad` = 1) or if it is in good standing (`isBad` = 0), based on `loanStatus`. 
 
-In this step, we first create a stored procedure `[dbo].[compute_bins]`. It uses the CRAN R package "smbinning" that builds a conditional inference tree on the training set (to which we append the binary label isBad) in order to get the optimal bins to be used for the numeric variables we want to bucketize. Because some of the numeric variables have too few unique values, or because the binning function did not return significant splits, we decided to manually specify default bins for all the variables in case smbinning failed to provide them. These default bins have been determined through an analysis of the data or through running smbinning on a larger data set. The computed and specified bins are then serialized and stored into the Bins table for usage in feature engineering of both Modeling and Production pipelines. 
+In this step, we first create a stored procedure `[dbo].[compute_bins]`. It uses the CRAN R package `smbinning` that builds a conditional inference tree on the training set (to which we append the binary label isBad) in order to get the optimal bins to be used for the numeric variables we want to bucketize. Because some of the numeric variables have too few unique values, or because the binning function did not return significant splits, we decided to manually specify default bins for all the variables in case smbinning failed to provide them. These default bins have been determined through an analysis of the data or through running smbinning on a larger data set. The computed and specified bins are then serialized and stored into the Bins table for usage in feature engineering of both Modeling and Production pipelines. 
 
-The bins computation is optimized by running smbinning in parallel across the different cores of the server, through the use of rxExec function applied in a Local Parallel (`localpar`) compute context. The `rxElemArg` argument it takes is used to specify the list of variables (here the numeric variables names) we want to apply smbinning on. 
+The bins computation is optimized by running `smbinning` in parallel across the different cores of the server, through the use of `rxExec` function applied in a Local Parallel (`localpar`) compute context. The `rxElemArg` argument it takes is used to specify the list of variables (here the numeric variables names) we want to apply `smbinning` on. 
 
 The `[dbo].[feature_engineering]` stored procedure then designs those new features on the view `Merged_Cleaned`, to create the table `Merged_Features`. This is done through an R code wrapped into the stored procedure. 
 

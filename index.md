@@ -3,7 +3,7 @@ layout: default
 title: HOME
 ---
 
-If we had a crystal ball, we would only loan money to someone we knew would pay us back. A lending institution can make use of predictive analytics to reduce number of loans they offer to those borrowers most likely to default, increasing the profitablity of their loan portfolio.   This solution uses simulated data for a small personal loan financial institution and uses predictive analytics to help decide whether the borrower will default on a loan.
+If we had a crystal ball, we would only loan money to someone if we knew they would pay us back. A lending institution can make use of predictive analytics to reduce the number of loans it offers to those borrowers most likely to default, increasing the profitablity of its loan portfolio.   This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  It uses predictive analytics to help decide whether or not to grant a loan for each borrower.
 <div class="alert alert-success">
 <h2>Select the method you wish to explore:</h2>
  <form style="margin-left:30px"> 
@@ -21,7 +21,7 @@ If we had a crystal ball, we would only loan money to someone we knew would pay 
 <p></p>
 
 <div class="cig">
-On the VM created for you from the <a href="{{ site.deploy_url }}">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>Campaign</code> contains all the data and results of the end-to-end modeling process.  
+On the VM created for you from the <a href="{{ site.deploy_url }}">Cortana Intelligence Gallery</a>, the SQL Server 2016 database <code>{{ site.folder_name }}</code> contains all the data and results of the end-to-end modeling process.  
 </div>
 
 <div class="onp">
