@@ -14,11 +14,11 @@ Remember that before the data in this dashboard can be refreshed to use your sco
 
 
 
-On the Test Data tab, Bernie uses the checkboxes at the top right to find a suitable level of risk for extending a loan.  He starts by unchecking all boxes, which shows the entire test set.  Then starting at the top (99%), he checks consecutive boxes to view characteristics of those loans whose scores fall into that percentile or above. The Loan Summary table shows how many loans, the total and average amount, and the average interest rate for those loans that are not bad (isBad = False) as well as those that are truly bad (isBad = True). This allows him to see how many good loans he would be rejecting if he were to use this cutoff value.
+On the Test Data tab, Bernie uses the checkboxes at the top right to find a suitable level of risk for extending a loan.  He starts by unchecking all boxes, which shows the entire test set.  Then starting at the top (99%), he checks consecutive boxes to view characteristics of those loans whose scores fall into that percentile or above. The Loan Summary table shows how many loans, the total and average amount, and the average interest rate for those loans that are not bad (Bad Loan = False) as well as those that are truly bad (Bad Loan = True). This allows him to see how many good loans he would be rejecting if he were to use this cutoff value.
 
-Directly below the checkboxes is the actual cutoff value to use for the current loans, as well as the bad loan rate associated with this cutoff value - for percentiles of 80 and above, the value is .47. 
+Directly below the checkboxes is the actual cutoff value to use for the current loans, as well as the bad loan rate associated with this cutoff value - for percentiles of 80 and above, the value is .4680. 
 <img src="images/test.jpg">
 
-Now Bernie switches to the Prod Data tab to view some scored potential loans.  He uses the .47 cutoff value and views information about these loans.  He sees he will reject 9 of the 22 potential loans based on this critera.
+Now Bernie switches to the Prod Data tab to view some scored potential loans.  He uses the .4680 cutoff value and views information about these loans.  He sees he will reject 9 of the 22 potential loans based on this critera.
 <img src="images/prod.jpg">
   
