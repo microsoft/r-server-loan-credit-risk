@@ -19,7 +19,7 @@ solution.
 These instructions show you how to replace the cached data in the PowerBI dashboard with data from your 
 <span class="sql">SQL Server</span>
 <span class="hdi">HDInsight</span> 
-solution , by using an ODBC connection to the 
+solution, by using an ODBC connection to the 
 <span class="sql">SQL Database</span>
 <span class="hdi">Hive</span> table. 
 

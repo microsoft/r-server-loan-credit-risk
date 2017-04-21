@@ -80,17 +80,13 @@ Now let's meet Debra, the Data Scientist. Debra's job is to use historical data 
 <span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft R Server.
 </span>  
 
-After analyzing the data she opted to create multiple models and choose the best one.  She will create two machine learning models and compare them, then use the one she likes best to compute a prediction for each combination of day, time, and channel for each lead, and then select the combination with the highest probability of conversion - this will be the recommendation for that lead.  
+Debra chooses to train a Logistic Regression, a standard model used in the Credit Score industry. Contrary to more complex models such as random forests or neural networks, it is easily understandable through the simple formula generated during the training. 
 
 <div class="sql">
 Debra will work on her own machine, using  <a href = "https://msdn.microsoft.com/en-us/microsoft-r/install-r-client-windows">R Client</a> to execute these R scripts. <span class="cig">R Client is already installed on the VM.</span>  She will also use an IDE to run R.  
 </div>
 
-<div class="cig">
-<p/>
-On your VM, R Tools for Visual Studio is installed.  You will however have to either log in or create a new account for using this tool.  If you prefer, you can <a href="rstudio.html">download and install RStudio</a> on your VM instead. 
-<p/>
-</div>
+
 
 <div class="hdi">
 <p/>
@@ -110,6 +106,8 @@ XXXAnything else for HDI?
 </div>
 
 <div class="alert alert-info cig" role="alert">
+On your VM, both R Tools for Visual Studio and RStudio are installed.  (You will  have to either log in or create a new account for if you wish to use Visual Studio.)  
+<p></p>
 OPTIONAL: You can execute the R code on your local computer if you wish, but you must first <a href="local.html">prepare both the VM and your computer</a>.  Additionally you can view and execute the R code  <a href="jupyter.html">in a Jupyter Notebook on the VM</a>.
 </div>
 

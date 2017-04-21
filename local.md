@@ -38,4 +38,4 @@ Also, on your local computer you will need a copy of the solution code.  Open a 
 
 This will create a folder **{{ site.folder_name }}** containing the full solution package.
 
-<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>
+<a href="Typical.html#step2">Return to Typical Workflow<a>

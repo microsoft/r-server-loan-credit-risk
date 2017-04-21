@@ -30,8 +30,11 @@ solution.
     </div>
     <div class="col-md-6">
 
-        <div class="sql">
-        For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while data cleaning, and the model training, scoring and evaluation steps are implemented with SQL stored procedures calling R (Microsoft R Server) code. 
+        <div class="onp">
+        For businesses that prefer an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server).
+        </div> 
+        <div class="cig">
+        This implementation on Azure SQL Server R Services is a great option which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
         </div>
         <div class="hdi">
         HDInsight is a cloud Spark and Hadoop service for the enterprise.  HDInsight is also the only managed cloud Hadoop solution with integration to Microsoft R Server.
@@ -42,7 +45,7 @@ solution.
 </div>
 <div class="sql">
 <p></p>
-This solution package shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the SQL Server machine. All these steps can be executed in an R IDE. 
+This solution package shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the SQL Server machine.
 <p></p>
 </div>
 
@@ -61,7 +64,7 @@ When a financial institution examines a request for a loan, it is crucial to ass
 
 <div class="sql">
 <p></p>
-In this solution, the final scored database table in SQL Server XXX.  This data is then visualized in PowerBI. 
+In this solution, the final scored database table `Scores` is created in SQL Server.  This data is then visualized in PowerBI. 
 <p></p>
 </div>
 <div class="hdi">

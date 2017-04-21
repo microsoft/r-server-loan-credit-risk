@@ -112,13 +112,13 @@ Right click on dbo.Scores and select `View Top 1000 Rows` to preview the scored 
 ## Visualizing Results 
 ---------------------
 
-You've now  created and processed data, created models, XXXWHATEVER ELSE as described  [here](data-scientist.html). This PowerShell script also created the stored procedures that can be used to score new data in the future.  
+You've now  uploaded and processed borrower and loan data  , created models, evaluated the model and scored new data as described  [here](data-scientist.html). 
 
 Let's look at our current results. Proceed to <a href="Visualize_Results.html">Visualizing Results with PowerBI</a>.
 
 ## Other Steps
 ----------------
 
-You've just completed the fully automated solution that simulates the data, trains and scores the models, and provide recommendations by executing PowerShell scripts.  
+You've just completed the fully automated solution by executing PowerShell scripts.  
 
 See the [Typical Workflow](Typical.html) for a description of how these files were first created in R by a Data Scientist and then incorporated into the SQL stored procedures that you just deployed.

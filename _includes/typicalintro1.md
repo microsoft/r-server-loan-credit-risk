@@ -1,1 +1,1 @@
-This solution package shows how XXXSHORT DESCRIPTION OF SOLUTION
+This solution package shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the SQL Server machine.

@@ -55,17 +55,22 @@ These files  in the **R** directory for the SQL solution.
 These files are in the **SQLR** directory.
 
 <table class="table table-striped table-condensed">
+
 <tr><th> File </th><th> Description </th></tr>
-<tr><td> step0_create_tables.sql </td><td> SQL Script to create empty tables in SQL. PowerShell script should be used to load the input data</td></tr>
+<tr><td>Load_Data.ps1 </td><td>Loads initial data into SQL Server  </td></tr>
+<tr><td>Loan_Credit_Risk.ps1  </td><td>Automates execution of all .sql files and creates stored procedures  </td></tr>
+<tr><td>create_tables_prod.sql   </td><td>creates the production tables   </td></tr>
+<tr><td>create_user.sql  </td><td>Used during initial SQL Server setup to create the user and password and grant permissions. </td></tr>
+<tr><td>modeling_proc.sql   </td><td>Stored procedure for the modeling/development pipeline  </td></tr>
+<tr><td>production_proc.sql   </td><td>Stored procedure for the production pipeline  </td></tr>
 <tr><td> step1_data_processing.sql  </td><td> Replaces Missing values in dataset with the modes </td></tr>
-<tr><td> step2_feature_engineering.sql </td><td> Performs Feature Engineering and creates the Analytical Dataset</td></tr>
-<tr><td> step3a_splitting.sql </td><td> Splits the analytical dataset into Train and Test</td></tr>
-<tr><td> step3b_train_model.sql</td><td> Trains either RF or GBT model, depending on input parameter</td></tr>
-<tr><td> step3c_test_evaluate_models.sql </td><td> Tests both RF and GBT models</td></tr>
-<tr><td> step4_campaign_recommendations.sql </td><td> Scores data with best model and outputs recommendations </td></tr>
-<tr><td> execute_yourself.sql  </td><td> Executes every stored procedure after running all the other .sql files </td></tr>
-<tr><td> Campaign_Optimization.ps1 </td><td> Loads the input data into the SQL server and automates the running of all .sql files  </td></tr>
-<tr><td> Readme.md  </td><td> Describes the stored procedures in more detail  </td></tr>
+<tr><td> step2a_splitting.sql </td><td> Splits the analytical dataset into Train and Test</td></tr>
+<tr><td> step2b_feature_engineering.sql </td><td> Performs Feature Engineering and creates the Analytical Dataset</td></tr>
+<tr><td> step3a_training.sql</td><td> Trains a Logistic Regression model</td></tr>
+<tr><td> step3b_scoring.sql </td><td> Scores data using the Logistic Regression model</td></tr>
+<tr><td> stepc_evaluating.sql </td><td> Evaluates the model </td></tr>
+<tr><td> step4_operational_metrics.sql </td><td> Computes operational metrics  </td></tr>
+
 </table>
 
 * See [ For the Database Analyst](dba.html?path=cig) for more information about these files.
@@ -102,9 +107,6 @@ These files are in the **RSparkCluster** directory.
 
 <table class="table table-striped table-condensed">
 <tr><th> File </th><th> Description </th></tr>
-
-<tr><td> create_user.sql </td><td> Used during initial SQL Server setup to create the user and password and grant permissions</td></tr>
-<tr><td> XXX.xlsx  </td><td> Schema and description of the 4 input tables and variables</td></tr>
 <tr><td> Images </td><td> Directory of images used for the  Readme.md  in this package </td></tr>
 </table>
 
