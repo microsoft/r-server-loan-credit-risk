@@ -31,7 +31,7 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  Find [more information](input_data.html) about the data here.
+When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View [more information about the data.](input_data.html) 
       <p/>
       <p>
       
@@ -59,7 +59,7 @@ To run the scripts, it requires the following:
 
 ## Workflow Automation
 -------------------
-Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  [Click here](tables.html) to view the details all tables created in this solution.
+Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  View the [details all tables](tables.html)  created in this solution.
 
  
 <a name="step0">

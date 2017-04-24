@@ -42,7 +42,7 @@ Once you've saved your files you can [use these steps to delete your cluster.](h
 
 ## Re-Using the Storage Account on a New Cluster
 
-You can use the Azure portal to create a new cluster by [following the steps shown here](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-r-server-get-started).  Make sure you select your existing storage account instead of creating a new one, and you can pick up where you left off.
+You can use the Azure portal to  [create a new cluster by following these steps](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-r-server-get-started).  Make sure you select your existing storage account instead of creating a new one, and you can pick up where you left off.
 
 When creating your cluster, use the default names in the blades: `admin` for the cluster login, and `sshuser` for the ssh login if you want to be consistent with the original cluster created for you from the Cortana Intelligence Gallery.
 

@@ -60,11 +60,11 @@ Data scientists who are testing and developing solutions can work from the brows
 ## {{ site.solution_name }}
 --------------------------
 
-When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  Find [more information](input_data.html) about the data here.
+When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View [more information about the data](input_data.html).
 
 <div class="sql">
 <p></p>
-In this solution, the final scored database table `Scores` is created in SQL Server.  This data is then visualized in PowerBI. 
+In this solution, the final scored database table <code>Scores</code> is created in SQL Server.  This data is then visualized in PowerBI. 
 <p></p>
 </div>
 <div class="hdi">
@@ -240,8 +240,7 @@ For example, if the score cutoff of the 91th score percentile is 0.9834, and we 
 ##  Deploy and Visualize Results
 --------------------------------
 <div class="sql">
-The deployed data resides in a newly created database table, showing XXX.  The final step of this solution visualizes these scores and XXX
-</div>
+The test data resides in a newly created database table `Scores`.  The production data is in a new database, `{{ site.db_name }}_Prod`, in the table `Scores_Prod`.  The final step of this solution visualizes these both the test data and the production data.
 <div class="hdi">
 <h2>Deploy</h2>
 XXXThe script <strong>campaign_deployment.R </strong> creates and tests a analytic web service.  The web service can then be used from another application to score future data.  The file <strong>web_scoring.R</strong> can be downloaded to invoke this web service locally on any computer with Microsoft R Server 9.0.1 installed. 
@@ -250,7 +249,7 @@ XXXThe script <strong>campaign_deployment.R </strong> creates and tests a analyt
 XXXBefore running  <strong>campaign_web_scoring.R</strong> on any computer, you must first connect to edge node from that computer.
 Once you have connected you can also use the web server admin utility to reconfigure or check on the status of the server.
 <p></p>
-Follow <a href="deployr.html">instructions here</a> to connect to the edge node and/or use the admin utility.
+Follow <a href="deployr.html">Operationalization with R Server instruction</a> to connect to the edge node and/or use the admin utility.
 </div>
 
 

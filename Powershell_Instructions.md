@@ -35,12 +35,12 @@ If you are configuring your own server, continue with the steps below to run the
 ## Setup
 -----------
 
-First, make sure you have set up your SQL Server by <a href="SetupSQL.html">following these instruction</a>.  Then proceed with the steps below to run the solution template using the automated PowerShell files. 
+First, make sure you have <a href="SetupSQL.html">set up your SQL Server</a>.  Then proceed with the steps below to run the solution template using the automated PowerShell files. 
 
 ## Execute PowerShell Script
 ----------------------------
 
-Running this PowerShell script will create stored procedures for the the operationalization of this solution.  It will also execute these procedures to create full database with results of the steps  – dataset creation, modeling, and scoring as described  [here](dba.html).
+Running this PowerShell script will create stored procedures for the the operationalization of this solution.  It will also execute these procedures to create full database with results of the steps  – dataset creation, modeling, and scoring as described in the [For the Database Analyst](dba.html) page.
 
 
 
@@ -93,26 +93,27 @@ Running this PowerShell script will create stored procedures for the the operati
 To score production data re-run the command from above, this time using `-is_production "Y"`.  You can also score production data in a different database by changing -DBName.  If you do use a different database, also add `-development_db`.  For example, the following will score into database `Loans_Prod` in uninterrupted mode for the rdemo user on your local machine:
 
         
-        .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y" -development_db "Loans"
+        .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}_Prod" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y" -development_db "{{ site.db_name }}"
 
 
 ## Review Data
 --------------
 
-Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` database.  
+Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` and the {{ site.db_name }}_Prod databases.  
 Hit `Refresh` if necessary.
 <br/>
 
-[Click here](tables.html) to view more information about each of these tables.
+* View [more information](tables.html)  about each of these tables.
 
-Right click on dbo.Scores and select `View Top 1000 Rows` to preview the scored data.
+* Right click on {{ site.db_name }}.dbo.Scores and select `View Top 1000 Rows` to preview the testing scored data.
 
-[Click here](tables.html) to view the details all tables created in this solution.
+* Right click on {{ site.db_name }}_Prod.dbo.Prod_Scores and select `View Top 1000 Rows` to preview the production scored data.
+
 
 ## Visualizing Results 
 ---------------------
 
-You've now  uploaded and processed borrower and loan data  , created models, evaluated the model and scored new data as described  [here](data-scientist.html). 
+You've now  uploaded and processed borrower and loan data, created models, evaluated the model and scored new data as described  [here](data-scientist.html). 
 
 Let's look at our current results. Proceed to <a href="Visualize_Results.html">Visualizing Results with PowerBI</a>.
 

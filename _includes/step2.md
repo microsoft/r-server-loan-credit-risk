@@ -76,6 +76,6 @@ She uses an ODBC connection to connect to the data, so that it will always show 
   If you want to refresh data in your PowerBI Dashboard, make sure to <a href="Visualize_Results.html">follow these instructions</a> to setup and use an ODBC connection to the dashboard.
   </div>
 </li>
-<li>A summary of this process and all the files involved is described <a href="data-scientist.html">in more detail here</a>.
+<li>A summary of this process and all the files involved is described in more detail on the <a href="data-scientist.html">For the Data Scientist</a> page.
 </li>
 </ol>

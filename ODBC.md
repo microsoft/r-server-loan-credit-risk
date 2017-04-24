@@ -102,5 +102,5 @@ Press <code>Test</code>.
 </span>
 </li>
 <p></p>
-You are now ready to use this connection in PowerBI by following the <a href="Visualize_Results.html">instructions here</a>.
+You are now ready to use this connection in PowerBI by following the <a href="Visualize_Results.html">Visualizing Results instructions</a>.
 	
