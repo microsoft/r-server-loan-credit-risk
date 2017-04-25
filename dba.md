@@ -47,10 +47,8 @@ All the steps can be executed on SQL Server client environment (such as SQL Serv
 ## System Requirements
 -----------------------
 
-To run the scripts requires the following:
-
-To run the scripts, it requires the following:
- * SQL server 2016 with Microsoft R server (version 9.0.1) installed and configured;
+the following are required to run these scripts:
+ * SQL server 2016 with Microsoft R server (version 9.0.1 or above) installed and configured;
  * The SQL user name and password, and the user is configured properly to execute R scripts in-memory;
  * SQL Database for which the user has write permission and can execute stored procedures (see create_user.sql);
  * Implied authentification is enabled so a connection string can be automatically created in R codes embedded into SQL Stored Procedures (see create_user.sql).
@@ -59,7 +57,8 @@ To run the scripts, it requires the following:
 
 ## Workflow Automation
 -------------------
-Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  View the [details all tables](tables.html)  created in this solution.
+Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  View the [details of all tables](tables.html)  created in this solution.
+
 
  
 <a name="step0">

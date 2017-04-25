@@ -75,7 +75,7 @@ In this solution, an Apache Hive table will be created to show predicted recomme
 
 To try this out yourself, visit the [Quick Start](START_HERE.html) page.  
 
-Below is a description of what happens in each of the steps: dataset creation, model development, prediction, and deployment in more detail.
+Below is a description of what happens in each of the steps: data preparation, feature engineering, model development, prediction, and deployment in more detail.
 
 
 The file **modeling_main.R** enables the user to define the input and call all the steps. Inputs are: paths to the raw data files, database name, server name, username and password.
@@ -240,7 +240,9 @@ For example, if the score cutoff of the 91th score percentile is 0.9834, and we 
 ##  Deploy and Visualize Results
 --------------------------------
 <div class="sql">
-The test data resides in a newly created database table `Scores`.  The production data is in a new database, `{{ site.db_name }}_Prod`, in the table `Scores_Prod`.  The final step of this solution visualizes these both the test data and the production data.
+The final scores reside in the table <code>Scores</code> of the <code>{{ site.db_name }}</code> database. The production data is in a new database, <code>{{ site.db_name }}_Prod</code>, in the table <code>Scores_Prod</code>. The final step of this solution visualizes both predictions tables in PowerBI.
+</div>
+
 <div class="hdi">
 <h2>Deploy</h2>
 XXXThe script <strong>campaign_deployment.R </strong> creates and tests a analytic web service.  The web service can then be used from another application to score future data.  The file <strong>web_scoring.R</strong> can be downloaded to invoke this web service locally on any computer with Microsoft R Server 9.0.1 installed. 

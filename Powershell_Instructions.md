@@ -99,7 +99,7 @@ To score production data re-run the command from above, this time using `-is_pro
 ## Review Data
 --------------
 
-Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` and the {{ site.db_name }}_Prod databases.  
+Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` and the `{{ site.db_name }}_Prod` databases.  
 Hit `Refresh` if necessary.
 <br/>
 
