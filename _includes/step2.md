@@ -57,7 +57,7 @@ FROM [Loans].[dbo].[Merged_Features]
 </pre>
 </li>
 
-<li>  Now she is ready for training the models, using <strong>step3_train_score_evaluae.R</strong>.  This step will train a logistic regression classification model on the training set, save it to SQL, score the logisitc regression on the test set, and evaluate the tested model.
+<li>  Now she is ready for training the models, using <strong>step3_train_score_evaluate.R</strong>.  This step will train a logistic regression classification model on the training set, save it to SQL, score the logisitc regression on the test set, and evaluate the tested model.
 <p></p>
 </li>
 

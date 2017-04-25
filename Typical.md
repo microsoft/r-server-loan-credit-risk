@@ -120,7 +120,7 @@ You can use your favorite IDE to follow along.  If you use Visual Studio, you ca
 <p/>
 Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>{{ site.folder_name }}/R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
 
-There you will see three files with the name <code>{{ site.solution_name }}</code>
+There you will see three files with the name <strong>{{ site.solution_name }}</strong>
 
 <ul>
 <li>If you use Visual Studio, double click on the Visual Studio SLN file.</li>

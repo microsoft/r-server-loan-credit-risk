@@ -105,9 +105,9 @@ Hit `Refresh` if necessary.
 
 * View [more information](tables.html)  about each of these tables.
 
-* Right click on {{ site.db_name }}.dbo.Scores and select `View Top 1000 Rows` to preview the testing scored data.
+* Right click on `{{ site.db_name }}.dbo.Scores` and select `View Top 1000 Rows` to preview the testing scored data.
 
-* Right click on {{ site.db_name }}_Prod.dbo.Prod_Scores and select `View Top 1000 Rows` to preview the production scored data.
+* Right click on `{{ site.db_name }}_Prod.dbo.Prod_Scores` and select `View Top 1000 Rows` to preview the production scored data.
 
 
 ## Visualizing Results 

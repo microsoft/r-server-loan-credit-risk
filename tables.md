@@ -6,7 +6,7 @@ title: Description of Database Tables
 ## SQL Database Tables
 --------------------------
 
-Below are the different data sets that you will find in the `{{ site.db_name }} database after deployment. 
+Below are the different data sets that you will find in the `{{ site.db_name }}` database after deployment. 
 
 <table class="table table-striped table-condensed">
    <tr>

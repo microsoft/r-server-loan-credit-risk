@@ -12,9 +12,7 @@ The following is the directory structure for this template:
 - [**R**](#model-development-in-r)  This contains the R code to simulate the input datasets, pre-process them, create the analytical datasets, train the models, identify the champion model and provide recommendations.
 - [**Resources**](#resources-for-the-solution-packet) This directory contains other resources for the solution package.
 - [**SQLR**](#operationalize-in-sql-2016) This contains T-SQL code to pre-process the datasets, train the models, identify the champion model and provide recommendations. It also contains a PowerShell script to automate the entire process, including loading the data into the database (not included in the T-SQL code).
-<!--
-- [**RSparkCluster**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide recommendations on a Spark cluster. 
- -->
+<!--[**RSparkCluster**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide recommendations on a Spark cluster. -->
 
 In this template with SQL Server R Services, two versions of the SQL implementation. 
 <!--and another version for HDInsight implementation -->:

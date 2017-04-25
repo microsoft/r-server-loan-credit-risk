@@ -253,11 +253,10 @@ Once you have connected you can also use the web server admin utility to reconfi
 <p></p>
 Follow <a href="deployr.html">Operationalization with R Server instruction</a> to connect to the edge node and/or use the admin utility.
 </div>
+</div>
 
-
-<img  src="images/visualize.png">
-
-{% include pbix.md %}
+<p></p>
+* See [For the Business Manager](business-manager.html) for details of the PowerBI dashboard.
 
 <div name="requirements" class="sql">
 <h2> System Requirements</h2>
@@ -275,7 +274,7 @@ The following are required to run the scripts in this solution:
 ## Template Contents 
 ---------------------
 
-[View the contents of this solution template](contents.html).
+* [View the contents of this solution template](contents.html).
 
 
 To try this out yourself: 

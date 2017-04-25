@@ -40,14 +40,18 @@ When a financial institution examines a request for a loan, it is crucial to ass
         </div>
 </div>
 
-For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while models training, scoring and evaluation steps are implemented with SQL stored procedures with embedded R (Microsoft R Server) code. 
+<span class="onp">For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+</span>
+<span class="cig">The implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+</span>
+
 <p/>
 All the steps can be executed on SQL Server client environment (such as SQL Server Management Studio). We provide a Windows PowerShell script, Loan_Credit_Risk.ps1, which invokes the SQL scripts and demonstrates the end-to-end modeling process.
 
 ## System Requirements
 -----------------------
 
-the following are required to run these scripts:
+The following are required to run these scripts:
  * SQL server 2016 with Microsoft R server (version 9.0.1 or above) installed and configured;
  * The SQL user name and password, and the user is configured properly to execute R scripts in-memory;
  * SQL Database for which the user has write permission and can execute stored procedures (see create_user.sql);
