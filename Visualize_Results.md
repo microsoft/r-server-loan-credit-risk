@@ -43,12 +43,12 @@ The PowerBI dashboard will show charts built from cached data. We need to set it
  <img src="images/vis2.png" >
 </li>
 
-<li> 	Under Data Source Name Enter <code>Campaign</code> and click <code>OK</code>
+<li> 	Under Data Source Name Enter <code>{{ site.folder_name }}</code> and click <code>OK</code>
  <br/>
  <img src="images/vis3.png" width="60%" >
 </li>
 
-<li class="sql">	Navigate to Campaign >  dbo and check Recommendations. Click <code>Load</code>.
+<li class="sql">	Navigate to {{ site.folder_name }} >  dbo and check Recommendations. Click <code>Load</code>.
  <br/>
  <img src="images/vis4.png"  >
 </li>

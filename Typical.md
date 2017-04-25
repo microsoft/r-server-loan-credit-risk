@@ -74,7 +74,7 @@ The cluster has been created and data loaded for you when you used the <code>Dep
 ## Step 2: Data Prep and Modeling with Debra the Data Scientist
 -----------------------------------------------------------------
 
-Now let's meet Debra, the Data Scientist. Debra's job is to use historical data to predict a model for future campaigns. 
+Now let's meet Debra, the Data Scientist. Debra's job is to use historical data to predict a model for future loans. 
 <span class="sql">Debra's preferred language for developing the models is using R and SQL. She uses Microsoft R Services with SQL Server 2016 as it provides the capability to run large datasets and also is not constrained by memory restrictions of Open Source R.
 </span>
 <span class="hdi">Debra will develop these models using <a href="https://azure.microsoft.com/en-us/services/hdinsight/">HDInsight</a>, the managed cloud Hadoop solution with integration to Microsoft R Server.
@@ -118,9 +118,9 @@ You can use your favorite IDE to follow along.  If you use Visual Studio, you ca
 
 <div class="sql">
 <p/>
-Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>Campaign/R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
+Now that Debra's environment is set up, she  opens her IDE and creates a Project.  To follow along with her, open the <strong>{{ site.folder_name }}/R</strong> directory on <span class="cig">the VM desktop </span> <span class="onp">your computer</span>.  
 
-There you will see three files with the name <code>{{ site.solution_name }}</code>
+There you will see three files with the name <strong>{{ site.solution_name }}</strong>
 
 <ul>
 <li>If you use Visual Studio, double click on the Visual Studio SLN file.</li>
@@ -142,3 +142,4 @@ There you will see three files with the name <code>{{ site.solution_name }}</cod
 
     {% include step4.md %}
 
+    

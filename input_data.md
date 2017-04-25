@@ -7,8 +7,8 @@ title: Input Data
 --------------------------
 
 The **Data** folder contains the following data:
-* **Loan.csv** and **Borrower.csv**: data sets with 100K rows of the simulated data used to build the end-to-end Loan Credit Risk Loan solution.
-* **Loan_Prod.csv** and **Borrower_Prod.csv**: data sets with 100K rows of the simulated data used in the Production pipeline.
+* **Loan.csv** and **Borrower.csv**: data sets with 100K rows of the simulated data used to build the end-to-end Loan Credit Risk solution.
+* **Loan_Prod.csv** and **Borrower_Prod.csv**: data sets with about 20 rows of the simulated data used in the Production pipeline.
 
 **Loan.csv** and **Loan_Prod.csv** contain the following fields:
 <table class="table table-compressed table-striped">
@@ -23,7 +23,7 @@ The **Data** folder contains the following data:
   <tr><td>interestRate</td><td>String</td><td>Interest Rate on the loan e.g., 7.21 %</td></tr>
   <tr><td>monthlyPayment</td><td>Float</td><td>Monthly payment owed by the borrower</td></tr>
   <tr><td>grade</td><td>String</td><td>Loan grade (risk-related) e.g. A2</td></tr>
-  <tr><td>loanStatus</td><td>String</td><td>Status of the loan (Label) Values taken: Current, Charged Off</td></tr>
+  <tr><td>loanStatus</td><td>String</td><td>Status of the loan (Label) Values taken: Current, Charged Off (This field is not present in the Loan_Prod.csv file)</td></tr>
 </table>
 
 **Borrower.csv** and **Borrower_Prod.csv** contain the following fields:
@@ -38,11 +38,11 @@ e.g., 10+ years</td></tr>
 Values taken: own, rent, mortgage</td></tr>
  <tr><td>annualIncome</td><td>Float</td><td>Annual income of the borrower</td></tr>
  <tr><td>incomeVerified</td><td>String</td><td>Flag indicating if the income was verified or not</td></tr>
-<tr><td>tiRatio</td><td>Float</td><td>Debt to income ratio: borrower’s total monthly debt payments (without mortgage and the requested loan) divided by the monthly income.  It is expressed in percentage</td></tr>
+<tr><td>dtiRatio</td><td>Float</td><td>Debt to income ratio: borrower’s total monthly debt payments (without mortgage and the requested loan) divided by the monthly income.  It is expressed in percentage</td></tr>
  <tr><td>lengthCreditHistory</td><td>Integer</td><td>Length of the credit history in terms of years</td></tr>
  <tr><td>numTotalCreditLines</td><td>Integer</td><td>Total number of credit lines in the borrower's credit file</td></tr>
  <tr><td>numOpenCreditLines</td><td>Integer</td><td>Number of open credit lines in the borrower's credit file</td></tr>
- <tr><td>numOpenCreditLines1Year</td><td>Integer</td><td>Number of credit lines in the borrower's credit file thaty were opened in the past year</td></tr>
+ <tr><td>numOpenCreditLines1Year</td><td>Integer</td><td>Number of credit lines in the borrower's credit file that were opened in the past year</td></tr>
  <tr><td>revolvingBalance</td><td>Float</td><td>Total credit revolving balance</td></tr>
  <tr><td>revolvingUtilizationRate</td><td>Float</td><td>Amount of credit the borrower is using relative to all available revolving credit e.g., 7.30%</td></tr>
  <tr><td>numDerogatoryRec</td><td>Integer</td><td>Number of derogatory public records (includes tax liens, bankruptcies, and other judgements such as civil lawsuits)</td></tr>

@@ -40,17 +40,19 @@ When a financial institution examines a request for a loan, it is crucial to ass
         </div>
 </div>
 
-For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). In this template, we implemented all steps in SQL stored procedures: data preprocessing, and feature engineering are implemented in pure SQL, while models training, scoring and evaluation steps are implemented with SQL stored procedures with embedded R (Microsoft R Server) code. 
+<span class="onp">For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+</span>
+<span class="cig">The implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+</span>
+
 <p/>
 All the steps can be executed on SQL Server client environment (such as SQL Server Management Studio). We provide a Windows PowerShell script, Loan_Credit_Risk.ps1, which invokes the SQL scripts and demonstrates the end-to-end modeling process.
 
 ## System Requirements
 -----------------------
 
-To run the scripts requires the following:
-
-To run the scripts, it requires the following:
- * SQL server 2016 with Microsoft R server (version 9.0.1) installed and configured;
+The following are required to run these scripts:
+ * SQL server 2016 with Microsoft R server (version 9.0.1 or above) installed and configured;
  * The SQL user name and password, and the user is configured properly to execute R scripts in-memory;
  * SQL Database for which the user has write permission and can execute stored procedures (see create_user.sql);
  * Implied authentification is enabled so a connection string can be automatically created in R codes embedded into SQL Stored Procedures (see create_user.sql).
@@ -59,7 +61,8 @@ To run the scripts, it requires the following:
 
 ## Workflow Automation
 -------------------
-Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  View the [details all tables](tables.html)  created in this solution.
+Follow the [PowerShell instructions](Powershell_Instructions.html) to execute all the scripts described below.  View the [details of all tables](tables.html)  created in this solution.
+
 
  
 <a name="step0">
