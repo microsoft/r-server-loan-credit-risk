@@ -63,13 +63,6 @@ After creating the model, Debra runs <strong>Copy_Dev2Prod.R</strong> to copy th
 </li>
  
 <li> Once all the above code has been executed, Debra will create a PowerBI dashboard to visualize the scores created from her model. 
-
-{% include pbix.md %}
-
-
-  <div class="alert alert-info" role="alert">
-  See <a href="Visualize_Results.html">how to refresh data in your PowerBI Dashboard</a> for more information.
-  </div>
 </li>
 <li>A summary of this process and all the files involved is described in more detail on the <a href="data-scientist.html">For the Data Scientist</a> page.
 </li>

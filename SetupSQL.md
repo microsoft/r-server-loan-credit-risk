@@ -63,8 +63,21 @@ If you are administering your own server and want to add a user to run the code 
 
 6.	Now, click on <code>File</code> on the top left corner of the SQL Server window and select <code>Connect Object Explorer…</code> verify that you can connect to the server with this username(<code>rdemo</code>) and password(<code>D@tascience</code>) using the SQL Server Authentication.
 
+## Install Packages
+--------------------
+There are R Packages required for this solution.  The following steps will install these packages into your SQL Server R Services.
 
-### Ready to Run Code 
+1. Download the [install_server.R](https://github.com/Microsoft/r-server-loan-credit-risk/blob/master/R/install_server.R) file.
+
+2.  In a terminal window, `cd` to the directory where the files is downloaded.
+
+3.  Run the following to install the required packages into SQL Server R Services:
+
+    ```
+    Rscript install_server.R
+    ```
+
+## Ready to Run Code 
 ---------------------
 
 You are now ready to run the code for this solution.  

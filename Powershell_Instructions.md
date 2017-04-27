@@ -61,7 +61,9 @@ Running this PowerShell script will create stored procedures for the the operati
     git clone {{ site.code_url }} {{ site.folder_name }}
     ```
 
-4.  Now CD to the **{{ site.folder_name }}/SQLR** directory and run one of the two following commands, inserting your server name, database name, username, and password.
+4.  CD to the **{{ site.folder_name }}/SQLR** directory.
+
+5. You are now ready to run the PowerShell script.  Use one of the two following commands, inserting your server name, database name, username, and password.
 
      * Run with no prompts: 
     
