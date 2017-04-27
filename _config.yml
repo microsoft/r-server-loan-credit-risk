@@ -18,10 +18,10 @@ hdi_text: HDInsight Spark
 # urls, etc
 code_url: "https://github.com/Microsoft/r-server-loan-credit-risk"
 website_url: "https://microsoft.github.io/r-server-loan-credit-risk"  
-dashboard_url: "LINKHERE"
 deploy_url: "http://aka.ms/loan-credit-risk" 
 deploy_url_hdi: "LINKHERE"
+pbix_name: LoanCreditRisk.pbix
 pbix_hdidownload_url: "LINKHERE"
-pbix_sqldownload_url: "LINKHERE"
+pbix_sqldownload_url: "https://github.com/Microsoft/r-server-loan-credit-risk/blob/master/LoanCreditRisk.pbix"
 pbix_view_url: "LINKHERE"
 
