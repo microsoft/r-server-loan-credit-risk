@@ -23,7 +23,7 @@ This page shows how to refresh data for the PowerBI file on your VM.  If you wan
 netsh advfirewall firewall add rule name="SQLServer" dir=in action=allow protocol=tcp localport=1433 
 </pre>
 <p/>
-Then follow the <a href="Visualize_Results.html?path=onp">{{ site.onp_text }} instructions</a>.
+Then follow the <a href="Visualize_Results.html?path=onp">{{ site.onp_text }} instructions</a>. 
 </div>  
 <p/>
 These instructions show you how to replace the cached data in the PowerBI dashboard with data from your 
@@ -37,7 +37,7 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <li class="hdi">Download and open the <a href="{{ site.pbix_hdidownload_url }}" target="_blank">{{ site.pbix_name }}</a> file</li>
 <li class="onp">Click on <code>Edit Query</code></li>
 <li class="onp">Select the first query (<code>TestData</code>) and then click on the <code>Advanced Editor</code> in the toolbar.</li>
-<li class="onp">Replace <code>localhost</code> with your server name and click on <code>Done</code></li>
+<li class="onp">Replace <code>localhost</code> with your server name and click on <code>Done</code>. (If you are using an Azure VM, such as the one deployed by Cortana Ingelligence Gallery, use the IP address for the server name.)</li>
 <li class="onp">After a moment you'll see an alert asking for Permision to run the query.  Click on <code>Edit Permission</code> </li>
 
 
