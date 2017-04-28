@@ -61,7 +61,9 @@ Running this PowerShell script will create stored procedures for the the operati
     git clone {{ site.code_url }} {{ site.folder_name }}
     ```
 
-4.  Now CD to the **{{ site.folder_name }}/SQLR** directory and run one of the two following commands, inserting your server name (or "." if you are on the same machine as the SQL server), database name, username, and password.
+4.  CD to the **{{ site.folder_name }}/SQLR** directory.
+
+5. You are now ready to run the PowerShell script.  Use one of the two following commands, inserting your server name, database name, username, and password.
 
      * Run with no prompts: 
     
@@ -81,9 +83,9 @@ Running this PowerShell script will create stored procedures for the the operati
         .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "N" -uninterrupted "Y"  
         ```
 
-5.  If running uninterrupted (`-uninterrupted "Y"`), default names are used and only the gradient boosted trees model (rxFastTrees) is trained and used for scoring.
+5.  If running uninterrupted (`-uninterrupted "Y"`), default names are used.
 
-6.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables, and choose which models to train and use.
+6.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables.
 
 7.  You can also optionally add the parameter -dataPath "your path\to\csv files".  If you omit this, it defaults to the Data folder in the current directory.
 

@@ -22,5 +22,5 @@ The Loan Summary table divides those loans classified as bad in two: those that 
 Now Bernie switches to the Prod Data tab to view some scored potential loans.  He uses the .4680 cutoff value and views information about these loans.  He sees he will reject 9 of the 22 potential loans based on this critera.
 
 <div class="alert alert-info" role="alert">
-Remember that before the data in this dashboard can be refreshed to use your scored data, you must <a href="Visualize_Results.html">configure the dashboard</a> as Debra did in step 2 of this workflow.
+The PowerBI file has cached data in it.  You can use these <a href="Visualize_Results.html">steps to refresh the PowerBI data</a>.
 </div>  

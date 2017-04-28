@@ -70,7 +70,7 @@ Follow the [PowerShell instructions](Powershell_Instructions.html) to execute al
 ## Step 0: Creating Tables
 -------------------------
 
-The data sets Loan.csv and Borrower.csv are provided in the Data directory.
+The data sets **Loan.csv** and **Borrower.csv** are provided in the **Data** directory.
 
 In this step, we create two tables, `Loan` and `Borrower` in a SQL Server database, and the data is uploaded to these tables using bcp command in PowerShell. This is done through either `Load_Data.ps1` or through running the beginning of `Loan_Credit_Risk.ps1`. 
 
@@ -91,10 +91,9 @@ In this step, we create two tables, `Loan` and `Borrower` in a SQL Server databa
 ## Step 1: Merging and Cleaning
 -------------------------
 
-In this step, the two tables are first merged into "Merged" with an inner join on memberId. This is done through the stored procedure [dbo].[merging]. 
+In this step, the two tables are first merged into `Merged` with an inner join on `memberId`. This is done through the stored procedure `[dbo].[merging]`. 
 
-Then, statistics (mode or mean) of "Merged" are computed and stored into a table called Stats. This table will be used for the Production pipeline. 
-This is done through the `[dbo].[compute_stats]` stored procedure. 
+Then, statistics (mode or mean) of `Merged` are computed and stored into a table called `Stats`. This table will be used for the Production pipeline. This is done through the `[dbo].[compute_stats]` stored procedure. 
 
 The raw data is then cleaned. This assumes that the ID variables (`loanId` and `memberId`), the `date` and `loanStatus` (Variables that will be used to create the label) do not contain blanks. 
 The stored procedure, `[fill_NA_mode_mean]`, will replace the missing values with the mode (categorical variables) or mean (float variables).
@@ -249,13 +248,13 @@ The first, `[dbo].[compute_operational_metrics]` will:
 3. Take each lower bound of each bin as a decision threshold for default loan classification, and compute the rate of bad loans among loans with a score higher than the threshold. 
 
 It outputs the table `Operational_Scores`, which will also be used in the Production pipeline. It can be read in the following way: 
-If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449, this means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
+* If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449, this means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
 
 The second, `[apply_score_transformation]` will: 
 
-1- Apply the same sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1].
+1. Apply the same sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1].
 
-2- Asssign each score to a percentile bin with the bad rates given by the `Operational_Scores` table. These bad rates are either observed (Modeling pipeline) or expected (Production pipeline).
+2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Scores` table. These bad rates are either observed (Modeling pipeline) or expected (Production pipeline).
 
 
 ## Input:
