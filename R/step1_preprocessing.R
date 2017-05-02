@@ -159,14 +159,18 @@ data_process <- function(Loan,
     Mean_Mode_Replace <- function(data) {
       data <- data.frame(data, stringsAsFactors = F)
       # Replace numeric variables with the mean. 
-      for(i in 1:length(num_with_NA)){
-        row_na <- which(is.na(data[, num_with_NA[i]]) == TRUE) 
-        data[row_na, num_with_NA[i]] <- num_NA_mean[i]
+      if(length(num_with_NA) > 0){
+        for(i in 1:length(num_with_NA)){
+          row_na <- which(is.na(data[, num_with_NA[i]]) == TRUE) 
+          data[row_na, num_with_NA[i]] <- num_NA_mean[i]
+        }
       }
-      # Replace character variables with the mode. 
-      for(i in 1:length(char_with_NA)){
-        row_na <- which(is.na(data[, char_with_NA[i]]) == TRUE) 
-        data[row_na, char_with_NA[i]] <- char_NA_mode[i]
+      # Replace categorical variables with the mode. 
+      if(length(char_with_NA) > 0){
+        for(i in 1:length(char_with_NA)){
+          row_na <- which(is.na(data[, char_with_NA[i]]) == TRUE) 
+          data[row_na, char_with_NA[i]] <- char_NA_mode[i]
+        }
       }
       return(data)  
     }

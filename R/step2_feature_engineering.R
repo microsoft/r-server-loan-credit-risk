@@ -92,27 +92,27 @@ feature_engineer <- function(splitting_ratio = 0.7)
   # For this reason, we manually specify default bins based on an analysis of the variables distributions or smbinning on a larger data set. 
   # We then overwrite them with smbinning when it output bins. 
   
-  b <- list()
+  bins <- list()
   
   # Default cutoffs for bins:
   ## EXAMPLE: If the cutoffs are (c1, c2, c3),
   ## Bin 1 = ]- inf, c1], Bin 2 = ]c1, c2], Bin 3 = ]c2, c3], Bin 4 = ]c3, + inf] 
   ## c1 and c3 are NOT the minimum and maximum found in the training set. 
-  b$loanAmount <- c(14953, 18951, 20852, 22122, 24709, 28004)
-  b$interestRate <- c(7.17, 10.84, 12.86, 14.47, 15.75, 18.05)
-  b$monthlyPayment <- c(382, 429, 495, 529, 580, 649, 708, 847)
-  b$annualIncome <- c(49402, 50823, 52089, 52885, 53521, 54881, 55520, 57490)
-  b$dtiRatio <- c(9.01, 13.42, 15.92, 18.50, 21.49, 22.82, 24.67)
-  b$lengthCreditHistory <- c(8)
-  b$numTotalCreditLines <- c(1, 2)
-  b$numOpenCreditLines <- c(3, 5)
-  b$numOpenCreditLines1Year <- c(3, 4, 5, 6, 7, 9)
-  b$revolvingBalance <- c(11912, 12645, 13799, 14345, 14785, 15360, 15883, 16361, 17374, 18877)
-  b$revolvingUtilizationRate <- c(49.88, 60.01, 74.25, 81.96)
-  b$numDerogatoryRec <- c(0, 1)
-  b$numDelinquency2Years <- c(0)
-  b$numChargeoff1year <- c(0)
-  b$numInquiries6Mon <- c(0)
+  bins$loanAmount <- c(14953, 18951, 20852, 22122, 24709, 28004)
+  bins$interestRate <- c(7.17, 10.84, 12.86, 14.47, 15.75, 18.05)
+  bins$monthlyPayment <- c(382, 429, 495, 529, 580, 649, 708, 847)
+  bins$annualIncome <- c(49402, 50823, 52089, 52885, 53521, 54881, 55520, 57490)
+  bins$dtiRatio <- c(9.01, 13.42, 15.92, 18.50, 21.49, 22.82, 24.67)
+  bins$lengthCreditHistory <- c(8)
+  bins$numTotalCreditLines <- c(1, 2)
+  bins$numOpenCreditLines <- c(3, 5)
+  bins$numOpenCreditLines1Year <- c(3, 4, 5, 6, 7, 9)
+  bins$revolvingBalance <- c(11912, 12645, 13799, 14345, 14785, 15360, 15883, 16361, 17374, 18877)
+  bins$revolvingUtilizationRate <- c(49.88, 60.01, 74.25, 81.96)
+  bins$numDerogatoryRec <- c(0, 1)
+  bins$numDelinquency2Years <- c(0)
+  bins$numChargeoff1year <- c(0)
+  bins$numInquiries6Mon <- c(0)
 
   # Import the training set to be able to apply smbinning. 
   Train_df <- rxImport(Train_sql)
@@ -121,7 +121,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
   Train_df$isBad <- as.numeric(as.character(Train_df$isBad))
   
   # Function to compute smbinning on every variable. 
-  bins <- function(name, data){
+  compute_bins <- function(name, data){
     library(smbinning)
     output <- smbinning(data, y = "isBad", x = name, p = 0.05)
     if (class(output) == "list"){ # case where the binning was performed and returned bins.
@@ -136,14 +136,14 @@ feature_engineer <- function(splitting_ratio = 0.7)
   ## numCoresToUse = -1 will enable the use of the maximum number of cores.
   rxOptions(numCoresToUse = 3) # use 3 cores.
   rxSetComputeContext('localpar')
-  q <- rxExec(bins, name = rxElemArg(smb_buckets_names), data = Train_df)
+  q <- rxExec(compute_bins, name = rxElemArg(smb_buckets_names), data = Train_df)
   names(q) <- smb_buckets_names
   
-  # Fill b with bins obtained in q with smbinning. 
-  ## We replace the default values in b if and only if smbinning returned a non NULL result. 
+  # Fill bins with bins obtained in q with smbinning. 
+  ## We replace the default values in bins if and only if smbinning returned a non NULL result. 
   for(name in smb_buckets_names){
     if (!is.null(q[[name]])){ 
-      b[[name]] <- q[[name]]
+      bins[[name]] <- q[[name]]
     }
   }
   
@@ -189,7 +189,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
                overwrite = TRUE, 
                transformFunc = Bucketize,
                transformObjects =  list(
-                b2 = b, buckets_names = smb_buckets_names)
+                b2 = bins, buckets_names = smb_buckets_names)
     )
     
   print("Step 2 Completed.")

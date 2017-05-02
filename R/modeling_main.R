@@ -26,7 +26,7 @@ Borrower <- "../Data/Borrower.csv"
 ## Database name. If it already exists, tables will be overwritten. If not, it will be created.
 ## Server name. If conecting remotely to the DSVM, the full DNS address should be used with the port number 1433 (which should be enabled) 
 ## User ID and Password. Change them below if you modified the default values.  
-db_name <- "Loan"
+db_name <- "LoanR"
 server <- "localhost"
 user_id <- "rdemo"
 password <- "D@tascience"
@@ -91,8 +91,8 @@ source(paste(getwd(),"/step4_operational_metrics.R", sep=""))
 print("Step 4: Operational Metrics Computation and Scores Transformation.")
 
 ## Compute operational metrics and plot the rates of bad loans for various thresholds obtained through binning. 
-Operational_Scores <- compute_operational_metrics()
-plot(Operational_Scores$badRate, main = c("Rate of Bad Loans Among those with Scores Higher than Decision Thresholds"), xlab = "Default Score Percentiles", ylab = "Expected Rate of Bad Loans")
+Operational_Metrics <- compute_operational_metrics()
+plot(Operational_Metrics$badRate, main = c("Rate of Bad Loans Among those with Scores Higher than Decision Thresholds"), xlab = "Default Score Percentiles", ylab = "Expected Rate of Bad Loans")
 
 ## EXAMPLE: 
 ## If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449.  

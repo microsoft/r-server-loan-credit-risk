@@ -38,9 +38,9 @@ compute_operational_metrics <- function(){
   
   # Define the sigmoid: it is centered at 1.2*mean score to ensure a good spread of scores.  
   ## The sigmoid parameters can be changed for a new data set. 
-  avg <- mean(Predictions$isBad_Pred)
+  dev_test_avg_score <- mean(Predictions$isBad_Pred)
   sigmoid <- function(x){
-    return(1/(1 + exp(-20*(x-1.2*avg))))
+    return(1/(1 + exp(-20*(x-1.2*dev_test_avg_score))))
   }
   
   # Apply the function.
@@ -70,11 +70,11 @@ compute_operational_metrics <- function(){
   }
   
   # Save the data points to a data frame and load it to SQL.  
-  Operational_Scores <- data.frame(scorePercentile = names(bins), scoreCutoff = bins, badRate = badrate, row.names = NULL)
-  Operational_Scores_sql <- RxSqlServerData(table = "Operational_Scores", connectionString = connection_string)
-  rxDataStep(inData = Operational_Scores, outFile = Operational_Scores_sql, overwrite = TRUE)
+  Operational_Metrics <- data.frame(scorePercentile = names(bins), scoreCutoff = bins, badRate = badrate, row.names = NULL)
+  Operational_Metrics_sql <- RxSqlServerData(table = "Operational_Metrics", connectionString = connection_string)
+  rxDataStep(inData = Operational_Metrics, outFile = Operational_Metrics_sql, overwrite = TRUE)
   
-  return(Operational_Scores)
+  return(Operational_Metrics)
 }
 
 
@@ -84,7 +84,7 @@ compute_operational_metrics <- function(){
 ## 2. Asssign each score to a quantile bin with the bad rates given by the Operational Scores table.
 ##########################################################################################################################################
 
-apply_score_transformation <- function(Operational_Scores){
+apply_score_transformation <- function(Operational_Metrics){
   
   print("Transforming scores based on operational metrics...")
   
@@ -103,10 +103,10 @@ apply_score_transformation <- function(Operational_Scores){
   ## Space out the scores (predicted probability of default) for interpretability with a sigmoid.
   ##########################################################################################################################################
   
-  # Define the sigmoid: it is centered at the mean score to ensure a good spread around a 0.5 score. 
-  avg <- mean(Predictions$isBad_Pred)
+  # Define the sigmoid: it is centered at the mean score to ensure a good spread of scores.  
+  dev_test_avg_score <- mean(Predictions$isBad_Pred)
   sigmoid <- function(x){
-    return(1/(1 + exp(-20*(x-1.5*avg))))
+    return(1/(1 + exp(-20*(x-1.2*dev_test_avg_score))))
   }
   
   # Apply the function.
@@ -117,19 +117,19 @@ apply_score_transformation <- function(Operational_Scores){
   ##########################################################################################################################################
   
   # Deal with the bottom 1-99 percentiles. 
-  for (i in seq(1, (nrow(Operational_Scores) - 1))){
-    rows <- which(Predictions$transformedScore <= Operational_Scores$scoreCutoff[i + 1] & 
-                  Predictions$transformedScore > Operational_Scores$scoreCutoff[i])
-    Predictions[rows, c("scorePercentile")] <- as.character(Operational_Scores$scorePercentile[i + 1])
-    Predictions[rows, c("badRate")] <- Operational_Scores$badRate[i]
-    Predictions[rows, c("scoreCutoff")] <- Operational_Scores$scoreCutoff[i]
+  for (i in seq(1, (nrow(Operational_Metrics) - 1))){
+    rows <- which(Predictions$transformedScore <= Operational_Metrics$scoreCutoff[i + 1] & 
+                  Predictions$transformedScore > Operational_Metrics$scoreCutoff[i])
+    Predictions[rows, c("scorePercentile")] <- as.character(Operational_Metrics$scorePercentile[i + 1])
+    Predictions[rows, c("badRate")] <- Operational_Metrics$badRate[i]
+    Predictions[rows, c("scoreCutoff")] <- Operational_Metrics$scoreCutoff[i]
   }
   
   # Deal with the top 1% higher scores (last bucket). 
-  rows <- which(Predictions$transformedScore > Operational_Scores$scoreCutoff[100])
+  rows <- which(Predictions$transformedScore > Operational_Metrics$scoreCutoff[100])
   Predictions[rows, c("scorePercentile")] <- "Top 1%"
-  Predictions[rows, c("scoreCutoff")] <- Operational_Scores$scoreCutoff[100]
-  Predictions[rows, c("badRate")] <- Operational_Scores$badRate[100]
+  Predictions[rows, c("scoreCutoff")] <- Operational_Metrics$scoreCutoff[100]
+  Predictions[rows, c("badRate")] <- Operational_Metrics$badRate[100]
 
   
   ##########################################################################################################################################
