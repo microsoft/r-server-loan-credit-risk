@@ -8,7 +8,7 @@
 
 
 -- Set the working database to the one where you created the stored procedures.
-Use Loan
+Use Loans
 GO
 
 -- @loan_input: specify the name of the table holding the raw data set about loans for Modeling.

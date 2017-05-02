@@ -102,13 +102,13 @@ BEGIN
 			FROM ['+ @dev_db + '].[dbo].[Scores_Average]';
 			EXEC sp_executesql @sql5;
 
-		-- Copy the Operational_Scores table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Operational_Scores]
+		-- Copy the Operational_Metrics table into the production database. 
+		 DROP TABLE IF EXISTS [dbo].[Operational_Metrics]
 		 DECLARE @sql6 nvarchar(max);
 			SELECT @sql6 = N'
 			SELECT *
-			INTO [dbo].[Operational_Scores]
-			FROM ['+ @dev_db + '].[dbo].[Operational_Scores]';
+			INTO [dbo].[Operational_Metrics]
+			FROM ['+ @dev_db + '].[dbo].[Operational_Metrics]';
 			EXEC sp_executesql @sql6;
 	END;
 END

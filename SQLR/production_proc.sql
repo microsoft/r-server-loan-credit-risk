@@ -9,7 +9,7 @@
 
 
 -- Set the working database to the one where you created the stored procedures.
-Use Loan_Prod
+Use Loans_Prod
 GO
 
 -- @loan_input: specify the name of the table holding the raw data set about loans for Production.
@@ -23,7 +23,7 @@ CREATE PROCEDURE [dbo].[prod_loan]  @loan_input varchar(max) = 'Loan_Prod', @bor
 AS
 BEGIN
 
--- Step 0: Copy the Stats, Models, Colum_Info, Scores_Average, and Operational_Scores tables to the production database (Only used for Production). 
+-- Step 0: Copy the Stats, Models, Colum_Info, Scores_Average, and Operational_Metrics tables to the production database (Only used for Production). 
 	exec [dbo].[copy_modeling_tables] @dev_db = @dev_db 
 
 -- Step 1: Preprocessing. 
