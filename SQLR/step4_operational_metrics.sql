@@ -11,7 +11,7 @@ GO
 
 -- @predictions_table : name of the table that holds the predictions (output of scoring).
 
--- How to read the output table Operational_Scores.
+-- How to read the output table Operational_Metrics.
 -- EXAMPLE: 
 -- If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449.  
 -- This means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%.  
@@ -79,9 +79,9 @@ BEGIN
   }
   
 # Save the percentiles, score cutoffs and bad rates in a SQL table.  
-  Operational_Scores <- data.frame(scorePercentile = names(bins), scoreCutoff = bins, badRate = badrate, row.names = NULL)
-  Operational_Scores_sql <- RxSqlServerData(table = "Operational_Scores", connectionString = connection_string)
-  rxDataStep(inData = Operational_Scores, outFile = Operational_Scores_sql, overwrite = TRUE)
+  Operational_Metrics <- data.frame(scorePercentile = names(bins), scoreCutoff = bins, badRate = badrate, row.names = NULL)
+  Operational_Metrics_sql <- RxSqlServerData(table = "Operational_Metrics", connectionString = connection_string)
+  rxDataStep(inData = Operational_Metrics, outFile = Operational_Metrics_sql, overwrite = TRUE)
 '
 , @params = N' @database_name varchar(max)'
 , @database_name = @database_name
@@ -143,24 +143,24 @@ BEGIN
 ##	Apply the score transformation. 
 ########################################################################################################################################## 
 # Import the Bins used during the Development pipeline. 
-  Operational_Scores_sql <- RxSqlServerData(sqlQuery = "SELECT * FROM [dbo].[Operational_Scores]",
+  Operational_Metrics_sql <- RxSqlServerData(sqlQuery = "SELECT * FROM [dbo].[Operational_Metrics]",
                                             connectionString = connection_string)
-  Operational_Scores <- rxImport(Operational_Scores_sql)
+  Operational_Metrics <- rxImport(Operational_Metrics_sql)
 
 # Deal with the bottom 1-99 percentiles. 
-  for (i in seq(1, (nrow(Operational_Scores) - 1))){
-    rows <- which(InputDataSet$transformedScore <= Operational_Scores$scoreCutoff[i + 1] & 
-                  InputDataSet$transformedScore > Operational_Scores$scoreCutoff[i])
-    InputDataSet[rows, c("scorePercentile")] <- as.character(Operational_Scores$scorePercentile[i + 1])
-    InputDataSet[rows, c("badRate")] <- Operational_Scores$badRate[i]
-    InputDataSet[rows, c("scoreCutoff")] <- Operational_Scores$scoreCutoff[i]
+  for (i in seq(1, (nrow(Operational_Metrics) - 1))){
+    rows <- which(InputDataSet$transformedScore <= Operational_Metrics$scoreCutoff[i + 1] & 
+                  InputDataSet$transformedScore > Operational_Metrics$scoreCutoff[i])
+    InputDataSet[rows, c("scorePercentile")] <- as.character(Operational_Metrics$scorePercentile[i + 1])
+    InputDataSet[rows, c("badRate")] <- Operational_Metrics$badRate[i]
+    InputDataSet[rows, c("scoreCutoff")] <- Operational_Metrics$scoreCutoff[i]
   }
   
 # Deal with the top 1% higher scores (last bucket). 
-  rows <- which(InputDataSet$transformedScore > Operational_Scores$scoreCutoff[100])
+  rows <- which(InputDataSet$transformedScore > Operational_Metrics$scoreCutoff[100])
   InputDataSet[rows, c("scorePercentile")] <- "Top 1%"
-  InputDataSet[rows, c("scoreCutoff")] <- Operational_Scores$scoreCutoff[100]
-  InputDataSet[rows, c("badRate")] <- Operational_Scores$badRate[100]
+  InputDataSet[rows, c("scoreCutoff")] <- Operational_Metrics$scoreCutoff[100]
+  InputDataSet[rows, c("badRate")] <- Operational_Metrics$badRate[100]
 
 ##########################################################################################################################################
 ## Save the transformed scores to SQL. 

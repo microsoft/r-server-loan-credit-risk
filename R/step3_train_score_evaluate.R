@@ -28,7 +28,7 @@ training_evaluation <- function()
   ##########################################################################################################################################
   
   ## The block below will do the following:
-  ## 1. Get the column information. 
+  ## 1. Get the column information and save it ot SQL for production. 
   ## 2. Create pointers to the training and testing sets.
   
   ##########################################################################################################################################
@@ -37,14 +37,44 @@ training_evaluation <- function()
   print("Getting the variable information...")
   column_info <- rxCreateColInfo(Merged_Features_sql, sortLevels = T)
   
-  ## Point to the training set. It will be created on the fly when training models. 
+  # Set the compute context to local to export the column_info list to SQl. 
+  rxSetComputeContext('local')
+  
+  ## Open an Odbc connection with SQL Server.
+  OdbcModel <- RxOdbcData(table = "Column_Info", connectionString = connection_string)
+  rxOpen(OdbcModel, "w")
+  
+  ## Drop the Column Info table if it exists. 
+  if(rxSqlServerTableExists(OdbcModel@table, OdbcModel@connectionString)) {
+    rxSqlServerDropTable(OdbcModel@table, OdbcModel@connectionString)
+  }
+  
+  ## Create an empty Bins table. 
+  rxExecuteSQLDDL(OdbcModel, 
+                  sSQLString = paste(" CREATE TABLE [", OdbcModel@table, "] (",
+                                     "     [id] varchar(200) not null, ",
+                                     "     [value] varbinary(max), ",
+                                     "     constraint unique_id2 unique (id))",
+                                     sep = "")
+  )
+  
+  ## Write the model to SQL. 
+  rxWriteObject(OdbcModel, "Column Info", column_info)
+  
+  ## Close the Obdc connection used. 
+  rxClose(OdbcModel)
+  
+  # Set the compute context back to SQL. 
+  rxSetComputeContext(sql)
+  
+  # Point to the training set. It will be created on the fly when training models. 
   Train_sql <- RxSqlServerData(sqlQuery = 
                                "SELECT *   
                                 FROM Merged_Features 
                                 WHERE loanId IN (SELECT loanId from Train_Id)",
                                   connectionString = connection_string, colInfo = column_info)
   
-  ## Point to the testing set. It will be created on the fly when testing models. 
+  # Point to the testing set. It will be created on the fly when testing models. 
   Test_sql <- RxSqlServerData(sqlQuery = 
                               "SELECT *   
                                FROM Merged_Features 
@@ -115,7 +145,7 @@ training_evaluation <- function()
                   sSQLString = paste(" CREATE TABLE [", OdbcModel@table, "] (",
                                      "     [id] varchar(200) not null, ",
                                      "     [value] varbinary(max), ",
-                                     "     constraint unique_id unique (id))",
+                                     "     constraint unique_id3 unique (id))",
                                      sep = "")
                   )
   

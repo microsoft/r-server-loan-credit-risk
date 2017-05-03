@@ -18,11 +18,11 @@ BEGIN
 	CREATE TABLE [dbo].[Model](
 		[id] [varchar](200) NOT NULL, 
 	    [value] [varbinary](max), 
-	    CONSTRAINT Unique_Id UNIQUE(id)
+			CONSTRAINT unique_id3 UNIQUE(id)
 		) 
+		
 
-	-- Get the database name and the column information. 
-	DECLARE @info varbinary(max) = (SELECT * FROM [dbo].[Column_Info]);
+	-- Get the database name.
 	DECLARE @database_name varchar(max) = db_name();
 
 	-- Train the model on the training set.	
@@ -30,19 +30,23 @@ BEGIN
 									   @script = N' 
 
 ##########################################################################################################################################
-##	Set the compute context to SQL for faster training
+##	Connection String
 ##########################################################################################################################################
 # Define the connection string
 connection_string <- paste("Driver=SQL Server;Server=localhost;Database=", database_name, ";Trusted_Connection=true;", sep="")
 
-# Set the Compute Context to SQL.
+########################################################################################################################################## 
+## Get the column information.
+########################################################################################################################################## 
+# Create an Odbc connection with SQL Server using the name of the table storing the bins. 
+OdbcModel <- RxOdbcData(table = "Column_Info", connectionString = connection_string) 
+
+# Read the model from SQL.  
+column_info <- rxReadObject(OdbcModel, "Column Info") 
+
+# Set the Compute Context to SQL for faster training.
 sql <- RxInSqlServer(connectionString = connection_string)
 rxSetComputeContext(sql)
-
-##########################################################################################################################################
-##	Get the column information.
-##########################################################################################################################################
-column_info <- unserialize(info)
 
 ##########################################################################################################################################
 ##	Point to the training set and use the column_info list to specify the types of the features.
@@ -100,9 +104,8 @@ Logistic_Coeff_sql <- RxSqlServerData(table = "Logistic_Coeff", connectionString
 rxDataStep(inData = Logistic_Coeff, outFile = Logistic_Coeff_sql, overwrite = TRUE)
 '
 
-, @params = N' @dataset_name varchar(max), @info varbinary(max), @database_name varchar(max)'
+, @params = N' @dataset_name varchar(max), @database_name varchar(max)'
 , @dataset_name =  @dataset_name
-, @info = @info
 , @database_name = @database_name
 
 ;

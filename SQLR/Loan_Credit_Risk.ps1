@@ -40,8 +40,14 @@ $uninterrupted="",
 [parameter(Mandatory=$false,ParameterSetName = "LC")]
 [ValidateNotNullOrEmpty()]
 [String]
-$dataPath = ""
+$dataPath = "",
+
+[parameter(Mandatory=$false,ParameterSetName = "LC")]
+[ValidateNotNullOrEmpty()]
+[String]
+$development_db = "Loans"  #default set to Loans. 
 )
+
 
 $scriptPath = Get-Location
 $filePath = $scriptPath.Path+ "\"
@@ -235,8 +241,6 @@ try{
 ##########################################################################
 # Production Pipeline
 ##########################################################################
-   $development_db = Read-Host 'Name of the development database to get Stats, Bins, Models and Column Information from?'
-   
    try
        {
 
@@ -269,7 +273,7 @@ try{
     ExecuteSQLQuery $query
 
     # execute the stored procedure to get the Stats, Bins, Model, ColInfo, Scores_Average, and  tables. 
-    Write-Host -ForeGroundColor 'Cyan' (" Getting the Stats, Bins, Model, Column Information, Scores_Average, and Operational_Scores from the tables used during the development pipeline...")
+    Write-Host -ForeGroundColor 'Cyan' (" Getting the Stats, Bins, Model, Column Information, Scores_Average, and Operational_Metrics from the tables used during the development pipeline...")
     $query = "EXEC copy_modeling_tables $development_db"
     ExecuteSQLQuery $query
 
@@ -659,9 +663,9 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 
     
 
-  # execute the stored procedure to get the Stats, Bins, Model, ColInfo, Scores_Average, and Operational_Scores tables. 
-    $ans = Read-Host 'Name of the development database to get Stats, Bins, Model, Column Information, Scores_Average and Operational_Scores from?'
-    Write-Host -ForeGroundColor 'Cyan' (" Getting the Stats, Bins, Model, Column Information, Scores_Average, and Operational_Scores from the tables used during the development pipeline...")
+  # execute the stored procedure to get the Stats, Bins, Model, ColInfo, Scores_Average, and Operational_Metrics tables. 
+    $ans = Read-Host 'Name of the development database to get Stats, Bins, Model, Column Information, Scores_Average and Operational_Metrics from?'
+    Write-Host -ForeGroundColor 'Cyan' (" Getting the Stats, Bins, Model, Column Information, Scores_Average, and Operational_Metrics from the tables used during the development pipeline...")
     $query = "EXEC copy_modeling_tables $ans "
     ExecuteSQLQuery $query
 

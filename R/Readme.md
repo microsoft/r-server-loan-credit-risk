@@ -96,7 +96,7 @@ Training a Logistic Regression for loan credit risk prediction is a standard pra
 
 Finally, we compute predictions on the testing set, as well as performance metrics: 
 
-* **KS** (Kolmogorov-Smirnov) statistic. It is a standard performance metric in the credit score industry. It represents how well the model can differenciate between the Good Credit applicants and the Bad Credit applicants in the testing set. We also draw the KS plot which corresponds to two cumulative distributions of the predicted probabilities. One is a subset of the predictions for which the observed values were bad loans (is_bad = 1) and the other concerns good loans (is_bad = 0). KS will be the biggest distance between those two curves. 
+* **KS** (Kolmogorov-Smirnov) statistic. It is a standard performance metric in the credit score industry. It represents how well the model can differenciate between the Good Credit applicants and the Bad Credit applicants in the testing set. We also draw the KS plot which corresponds to two cumulative distributions of the predicted probabilities. One is a subset of the predictions for which the observed values were bad loans (isBad = 1) and the other concerns good loans (isBad = 0). KS will be the biggest distance between those two curves. 
 
 ![Visualize](../Images/KS.png?raw=true)
 
