@@ -14,7 +14,7 @@ AS
 BEGIN
 
 	-- Create an empty table to be filled with the trained models.
-	IF NOT EXISTS (SELECT * FROM sysobjects WHERE name = 'Model' AND xtype = 'U')
+	DROP TABLE if exists [dbo].[Model]
 	CREATE TABLE [dbo].[Model](
 		[id] [varchar](200) NOT NULL, 
 	    [value] [varbinary](max), 
