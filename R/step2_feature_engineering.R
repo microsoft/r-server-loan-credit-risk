@@ -147,6 +147,32 @@ feature_engineer <- function(splitting_ratio = 0.7)
     }
   }
   
+  # Save the bins to SQL for use in Production Stage. 
+  
+  ## Open an Odbc connection with SQL Server.
+  OdbcModel <- RxOdbcData(table = "Bins", connectionString = connection_string)
+  rxOpen(OdbcModel, "w")
+  
+  ## Drop the Bins table if it exists. 
+  if(rxSqlServerTableExists(OdbcModel@table, OdbcModel@connectionString)) {
+    rxSqlServerDropTable(OdbcModel@table, OdbcModel@connectionString)
+  }
+  
+  ## Create an empty Bins table. 
+  rxExecuteSQLDDL(OdbcModel, 
+                  sSQLString = paste(" CREATE TABLE [", OdbcModel@table, "] (",
+                                     "     [id] varchar(200) not null, ",
+                                     "     [value] varbinary(max), ",
+                                     "     constraint unique_id unique (id))",
+                                     sep = "")
+  )
+  
+  ## Write the model to SQL. 
+  rxWriteObject(OdbcModel, "Bin Info", bins)
+  
+  ## Close the Obdc connection used. 
+  rxClose(OdbcModel)
+  
   # Set back the compute context to SQL.
   rxSetComputeContext(sql)
   
@@ -163,14 +189,14 @@ feature_engineer <- function(splitting_ratio = 0.7)
     for(name in  buckets_names){
       # Deal with the last bin.
       name2 <- paste(name, "Bucket", sep = "")
-      data[, name2] <- as.character(length(b2[[name]]) + 1)
+      data[, name2] <- as.character(length(b[[name]]) + 1)
       # Deal with the first bin. 
-      rows <- which(data[, name] <= b2[[name]][[1]])
+      rows <- which(data[, name] <= b[[name]][[1]])
       data[rows, name2] <- "1"
       # Deal with the rest.
-      if(length(b2[[name]]) > 1){
-        for(i in seq(1, (length(b2[[name]]) - 1))){
-          rows <- which(data[, name] <= b2[[name]][[i + 1]] & data[, name] > b2[[name]][[i]])
+      if(length(b[[name]]) > 1){
+        for(i in seq(1, (length(b[[name]]) - 1))){
+          rows <- which(data[, name] <= b[[name]][[i + 1]] & data[, name] > b[[name]][[i]])
           data[rows, name2] <- as.character(i + 1)
         }
       }
@@ -189,7 +215,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
                overwrite = TRUE, 
                transformFunc = Bucketize,
                transformObjects =  list(
-                b2 = bins, buckets_names = smb_buckets_names)
+                b = bins, buckets_names = smb_buckets_names)
     )
     
   print("Step 2 Completed.")

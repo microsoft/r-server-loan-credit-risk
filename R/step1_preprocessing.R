@@ -22,11 +22,9 @@ data_process <- function(Loan,
   rxSetComputeContext('local')
   
   ##############################################################################################################################
-  
   ## The block below will do the following:
   ## 1. Specify the column types of the input data sets
   ## 2. Upload the data sets to SQL Server with rxDataStep. 
-  
   ##############################################################################################################################
   
   print("Uploading the data sets to SQL Server...")
@@ -74,7 +72,7 @@ data_process <- function(Loan,
   rxDataStep(inData = Loan_text, outFile = Loan_sql, overwrite = TRUE)
   rxDataStep(inData = Borrower_text, outFile = Borrower_sql, overwrite = TRUE)
   
-  # Set the compute context to SQL for the rest. 
+  # Set the compute context to SQL. 
   rxSetComputeContext(sql)
   
   #############################################################################################################################################
@@ -95,31 +93,64 @@ data_process <- function(Loan,
       , sep=""))
   
   ############################################################################################################################################
-  
   ## The block below will do the following:
-  ## 1. Use rxSummary to get the names of the variables with missing values.
-  ## Then, only if there are missing values: 
-  ## 2. Compute the global means and modes of variables with missing values. 
-  ## 3. Replace missing values with the global mean (numeric) or mode (character). 
-  
+  ## 1. Use rxSummary to get the summary statistics, and the names of the variables with missing values.
+  ## 2. Compute the global means and modes of all the variables and load them to SQL.
   ############################################################################################################################################
-  print("Looking for variables with missing values...")
+  print("Computing summary statistics and looking for variables with missing values...")
   
   # Use rxSummary function to get the names of the variables with missing values.
-  # Assumption: no NAs in the id variables (loan_id and member_id) and target variable.
+  # Assumption: no NAs in the id variables (loan_id and member_id), target variable and date.
   # For rxSummary to give correct info on characters, stringsAsFactors = T should be used. 
   Merged_sql <- RxSqlServerData(table = "Merged", connectionString = connection_string, stringsAsFactors = T)
   colnames <- rxGetVarNames(Merged_sql)
-  var <- colnames[!colnames %in% c("loanId", "memberId", "loanStatus")]
+  var <- colnames[!colnames %in% c("loanId", "memberId", "loanStatus", "date")]
   formula <- as.formula(paste("~", paste(var, collapse = "+")))
   summary <- rxSummary(formula, Merged_sql, byTerm = TRUE)
   
-  # Get the summary statistics. 
-  Summary_DF <- summary$sDataFrame
-  Summary_Counts <- summary$categorical
+  # Get the variables types.
+  categorical_all <- unlist(lapply(summary$categorical, FUN = function(x){colnames(x)[1]}))
+  numeric_all <- setdiff(var, categorical_all)
+  
+  # Get the variables names with missing values. 
+  var_with_NA <- summary$sDataFrame[summary$sDataFrame$MissingObs > 0, 1]
+  categorical_NA <- intersect(categorical_all, var_with_NA)
+  numeric_NA <- intersect(numeric_all, var_with_NA)
 
-  # Get the names of the variables with missing values. 
-  var_with_NA <- summary$sDataFrame[summary$sDataFrame$MissingObs > 0, 1] 
+  # Compute the global means. 
+  Summary_DF <- summary$sDataFrame
+  Numeric_Means <- Summary_DF[Summary_DF$Name %in% numeric_all, c("Name", "Mean")]
+  Numeric_Means$Mean  <- round(Numeric_Means$Mean) 
+  
+  # Compute the global modes. 
+  ## Get the counts tables.
+  Summary_Counts <- summary$categorical
+  names(Summary_Counts) <- lapply(Summary_Counts, FUN = function(x){colnames(x)[1]})
+  
+  ## Compute for each count table the value with the highest count. 
+  modes <- unlist(lapply(Summary_Counts, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = F)
+  Categorical_Modes <- data.frame(Name = categorical_all, Mode = modes)
+  
+  # Set the compute context to local to export the summary statistics to SQL. 
+  ## The schema of the Statistics table is adapted to the one created in the SQL code. 
+  rxSetComputeContext('local')
+  
+  Numeric_Means$Mode <- NA
+  Numeric_Means$type <- "float" 
+  
+  Categorical_Modes$Mean <- NA
+  Categorical_Modes$type <- "char"
+  
+  Stats <- rbind(Numeric_Means, Categorical_Modes)[, c("Name", "type", "Mode", "Mean")]
+  colnames(Stats) <- c("variableName", "type", "mode", "mean")
+  
+  # Save the statistics to SQL for Production use. 
+  Stats_sql <- RxSqlServerData(table = "Stats", connectionString = connection_string)
+  rxDataStep(inData = Stats, outFile = Stats_sql, overwrite = TRUE)
+  
+  # Set the compute context back to SQL. 
+  rxSetComputeContext(sql)
+  
   
   # If no missing values, we move the data to a new table Merged_Cleaned. 
   if(length(var_with_NA) == 0){
@@ -132,28 +163,22 @@ data_process <- function(Loan,
       "SELECT * INTO Merged_Cleaned FROM Merged;"
       , sep=""))
 
+  } else{    
+     
+     ############################################################################################################################################
+     ## Replace missing values with the global mean (numeric) or mode (character). 
+     ############################################################################################################################################
+     
     # If there are missing values, we replace them with the mode or mean.    
-  } else{
     print("Variables containing missing values are:")
     print(var_with_NA)
     print("Replacing missing values with the global mean or mode...")
     
-    # Get the names of the character variables (those whose mean is NA) and numeric variables.
-    var_with_NA_mean <- Summary_DF[Summary_DF$MissingObs > 0,2]
-    character_with_NA <- as.character(na.omit(var_with_NA[which(is.na(var_with_NA_mean ))]))
-    numeric_with_NA <- as.character(na.omit(var_with_NA[which(!is.na(var_with_NA_mean ))]))
-    
     # Get the global means of the numeric variables with missing values.
-    numeric_NA_mean <- round(Summary_DF[Summary_DF$Name %in% numeric_with_NA,]$Mean)
+    numeric_NA_mean <- round(Numeric_Means[Numeric_Means$Name %in% numeric_NA,]$Mean)
     
-    # Compute the global mode of the character variables with missing values. 
-    ## Get the counts tables for each character variable, and keep the ones with missing values. 
-    counts_tables <- Summary_Counts
-    names(counts_tables) <- lapply(counts_tables, FUN = function(x){colnames(x)[1]})
-    counts_tables <- counts_tables[character_with_NA]
-    
-    ## Compute for each table the value with the highest count. 
-    character_NA_mode <- unlist(lapply(counts_tables, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = F)
+    # Get the global modes of the categorical variables with missing values. 
+    categorical_NA_mode <- as.character(Categorical_Modes[Categorical_Modes$Name %in% categorical_NA,]$Mode)
     
     # Function to replace missing values with mean or mode. It will be wrapped into rxDataStep. 
     Mean_Mode_Replace <- function(data) {
@@ -166,10 +191,10 @@ data_process <- function(Loan,
         }
       }
       # Replace categorical variables with the mode. 
-      if(length(char_with_NA) > 0){
-        for(i in 1:length(char_with_NA)){
-          row_na <- which(is.na(data[, char_with_NA[i]]) == TRUE) 
-          data[row_na, char_with_NA[i]] <- char_NA_mode[i]
+      if(length(cat_with_NA) > 0){
+        for(i in 1:length(cat_with_NA)){
+          row_na <- which(is.na(data[, cat_with_NA[i]]) == TRUE) 
+          data[row_na, cat_with_NA[i]] <- cat_NA_mode[i]
         }
       }
       return(data)  
@@ -190,8 +215,13 @@ data_process <- function(Loan,
                outFile = Merged_Cleaned_sql, 
                overwrite = T, 
                transformFunc = Mean_Mode_Replace,
-               transformObjects = list(num_with_NA = numeric_with_NA , num_NA_mean = numeric_NA_mean,
-                                       char_with_NA = character_with_NA, char_NA_mode = character_NA_mode))  
+               transformObjects = list(num_with_NA = numeric_NA , num_NA_mean = numeric_NA_mean,
+                                       cat_with_NA = categorical_NA, cat_NA_mode = categorical_NA_mode))  
+    
+    ## Check if data cleaned:
+    ## summary_cleaned <- rxSummary(formula, Merged_Cleaned_sql, byTerm = TRUE)
+    ## Summary_Cleaned_DF <- summary_cleaned$sDataFrame
+    ## length(Summary_Cleaned_DF[Summary_Cleaned_DF$MissingObs > 0,2]) == 0
 
   } # end of case with missing variables. 
   

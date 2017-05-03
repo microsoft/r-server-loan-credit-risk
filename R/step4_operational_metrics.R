@@ -52,6 +52,11 @@ compute_operational_metrics <- function(){
   ##summary(Predictions$transformedScore)
   ##hist(Predictions$transformedScore)
   
+  # Save the average score on the test set for the Production stage. 
+  Scores_Average <- data.frame(avg = dev_test_avg_score)
+  Scores_Average_sql <- RxSqlServerData(table = "Scores_Average", connectionString = connection_string)
+  rxDataStep(inData = Scores_Average, outFile = Scores_Average_sql, overwrite = TRUE)
+  
   ##########################################################################################################################################
   ## Get the rates of bad loans for every bin taken as a threshold. 
   ##########################################################################################################################################

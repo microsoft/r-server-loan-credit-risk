@@ -51,7 +51,7 @@ GO
 DROP PROCEDURE IF EXISTS [dbo].[compute_stats]
 GO
 
-CREATE PROCEDURE [compute_stats]  @input varchar(max) = 'Loan_Borrower'
+CREATE PROCEDURE [compute_stats]  @input varchar(max) = 'Merged'
 AS
 BEGIN
 

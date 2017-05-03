@@ -26,7 +26,7 @@ Borrower <- "../Data/Borrower.csv"
 ## Database name. If it already exists, tables will be overwritten. If not, it will be created.
 ## Server name. If conecting remotely to the DSVM, the full DNS address should be used with the port number 1433 (which should be enabled) 
 ## User ID and Password. Change them below if you modified the default values.  
-db_name <- "LoanR"
+db_name <- "Loans"
 server <- "localhost"
 user_id <- "rdemo"
 password <- "D@tascience"
@@ -100,7 +100,7 @@ plot(Operational_Metrics$badRate, main = c("Rate of Bad Loans Among those with S
 ## This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
 
 ## Transform the scores using the computed thresholds. 
-apply_score_transformation (Operational_Scores)
+apply_score_transformation (Operational_Metrics)
 
 # Close the Obdc connection used for rxExecuteSQLddl functions. 
 rxClose(outOdbcDS)
