@@ -5,7 +5,7 @@ loanId,memberId,date,purpose,isJointApplication,loanAmount,term,interestRate,mon
 10000003,16334483,7/5/2016,debtconsolidation,0,19621,48 months,7.48,474,A1
 10000004,16334484,7/6/2016,debtconsolidation,0,20577,48 months,9.26,515,E3
 10000005,16334485,7/7/2016,debtconsolidation,0,21751,60 months,6.6,427,C2
-10000006,16334486,7/8/2016,debtconsolidation,0,19911,48 months,14.12,545,
+10000006,16334486,7/8/2016,debtconsolidation,0,19911,48 months,14.12,545,C3
 10000007,16334487,7/9/2016,debtconsolidation,0,21274,60 months,12.86,483,C3
 10000008,16334488,7/10/2016,debtconsolidation,0,25574,60 months,13.26,585,C2
 10000009,16334489,7/11/2016,debtconsolidation,0,24363,48 months,13.87,664,C1
