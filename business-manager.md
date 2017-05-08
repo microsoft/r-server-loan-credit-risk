@@ -35,14 +35,14 @@ The PowerBI dashboard allows you to visualize and use these predicted scores to 
 
 ### Test Data Tab
 <img src="images/test.jpg">
-The output scores from the model have been binned according to the percentiles: the higher the percentile, and the most likely the risk of default.  On the Test Data tab, you can use the checkboxes at the top right to examine loans in the test data that correspond to these percentiles. Start by unchecking all boxes, which shows the entire test set. Then starting at the top (99%), check consecutive boxes to view characteristics of those loans whose scores fall into that percentile or above. This  corresponds to a specific choice of a score cutoff value which is shown directly below the checkboxes. For example, for percentiles of 80 and above, the score cutoff is .4680, which means that all scores higher than 0.4680 will be classified as bad. Among those loans classified as bad, the real or expected bad rate is indicated in the box below (here 37%). 
+The output scores from the model have been binned according to the percentiles: the higher the percentile, and the most likely the risk of default.  On the Test Data tab, you can use the checkboxes at the top right to examine loans in the test data that correspond to these percentiles. Start by unchecking all boxes, which shows the entire test set. Then starting at the top (99%), check consecutive boxes to view characteristics of those loans whose scores fall into that percentile or above. This  corresponds to a specific choice of a score cutoff value which is shown directly below the checkboxes. For example, for percentiles of 81 and above, the score cutoff is .4933, which means that all scores higher than 0.4933 will be classified as bad. Among those loans classified as bad, the real or expected bad rate is indicated in the box below ( 40%). 
 <p></p>
-The Loan Summary table divides those loans classified as bad in two: those that were indeed bad (Bad Loan = True) and those that were in fact good although they were classified as bad (Bad Loan = False). For each of those 2 categories, the table shows the number, total and average amount, and the average interest rate of the loans. This allows you to see the expected impact of choosing this cutoff value.
+The Loan Summary table divides those loans classified as bad in two: those that were indeed bad (Bad Loan = Ues) and those that were in fact good although they were classified as bad (Bad Loan = No). For each of those 2 categories, the table shows the number, total and average amount, and the average interest rate of the loans. This allows you to see the expected impact of choosing this cutoff value.
 <p></p>
 
-### Prod Data Tab
+### New Loans Tab
 <img src="images/prod.jpg">
-On the Prod Data tab you will see some scored potential loans. This page is using .4680 as the cutoff value. You will reject 9 of the 22 potential loans based on this critera. (Using PowerBI Desktop, you can change this cutoff to a different value.)
+On the New Loans tab you will see some scored potential loans. This page is using .4933 as the cutoff value. You will reject 9 of the 22 potential loans based on this critera. (With PowerBI Desktop, you can change this cutoff to a different value.)
 
  <p></p> 
 
