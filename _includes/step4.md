@@ -17,9 +17,9 @@ The output scores from the model have been binned according to the percentiles: 
 
 The Loan Summary table divides those loans classified as bad in two: those that were indeed bad (Bad Loan = Yes) and those that were in fact good although they were classified as bad (Bad Loan = No). For each of those 2 categories, the table shows the number, total and average amount, and the average interest rate of the loans. This allows you to see the expected impact of choosing this cutoff value.
 
-### Prod Data Tab 
+### New Loans Tab 
 <img src="images/prod.jpg">
-Now Bernie switches to the Prod Data tab to view some scored potential loans.  He uses the .4933 cutoff value and views information about these loans.  He sees he will reject 9 of the 22 potential loans based on this critera.
+Now Bernie switches to the New Loans tab to view some scored potential loans.  He uses the .4933 cutoff value and views information about these loans.  He sees he will reject 9 of the 22 potential loans based on this critera.
 
 <div class="alert alert-info" role="alert">
 The PowerBI file has cached data in it.  You can use these <a href="Visualize_Results.html">steps to refresh the PowerBI data</a>.
