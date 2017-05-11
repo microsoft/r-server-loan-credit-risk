@@ -83,7 +83,7 @@ Running this PowerShell script will create stored procedures for the the operati
         .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "N" -uninterrupted "Y"  
         ```
 
-5.  If running uninterrupted (`-uninterrupted "Y"`), default names are used.
+5.  If running uninterrupted (`-uninterrupted "Y"`), default names for tables are used.
 
 6.  If running with prompts (`-uninterrupted "N"`), you cannot complete a step until the previous step has been completed, so only skip steps that have previously been executed.  Running in this mode allows you to specify non default names for tables.
 
@@ -92,7 +92,7 @@ Running this PowerShell script will create stored procedures for the the operati
 <h2 id="score-production-data">Score Production Data</h2>
 <hr />
 <p/>
-To score production data re-run the command from above, this time using `-is_production "Y"`.  You can also score production data in a different database by changing -DBName.  If you do use a different database, also add `-development_db`.  For example, the following will score into database `Loans_Prod` in uninterrupted mode for the rdemo user on your local machine:
+To score production data re-run the command from above, this time using `-is_production "Y"`.  Score production data in a different database by changing `-DBName` and specifying the development database name by adding `-development_db`. This let you use the model and other tables created during the development stage, and needed for batch scoring. If you do not specify the `-development_db`, its default value is set to `Loans`. For example, the following will score into database `Loans_Prod` in uninterrupted mode for the rdemo user on your local machine:
 
         
         .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}_Prod" -username "rdemo" -password "D@tascience" -is_production "Y" -uninterrupted "Y" -development_db "{{ site.db_name }}"
@@ -105,7 +105,7 @@ Once the PowerShell script has completed successfully, log into the SQL Server M
 Hit `Refresh` if necessary.
 <br/>
 
-* View [more information](tables.html)  about each of these tables.
+* View [more information](tables.html)  about each of the tables created in the `Loans` database.
 
 * Right click on `{{ site.db_name }}.dbo.Scores` and select `View Top 1000 Rows` to preview the testing scored data.
 

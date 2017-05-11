@@ -31,10 +31,10 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View [more information about the data.](input_data.html) 
+When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View <a href="input_data.html">more information about the data.</a>
       <p/>
       <p>
-      
+ In this template, we implemented all steps in SQL stored procedures: data preprocessing is implemented in pure SQL, while feature engineering, model training, scoring and evaluation steps are implemented with SQL stored procedures with embedded R (Microsoft R Server) code.     
       </p>
 
         </div>

@@ -64,7 +64,6 @@ These files are in the **SQLR** directory.
 <tr><td>modeling_proc.sql   </td><td>Stored procedure for the modeling/development pipeline  </td></tr>
 <tr><td>production_proc.sql   </td><td>Stored procedure for the production pipeline  </td></tr>
 <tr><td> step1_data_processing.sql  </td><td> Replaces Missing values in dataset with the modes or means </td></tr>
-<tr><td> step1_data_processing.sql  </td><td> Replaces Missing values in dataset with the modes </td></tr>
 <tr><td> step2a_splitting.sql </td><td> Splits the analytical dataset into Train and Test</td></tr>
 <tr><td> step2b_feature_engineering.sql </td><td> Performs Feature Engineering and creates the Analytical Dataset</td></tr>
 <tr><td> step3a_training.sql</td><td> Trains a Logistic Regression model</td></tr>
