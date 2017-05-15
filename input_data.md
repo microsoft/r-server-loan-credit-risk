@@ -15,7 +15,7 @@ The **Data** folder contains the following data:
   <tr><th>Field</th><th>Type</th><th>Description</th></tr>
   <tr><td>loanId</td><td>Integer</td><td>Unique Id of the loan</td></tr>
   <tr><td>memberId</td><td>Integer</td><td>Unique Id of the borrower</td></tr>
-  <tr><td>date</td><td>Date</td><td>a) Historical data: the loan approval date b) Production data: the loan application date.  Format: M/D/YYYY (e.g. 3/9/2016, 3/13/2016)</td></tr>
+  <tr><td>date</td><td>Date</td><td>a) Historical data: the loan approval date <br/>b) Production data: the loan application date.  Format: M/D/YYYY (e.g. 3/9/2016, 3/13/2016)</td></tr>
   <tr><td>purpose</td><td>String</td><td>Purpose of the loan e.g., debtconsolidation</td></tr>
   <tr><td>isJointApplication</td><td>String</td><td>Flag about the nature of the application (joint or individual)</td></tr>
   <tr><td>loanAmount</td><td>Float</td><td>Total amount to be borrowed</td></tr>
