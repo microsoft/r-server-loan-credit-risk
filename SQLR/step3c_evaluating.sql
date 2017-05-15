@@ -14,7 +14,7 @@ CREATE PROCEDURE [evaluate] @predictions_table varchar(max)
 AS 
 BEGIN
 	-- Create an empty table to be filled with the Metrics.
-	DROP TABLE if exists [dbo].[Metrics]
+    DROP TABLE if exists  [dbo].[Metrics]
 	CREATE TABLE [dbo].[Metrics](
 		[modelName] [varchar](30) NOT NULL,
 		[accuracy] [float] NULL,
@@ -40,6 +40,10 @@ BEGIN
 ##	Convert isBad to numeric in the imported predictions data set for correct evaluation. 
 ##########################################################################################################################################
 InputDataSet$isBad <- as.numeric(as.character(InputDataSet$isBad))
+
+ ## Change the names of the variables in the predictions table if you used rxLogisticRegression.
+ ## InputDataSet <- InputDataSet[, c(1, 2, 5)]
+ ## colnames(InputDataSet) <- c("isBad", "loanId", "isBad_Pred")
 
 ##########################################################################################################################################
 ## Model evaluation metrics.

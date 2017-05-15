@@ -73,6 +73,9 @@ if(length(logistic_model) > 0){
             overwrite = T, 
             type = "response",
             extraVarsToWrite = c("isBad", "loanId"))
+
+ # If you used rxLogisticRegression, the argument type = "response" should be removed.  
+ # You should also load the MicrosoftML library before using rxPredict: library("MicrosoftML")
  }	 		   	   	   
 '
 , @params = N' @inquery nvarchar(max), @database_name varchar(max), @output varchar(max)' 

@@ -32,6 +32,10 @@ compute_operational_metrics <- function(){
   Predictions <- rxImport(Predictions_sql)
   Predictions$isBad <- as.numeric(as.character(Predictions$isBad))
   
+  ## Change the names of the variables in the predictions table if you used rxLogisticRegression in step 3.
+  ## Predictions <- Predictions[, c(1, 2, 5)]
+  ## colnames(Predictions) <- c("isBad", "loanId", "isBad_Pred")
+  
   ##########################################################################################################################################
   ## Space out the scores (predicted probability of default) for interpretability with a sigmoid.
   ##########################################################################################################################################
@@ -103,6 +107,10 @@ apply_score_transformation <- function(Operational_Metrics){
   Predictions_sql <- RxSqlServerData(table = "Predictions_Logistic", connectionString = connection_string)
   Predictions <- rxImport(Predictions_sql)
   Predictions$isBad <- as.numeric(as.character(Predictions$isBad))
+  
+  ## Change the names of the variables in the predictions table if you used rxLogisticRegression in step 3.
+  ## Predictions <- Predictions[, c(1, 2, 5)]
+  ## colnames(Predictions) <- c("isBad", "loanId", "isBad_Pred")
   
   ##########################################################################################################################################
   ## Space out the scores (predicted probability of default) for interpretability with a sigmoid.

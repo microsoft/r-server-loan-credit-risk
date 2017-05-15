@@ -25,7 +25,7 @@
     <td>Modes or Means of variables of Merged for missing values replacement</td>
   </tr>
   <tr>
-    <td>Merged_Cleaned (View)</td>
+    <td>Merged_Cleaned</td>
     <td>Merged table with missing values replaced</td>
   </tr>
     <tr>
@@ -41,8 +41,8 @@
     <td>Serialized list of variable information including factors and their levels</td>
   </tr>
     <tr>
-    <td>Train_Id</td>
-    <td>Loan Ids that will belong to the training set</td>
+    <td>Hash_Id</td>
+    <td>Loan Ids and Mapping through hash function for splitting</td>
   </tr>
     <tr>
     <td>Model</td>

@@ -9,13 +9,15 @@ GO
 DROP PROCEDURE IF EXISTS [dbo].[compute_bins]  
 GO
 
-CREATE PROCEDURE [compute_bins] @inquery nvarchar(max) = N'SELECT *, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
-                                                           FROM  Merged_Cleaned WHERE loanId IN (SELECT loanId from Train_Id)'
+CREATE PROCEDURE [compute_bins] @inquery nvarchar(max) = N'SELECT Merged_Cleaned.*, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
+                                                           FROM  Merged_Cleaned JOIN Hash_Id 
+														   ON Merged_Cleaned.loanId = Hash_Id.loanId
+                                                           WHERE hashCode <= 70'
 AS 
 BEGIN
 
 	-- Create an empty table to be filled with the serialized cutoffs. 
-	DROP TABLE if exists [dbo].[Bins]
+    DROP TABLE if exists  [dbo].[Bins]
 	CREATE TABLE [dbo].[Bins](
 		[id] [varchar](200) NOT NULL, 
 	    [value] [varbinary](max), 
@@ -219,6 +221,17 @@ rxDataStep(inData = Merged_Cleaned_sql,
  , @input = @input
  , @output = @output 
  , @database_name = @database_name 
+
+  -- Set loanId as the primary key. 
+DECLARE @sql1 nvarchar(max);
+SELECT @sql1 = N'
+ALTER TABLE ' + @output + ' ALTER COLUMN [loanId] INTEGER NOT NULL'
+EXEC sp_executesql @sql1
+
+DECLARE @sql2 nvarchar(max);
+SELECT @sql2 = N'
+ALTER TABLE ' + @output + ' ADD CONSTRAINT [PK_Features] PRIMARY KEY([loanId])'
+EXEC sp_executesql @sql2
 ;
 END
 GO
@@ -284,4 +297,7 @@ rxWriteObject(OdbcModel, "Column Info", column_info)
 ;
 END
 GO
+
+
+
 

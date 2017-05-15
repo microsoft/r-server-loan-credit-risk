@@ -32,12 +32,14 @@ BEGIN
 	exec [dbo].[fill_NA_mode_mean]  @input = 'Merged',  @output = 'Merged_Cleaned'
 
 -- Step 2a: Splitting into a training and testing set.
-    exec [dbo].[splitting]  @splitting_percent = 70, @input = 'Merged_Cleaned' 
+    exec [dbo].[splitting]  @input = 'Merged_Cleaned' 
 
 -- Step 2b: Feature Engineering.
 -- Compute the Bins to be used for feature engineering in Production. 
-	exec [dbo].[compute_bins]  @inquery = 'SELECT *, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
-                                            FROM  Merged_Cleaned WHERE loanId IN (SELECT loanId from Train_Id)'
+	exec [dbo].[compute_bins]  @inquery = 'SELECT Merged_Cleaned.*, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
+                                           FROM  Merged_Cleaned JOIN Hash_Id 
+										   ON Merged_Cleaned.loanId = Hash_Id.loanId
+                                           WHERE hashCode <= 70'
 
 -- Feature Engineering. 
     exec [dbo].[feature_engineering]  @input = 'Merged_Cleaned', @output  = 'Merged_Features'
@@ -51,7 +53,7 @@ BEGIN
 -- Step 3b: Scoring the model on the test set.
 	DECLARE @query_string nvarchar(max)
 	SET @query_string ='
-	SELECT * FROM Merged_Features WHERE loanId NOT IN (SELECT loanId FROM Train_Id)' 
+	SELECT * FROM Merged_Features WHERE loanId NOT IN (SELECT loanId FROM Hash_Id WHERE hashCode <= 70)' 
 
 	exec [dbo].[score] @inquery = @query_string, @output = 'Predictions_Logistic'  
 

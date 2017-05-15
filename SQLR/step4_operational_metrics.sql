@@ -43,6 +43,10 @@ BEGIN
 ##########################################################################################################################################
    connection_string <- paste("Driver=SQL Server;Server=localhost;Database=", database_name, ";Trusted_Connection=true;", sep="")
 
+ ## Change the names of the variables in the predictions table if you used rxLogisticRegression.
+ ## InputDataSet <- InputDataSet[, c(1, 2, 5)]
+ ## colnames(InputDataSet) <- c("isBad", "loanId", "isBad_Pred")
+
 ##########################################################################################################################################
 ##	Space out the scores (predicted probability of default) for interpretability with a sigmoid.
 ##########################################################################################################################################
@@ -122,6 +126,10 @@ BEGIN
 ##	Define the connection string
 ##########################################################################################################################################
   connection_string <- paste("Driver=SQL Server;Server=localhost;Database=", database_name, ";Trusted_Connection=true;", sep="")
+
+ ## Change the names of the variables in the predictions table if you used rxLogisticRegression.
+ ## InputDataSet <- InputDataSet[, c(1, 2, 5)]
+ ## colnames(InputDataSet) <- c("isBad", "loanId", "isBad_Pred")
 
 ##########################################################################################################################################
 ##	Space out the scores (predicted probability of default) for interpretability with a sigmoid. 

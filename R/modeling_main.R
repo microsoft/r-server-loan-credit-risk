@@ -71,11 +71,9 @@ data_process(Loan, Borrower)
   
 # Step 2: feature engineering.
 source(paste(getwd(),"/step2_feature_engineering.R", sep=""))
-## Splitting Ratio for the training/testing splitting. 
-splitting_ratio <- 0.7
 
 print("Step 2: Feature Engineering.")
-feature_engineer(splitting_ratio)
+feature_engineer()
   
 # Step 3: training, scoring and evaluation of Logistic Regression. 
 source(paste(getwd(),"/step3_train_score_evaluate.R", sep=""))

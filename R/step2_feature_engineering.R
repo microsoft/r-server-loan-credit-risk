@@ -11,7 +11,7 @@
 
 ## Function for feature engineering:
 
-feature_engineer <- function(splitting_ratio = 0.7)
+feature_engineer <- function()
 { 
   
   # Set the compute context to SQL.
@@ -29,7 +29,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
   
   #############################################################################################################################################
   
-  ## The block below will Create the label, is_bad, based on the loan_status variable. 
+  ## The block below will Create the label, isBad, based on the loanStatus variable. 
   
   ############################################################################################################################################
   print("Creating the label...")
@@ -37,7 +37,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
   # Point to the Output SQL table:
   Merged_Labeled_sql <- RxSqlServerData(table = "Merged_Labeled", connectionString = connection_string)
   
-  # Create the target variable, is_bad, based on loan_status.
+  # Create the target variable, isBad, based on loanStatus.
   rxDataStep(inData = Merged_Cleaned_sql ,
              outFile = Merged_Labeled_sql, 
              overwrite = TRUE, 
@@ -52,23 +52,21 @@ feature_engineer <- function(splitting_ratio = 0.7)
   ############################################################################################################################################
   
   print("Randomly splitting into a training and a testing set...")
-  p <- as.character(splitting_ratio*100)
   
-  # Create the Train_Id table containing loan_id of training set. 
-  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Train_Id;", sep=""))
+  # Create the Hash_Id table containing loanId hashed to integers. 
+  # The advantage of using a hashing function for splitting is to permit repeatability of the experiment.  
+  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Hash_Id;", sep = ""))
   
-  rxExecuteSQLDDL(outOdbcDS, sSQLString = sprintf(
-    "SELECT loanId
-    INTO Train_Id
-    FROM Merged_Labeled 
-    WHERE ABS(CAST(BINARY_CHECKSUM(loanId, NEWID()) as int)) %s < %s ;"
-    ,"% 100", p ))
+  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste(
+    "SELECT loanId, ABS(CAST(CAST(HashBytes('MD5', CAST(loanId AS varchar(20))) AS VARBINARY(64)) AS BIGINT) % 100) AS hashCode  
+    INTO Hash_Id
+    FROM Merged_Labeled ;", sep = ""))
   
   # Point to the training set. 
   Train_sql <- RxSqlServerData(sqlQuery = 
                                "SELECT *   
                                 FROM Merged_Labeled 
-                                WHERE loanId IN (SELECT loanId from Train_Id)",
+                                WHERE loanId IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)",
                                connectionString = connection_string)
   
   #############################################################################################################################################
@@ -184,7 +182,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
   print("Bucketizing variables...")
   
   # Function to bucketize numeric variables. It will be wrapped into rxDataStep. 
-  Bucketize <- function(data) {
+  bucketize <- function(data) {
     data <- data.frame(data)
     for(name in  buckets_names){
       # Deal with the last bin.
@@ -213,7 +211,7 @@ feature_engineer <- function(splitting_ratio = 0.7)
     rxDataStep(inData = Merged_Labeled_sql,
                outFile = Merged_Features_sql, 
                overwrite = TRUE, 
-               transformFunc = Bucketize,
+               transformFunc = bucketize,
                transformObjects =  list(
                 b = bins, buckets_names = smb_buckets_names)
     )

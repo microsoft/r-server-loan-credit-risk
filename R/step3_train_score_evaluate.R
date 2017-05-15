@@ -49,7 +49,7 @@ training_evaluation <- function()
     rxSqlServerDropTable(OdbcModel@table, OdbcModel@connectionString)
   }
   
-  ## Create an empty Bins table. 
+  ## Create an empty Column_Info table. 
   rxExecuteSQLDDL(OdbcModel, 
                   sSQLString = paste(" CREATE TABLE [", OdbcModel@table, "] (",
                                      "     [id] varchar(200) not null, ",
@@ -71,14 +71,14 @@ training_evaluation <- function()
   Train_sql <- RxSqlServerData(sqlQuery = 
                                "SELECT *   
                                 FROM Merged_Features 
-                                WHERE loanId IN (SELECT loanId from Train_Id)",
+                                WHERE loanId IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)",
                                   connectionString = connection_string, colInfo = column_info)
   
   # Point to the testing set. It will be created on the fly when testing models. 
   Test_sql <- RxSqlServerData(sqlQuery = 
                               "SELECT *   
                                FROM Merged_Features 
-                               WHERE loanId NOT IN (SELECT loanId from Train_Id)",
+                               WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)",
                               connectionString = connection_string, colInfo = column_info)
   
   
@@ -114,6 +114,19 @@ training_evaluation <- function()
                             data = Train_sql,
                             reportProgress = 0, 
                             initialValues = NA)
+  
+  ## rxLogisticRegression function from the MicrosoftML library can be used instead. 
+  ## The regularization weights (l1Weight and l2Weight) can be modified for further optimization.
+  ## The included selectFeatures function can select a certain number of optimal features based on a specified method.
+  ## the number of variables to select and the method can be further optimized.
+  
+  #library('MicrosoftML')
+  #logistic_model <- rxLogisticRegression(formula = formula,
+  #                                       data = Train_sql,
+  #                                       type = "binary",
+  #                                       l1Weight = 0.7,
+  #                                       l2Weight = 0.7,
+  #                                       mlTransforms = list(selectFeatures(formula, mode = mutualInformation(numFeaturesToKeep = 10))))
   
   # Get the coefficients of the logistic regression formula.
   ## NA means the variable has been dropped while building the model.
@@ -172,7 +185,7 @@ training_evaluation <- function()
             data = Test_sql, 
             outData = Predictions_Logistic_sql, 
             overwrite = T, 
-            type = "response",
+            type = "response",  # If you used rxLogisticRegression, this argument should be removed.  
             extraVarsToWrite = c("isBad", "loanId"))
   
   ##########################################################################################################################################
@@ -191,6 +204,10 @@ training_evaluation <- function()
     Predictions_sql <- RxSqlServerData(table = predictions_table, connectionString = connection_string)
     Predictions <- rxImport(Predictions_sql)
     Predictions$isBad <- as.numeric(as.character(Predictions$isBad))
+    
+    ## Change the names of the variables in the predictions table if you used rxLogisticRegression.
+    ## Predictions <- Predictions[, c(1, 2, 5)]
+    ## colnames(Predictions) <- c("isBad", "loanId", "isBad_Pred")
     
     ## KS PLOT AND STATISTIC.
     # Split the data according to the observed value and get the cumulative distribution of predicted probabilities. 
