@@ -4,7 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Create empty tables Loan_Prod and Borrower_Prod to be filled with the new data with PowerShell during Production. 
-DROP TABLE IF EXISTS [dbo].[Loan_Prod]
+DROP TABLE if exists  [dbo].[Loan_Prod]
 CREATE TABLE [dbo].[Loan_Prod](
 	[loanId] [int] NOT NULL,
 	[memberId] [int] NOT NULL,
@@ -18,9 +18,8 @@ CREATE TABLE [dbo].[Loan_Prod](
 	[grade] [varchar](2)
 	)
 
-CREATE CLUSTERED COLUMNSTORE INDEX loanprod_cci ON Loan_Prod WITH (DROP_EXISTING = OFF);
 
-DROP TABLE IF EXISTS [dbo].[Borrower_Prod]
+DROP TABLE if exists  [dbo].[Borrower_Prod]
 CREATE TABLE [dbo].[Borrower_Prod](
 	[memberId] [int] NOT NULL,
 	[residentialState] [varchar](2),
@@ -41,7 +40,6 @@ CREATE TABLE [dbo].[Borrower_Prod](
 	[numInquiries6Mon] [int]	
 	)
 
-CREATE CLUSTERED COLUMNSTORE INDEX borrowerprod_cci ON Borrower_Prod WITH (DROP_EXISTING = OFF);
 
 -- Copy the Stats, Model, Bins, Column_Info, Scores_Average, and Operational_Scores tables to the Production database (Only used for Production). 
 -- @dev_db: specify the name of the development database holding those tables. 
@@ -58,7 +56,7 @@ BEGIN
 	BEGIN 
 
 		-- Copy the Stats table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Stats]
+		 DROP TABLE if exists  [dbo].[Stats]
 		 DECLARE @sql1 nvarchar(max);
 			SELECT @sql1 = N'
 			SELECT *
@@ -67,7 +65,7 @@ BEGIN
 			EXEC sp_executesql @sql1;
 
 		-- Copy the Models table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Model]
+		 DROP TABLE if exists  [dbo].[Model]
 		 DECLARE @sql2 nvarchar(max);
 			SELECT @sql2 = N'
 			SELECT *
@@ -76,7 +74,7 @@ BEGIN
 			EXEC sp_executesql @sql2;
 
 		-- Copy the Bins table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Bins]
+		 DROP TABLE if exists  [dbo].[Bins]
 		 DECLARE @sql3 nvarchar(max);
 			SELECT @sql3 = N'
 			SELECT *
@@ -85,7 +83,7 @@ BEGIN
 			EXEC sp_executesql @sql3;
 
 		-- Copy the Column_Info table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Column_Info]
+		 DROP TABLE if exists  [dbo].[Column_Info]
 		 DECLARE @sql4 nvarchar(max);
 			SELECT @sql4 = N'
 			SELECT *
@@ -94,7 +92,7 @@ BEGIN
 			EXEC sp_executesql @sql4;
 
 		-- Copy the Scores_Average table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Scores_Average]
+	     DROP TABLE if exists  [dbo].[Scores_Average]
 		 DECLARE @sql5 nvarchar(max);
 			SELECT @sql5 = N'
 			SELECT *
@@ -103,7 +101,7 @@ BEGIN
 			EXEC sp_executesql @sql5;
 
 		-- Copy the Operational_Metrics table into the production database. 
-		 DROP TABLE IF EXISTS [dbo].[Operational_Metrics]
+         DROP TABLE if exists  [dbo].[Operational_Metrics]
 		 DECLARE @sql6 nvarchar(max);
 			SELECT @sql6 = N'
 			SELECT *

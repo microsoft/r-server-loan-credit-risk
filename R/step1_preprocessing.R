@@ -151,14 +151,13 @@ data_process <- function(Loan,
   # Set the compute context back to SQL. 
   rxSetComputeContext(sql)
   
-  
   # If no missing values, we move the data to a new table Merged_Cleaned. 
   if(length(var_with_NA) == 0){
     print("No missing values: no treatment will be applied.")
-   
-     rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Merged_Cleaned;"
-                                                  , sep=""))
     
+    rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Merged_Cleaned;"
+                                                  , sep=""))
+   
      rxExecuteSQLDDL(outOdbcDS, sSQLString = paste(
       "SELECT * INTO Merged_Cleaned FROM Merged;"
       , sep=""))
@@ -206,10 +205,6 @@ data_process <- function(Loan,
     # Point to the output (empty) table. 
     Merged_Cleaned_sql <- RxSqlServerData(table = "Merged_Cleaned", connectionString = connection_string)
     
-    ## We drop the Merged_Cleaned view in case the SQL Stored Procedure was executed in the same database before. 
-    rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("IF OBJECT_ID ('Merged_Cleaned', 'V') IS NOT NULL DROP VIEW Merged_Cleaned;"
-                                                  , sep=""))
-      
     # Perform the data cleaning with rxDataStep. 
     rxDataStep(inData = Merged_sql, 
                outFile = Merged_Cleaned_sql, 

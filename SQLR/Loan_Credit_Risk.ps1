@@ -168,9 +168,8 @@ try{
     ExecuteSQL $script
 
     # execute the procedure
-    $splitting_percent = 70
     Write-Host -ForeGroundColor 'Cyan' (" Splitting the data set...")
-    $query = "EXEC splitting $splitting_percent, 'Merged_Cleaned'"
+    $query = "EXEC splitting 'Merged_Cleaned'"
     ExecuteSQLQuery $query
 
     # create the stored procedure for feature engineering and getting column information.
@@ -179,8 +178,9 @@ try{
 
     # compute bins for production.
     Write-Host -ForeGroundColor 'Cyan' (" Computing bins for feature engineering...")
-    $query = "EXEC compute_bins 'SELECT *, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
-                                 FROM  Merged_Cleaned WHERE loanId IN (SELECT loanId from Train_Id)'"
+    $query = "EXEC compute_bins 'SELECT Merged_Cleaned.*, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
+                                 FROM  Merged_Cleaned JOIN Hash_Id ON Merged_Cleaned.loanId = Hash_Id.loanId 
+                                 WHERE hashCode <= 70'"
     ExecuteSQLQuery $query
 
     # execute the feature engineering
@@ -208,7 +208,7 @@ try{
 
     # execute the scoring 
     Write-Host -ForeGroundColor 'Cyan' (" Scoring the Logistic Regression...")
-    $query = "EXEC score 'SELECT * FROM Merged_Features WHERE loanId NOT IN (SELECT loanId FROM Train_Id)', 'Predictions_Logistic'"
+    $query = "EXEC score 'SELECT * FROM Merged_Features WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)', 'Predictions_Logistic'"
     ExecuteSQLQuery $query
 
     # create the stored procedure for evaluation
@@ -450,9 +450,8 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
     ExecuteSQL $script
 
     # execute the procedure
-    $splitting_percent = Read-Host 'Split Percent (e.g. Type 70 for 70% in training set) ?'
     Write-Host -ForeGroundColor 'Cyan' (" Splitting the data set...")
-    $query = "EXEC splitting $splitting_percent, $output1"
+    $query = "EXEC splitting $output1"
     ExecuteSQLQuery $query
 }
 
@@ -473,8 +472,9 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
 
     # compute bins for production.
     Write-Host -ForeGroundColor 'Cyan' (" Computing bins for feature engineering...")
-    $query = "EXEC compute_bins 'SELECT *, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
-                                 FROM $output1 WHERE loanId IN (SELECT loanId from Train_Id)'"
+    $query = "EXEC compute_bins 'SELECT $output1.*, isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
+                                 FROM $output1 JOIN Hash_Id ON $output1.loanId = Hash_Id.loanId 
+                                 WHERE hashCode <= 70'"
     ExecuteSQLQuery $query
 
     # execute the feature engineering
@@ -545,7 +545,7 @@ if ($ans -eq 'y' -or $ans -eq 'Y')
     }
 
     Write-Host -ForeGroundColor 'Cyan' (" Scoring the Logistic Regression...")  
-    $query = "EXEC score 'SELECT * FROM $output2 WHERE loanId NOT IN (SELECT loanId FROM Train_Id)', $output3"
+    $query = "EXEC score 'SELECT * FROM $output2 WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)', $output3"
     ExecuteSQLQuery $query
          
 }

@@ -3,28 +3,32 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
--- Stored Procedure for splitting the data set into a training and a testing set. 
-
--- @splitting_percent: specify the percentage of the rows that will go to the training set for the development pipeline. 
+-- Stored Procedure to hash the loanId for splitting purposes.
+-- The advantage of using a hashing function for splitting is to permit repeatability of the experiment.  
 -- @input: specify the name of the cleaned data set. 
 
 DROP PROCEDURE IF EXISTS [dbo].[splitting]
 GO
 
-CREATE PROCEDURE [splitting]  @splitting_percent int = 70, @input varchar(max) 
+CREATE PROCEDURE [splitting]  @input varchar(max)
 AS
 BEGIN
+  DROP TABLE if exists [dbo].[Hash_Id]
+  CREATE TABLE [dbo].[Hash_Id](
+	[loanId] [int] NOT NULL Primary Key,
+	[hashCode] [bigint] NOT NULL) 
 
   DECLARE @sql nvarchar(max);
   SET @sql = N'
-  DROP TABLE IF EXISTS Train_Id
-  SELECT loanId
-  INTO Train_Id
-  FROM ' + @input + ' 
-  WHERE ABS(CAST(BINARY_CHECKSUM(loanId, NEWID()) as int)) % 100 < ' + Convert(Varchar, @splitting_percent);
+  INSERT INTO Hash_Id
+  SELECT loanId, ABS(CAST(CAST(HashBytes(''MD5'', CAST(loanId AS varchar(20))) AS VARBINARY(64)) AS BIGINT) % 100) AS hashCode
+  FROM ' + @input;
 
   EXEC sp_executesql @sql
+
+
 ;
 END
 GO
+
 

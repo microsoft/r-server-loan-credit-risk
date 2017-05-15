@@ -31,7 +31,6 @@ BEGIN
 	EXEC sp_executesql @sql2
 
 -- Perform the inner join.
-
 	DECLARE @sql3 nvarchar(max);
 	SELECT @sql3 = N'
 		SELECT loanId, [date], purpose, isJointApplication, loanAmount, term, interestRate, monthlyPayment,
@@ -68,11 +67,10 @@ BEGIN
 		DECLARE @sql nvarchar(max);
 		SELECT @sql = N'
 		INSERT INTO Stats(variableName, type)
-		SELECT *
-		FROM (SELECT COLUMN_NAME as variableName, DATA_TYPE as type
-			  FROM INFORMATION_SCHEMA.COLUMNS
-	          WHERE TABLE_NAME = ''' + @input + ''' 
-			  AND COLUMN_NAME NOT IN (''loanId'', ''memberId'', ''loanStatus'', ''date'')) as t ';
+        SELECT COLUMN_NAME as variableName, DATA_TYPE as type
+	    FROM INFORMATION_SCHEMA.COLUMNS
+	    WHERE TABLE_NAME = ''' + @input + ''' 
+        AND COLUMN_NAME NOT IN (''loanId'', ''memberId'', ''loanStatus'', ''date'')';
 		EXEC sp_executesql @sql;
 
 	-- Loops to compute the Mode for categorical variables.
@@ -151,27 +149,19 @@ CREATE PROCEDURE [fill_NA_mode_mean]  @input varchar(max), @output varchar(max)
 AS
 BEGIN
 
-    -- Drop the output table if it has been created in R in the same database. 
-    DECLARE @sql0 nvarchar(max);
-	SELECT @sql0 = N'
-	IF OBJECT_ID (''' + @output + ''', ''U'') IS NOT NULL  
-	DROP TABLE ' + @output ;  
-	EXEC sp_executesql @sql0
+    -- Drop the output table if it exists.
+    DECLARE @sql1 nvarchar(max);
+	SELECT @sql1 = N'
+	DROP TABLE if exists ' + @output ;  
+	EXEC sp_executesql @sql1
 
-	-- Create a View with the raw merged data. 
-	DECLARE @sqlv1 nvarchar(max);
-	SELECT @sqlv1 = N'
-	IF OBJECT_ID (''' + @output + ''', ''V'') IS NOT NULL  
-	DROP VIEW ' + @output ;  
-	EXEC sp_executesql @sqlv1
-
-	DECLARE @sqlv2 nvarchar(max);
-	SELECT @sqlv2 = N'
-		CREATE VIEW ' + @output + '
-		AS
+	-- Create a Table with the raw merged data. 
+	DECLARE @sql2 nvarchar(max);
+	SELECT @sql2 = N'
 		SELECT *
+		INTO ' + @output + '
 	    FROM ' + @input;
-	EXEC sp_executesql @sqlv2
+	EXEC sp_executesql @sql2
 
     -- Loops to fill missing values for the categorical variables with the mode. 
 	DECLARE @name1 NVARCHAR(100)
@@ -250,7 +240,12 @@ BEGIN
 	END
 	CLOSE @getname2
 	DEALLOCATE @getname2
+
+    -- Set loanId as the primary key. 
+	DECLARE @sql3 nvarchar(max);
+	SELECT @sql3 = N'
+ALTER TABLE ' + @output + ' ADD CONSTRAINT [PK_Cleaned] PRIMARY KEY([loanId])'
+     EXEC sp_executesql @sql3
 END
 GO
 ;
-

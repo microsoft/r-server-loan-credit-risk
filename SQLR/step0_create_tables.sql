@@ -4,10 +4,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Create empty tables Loan and Borrower to be filled with the raw data with PowerShell during Development/Modeling. 
-DROP TABLE IF EXISTS [dbo].[Loan]
+DROP TABLE if exists [dbo].[Loan]
 CREATE TABLE [dbo].[Loan](
 	[loanId] [int] NOT NULL,
-	[memberId] [int] NOT NULL,
+	[memberId] [int] NOT NULL Primary Key,
 	[date] [datetime],
 	[purpose] [varchar](30),
     [isJointApplication] [char](1),
@@ -19,11 +19,11 @@ CREATE TABLE [dbo].[Loan](
 	[loanStatus] [varchar](60) NOT NULL
 	)
 
-CREATE CLUSTERED COLUMNSTORE INDEX loan_cci ON Loan WITH (DROP_EXISTING = OFF);
 
-DROP TABLE IF EXISTS [dbo].[Borrower]
+
+DROP TABLE if exists [dbo].[Borrower]
 CREATE TABLE [dbo].[Borrower](
-	[memberId] [int] NOT NULL,
+	[memberId] [int] NOT NULL Primary Key,
 	[residentialState] [varchar](2),
 	[yearsEmployment] [varchar](10),
 	[homeOwnership] [varchar](10),
@@ -42,4 +42,5 @@ CREATE TABLE [dbo].[Borrower](
 	[numInquiries6Mon] [int]	
 	)
 
-CREATE CLUSTERED COLUMNSTORE INDEX borrower_cci ON Borrower WITH (DROP_EXISTING = OFF);
+
+

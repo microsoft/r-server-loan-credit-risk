@@ -14,7 +14,7 @@ AS
 BEGIN
 
 	-- Create an empty table to be filled with the trained models.
-	DROP TABLE if exists [dbo].[Model]
+    DROP TABLE if exists  [dbo].[Model]
 	CREATE TABLE [dbo].[Model](
 		[id] [varchar](200) NOT NULL, 
 	    [value] [varbinary](max), 
@@ -51,7 +51,7 @@ rxSetComputeContext(sql)
 ##########################################################################################################################################
 ##	Point to the training set and use the column_info list to specify the types of the features.
 ##########################################################################################################################################
-Train_sql <- RxSqlServerData(sqlQuery = sprintf( "SELECT * FROM [%s] WHERE loanId IN (SELECT loanId from Train_Id)", dataset_name), 
+Train_sql <- RxSqlServerData(sqlQuery = sprintf( "SELECT [%s].* FROM [%s] JOIN Hash_Id ON [%s].loanId = Hash_Id.loanId WHERE hashCode <= 70", dataset_name, dataset_name, dataset_name),
                              connectionString = connection_string,  
 						     colInfo = column_info) 
 
@@ -77,7 +77,19 @@ logistic_model <- rxLogit(formula = formula,
                           reportProgress = 0, 
                           initialValues = NA)
 
- 
+## rxLogisticRegression function from the MicrosoftML library can be used instead. 
+## The regularization weights (l1Weight and l2Weight) can be modified for further optimization.
+## The included selectFeatures function can select a certain number of optimal features based on a specified method.
+## the number of variables to select and the method can be further optimized.
+  
+#library("MicrosoftML")
+#logistic_model <- rxLogisticRegression(formula = formula,
+#                                       data = Train_sql,
+#                                       type = "binary",
+#                                       l1Weight = 0.7,
+#                                       l2Weight = 0.7,
+#                                       mlTransforms = list(selectFeatures(formula, mode = mutualInformation(numFeaturesToKeep = 10))))
+   
 ########################################################################################################################################## 
 ## Save the model in SQL Server 
 ########################################################################################################################################## 
