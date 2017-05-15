@@ -102,7 +102,7 @@ The stored procedure, `[fill_NA_mode_mean]`, will replace the missing values wit
 * 2 Tables filled with the raw data: `Loan` and `Borrower` (filled through PowerShell).
 
 ### Output:
-* A view, `Merged_Cleaned` with the cleaned data.
+* `Merged_Cleaned` table with the cleaned data.
 * `Stats` table with statistics on the raw data set. 
 
 ### Related files:
@@ -113,15 +113,17 @@ The stored procedure, `[fill_NA_mode_mean]`, will replace the missing values wit
 ## Step 2a: Splitting the data set
 -------------------------
 
-In this step, we create a stored procedure `[dbo].[splitting]` that splits the data into a training set and a testing set. The user has to specify a splitting percentage. For example, if the splitting percentage is 70, 70% of the data will be put in the training set, while the other 30% will be assigned to the testing set. The `loanId` that will end in the training set is stored in the table `Train_Id`. The splitting is performed prior to feature engineering instead of in the training step because the feature engineering creates bins based on conditional inference trees that should be built only on the training set. If the bins were computed with the whole data set, the evaluation step would be rigged. 
+In this step, we create a stored procedure `[dbo].[splitting]` that splits the data into a training set and a testing set.  It creates a hash function that ensures repeatability and maps loanIds to integers that will be used later to split the data into a training and a testing set.  
+
+ The splitting is performed prior to feature engineering instead of in the training step because the feature engineering creates bins based on conditional inference trees that should be built only on the training set. If the bins were computed with the whole data set, the evaluation step would be rigged. 
 
 ### Input:
 
-* `Merged_Cleaned` View.
+* `Merged_Cleaned` Table.
 
 ### Output:
 
-* `Train_Id` table containing the loanId that will end in the training set.
+* `Hash_Id` table containing the `loanId` and mapping through the hash function. 
 
 ### Related files:
 
@@ -148,7 +150,7 @@ Variables names and types (and levels for factors) of the raw data set are then 
 
 ### Input:
 
-* `Merged_Cleaned` View and `Train_Id` table.
+* `Merged_Cleaned` table and `Hash_Id` table.
 
 ### Output:
 
@@ -173,7 +175,7 @@ Training a Logistic Regression for loan credit risk prediction is a standard pra
 
 ### Input:
 
-* `Merged_Features` and `Train_Id` tables.
+* `Merged_Features` and `Hash_Id` tables.
 
 ### Output:
 
@@ -194,7 +196,7 @@ In this step, we create a stored procedure `[dbo].[score]` that scores the train
 
 ### Input:
 
-* `Merged_Features`,`Train_Id`, and `Model` tables.
+* `Merged_Features`,`Hash_Id`, and `Model` tables.
 
 ### Output:
 
@@ -247,14 +249,14 @@ The first, `[dbo].[compute_operational_metrics]` will:
 
 3. Take each lower bound of each bin as a decision threshold for default loan classification, and compute the rate of bad loans among loans with a score higher than the threshold. 
 
-It outputs the table `Operational_Scores`, which will also be used in the Production pipeline. It can be read in the following way: 
+It outputs the table `Operational_Metrics`, which will also be used in the Production pipeline. It can be read in the following way: 
 * If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449, this means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
 
 The second, `[apply_score_transformation]` will: 
 
 1. Apply the same sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1].
 
-2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Scores` table. These bad rates are either observed (Modeling pipeline) or expected (Production pipeline).
+2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Metrics` table. These bad rates are either observed (Modeling pipeline) or expected (Production pipeline).
 
 
 ## Input:
@@ -263,7 +265,7 @@ The second, `[apply_score_transformation]` will:
 
 ## Output:
 
-* `Operational_Scores` table containing the percentiles from 1% to 99%, the scores thresholds each one corresponds to, and the observed bad rate among loans with a score higher than the corresponding threshold. 
+* `Operational_Metrics` table containing the percentiles from 1% to 99%, the scores thresholds each one corresponds to, and the observed bad rate among loans with a score higher than the corresponding threshold. 
 * `Scores_Average` table containing the single value of the average score output from the logistic regression. It is used for the sigmoid transformation in Modeling and Production pipeline.
 * `Scores` table containing the transformed scores for each record of the testing set, together with the percentiles they belong to, the corresponding score cutoff, and the observed bad rate among loans with a higher score than this cutoff.
 
@@ -277,9 +279,9 @@ The second, `[apply_score_transformation]` will:
 -------------------------
 
 In the Production pipeline, the data from the files **Loan_Prod.csv** and **Borrower_Prod.csv** is uploaded through PowerShell to the `Loan_Prod` and `Borrower_Prod` tables.
-The tables `Stats`, `Bins`, `Column_Info`, `Model`, `Operational_Scores` and `Scores_Average` created during the Development pipeline are then moved to the Production database through the stored procedure `[dbo].[copy_modeling_tables]` located in the file **create_tables_prod.sql**.
+The tables `Stats`, `Bins`, `Column_Info`, `Model`, `Operational_Metrics` and `Scores_Average` created during the Development pipeline are then moved to the Production database through the stored procedure `[dbo].[copy_modeling_tables]` located in the file **create_tables_prod.sql**.
 
-The `Loan_Prod` and `Borrower_Prod` tables are then merged and cleaned like in Step 1 (using the `Stats` table), and a feature engineered table is created like in Step 2 (using the `Bins` table). The featurized table is then scored on the logistic regression model (using the `Model` and `Column_Info` tables). Finally, the scores are transformed and stored in the `Scores_Prod` table (using the `Scores_Average` and `Operational_Scores` tables). 
+The `Loan_Prod` and `Borrower_Prod` tables are then merged and cleaned like in Step 1 (using the `Stats` table), and a feature engineered table is created like in Step 2 (using the `Bins` table). The featurized table is then scored on the logistic regression model (using the `Model` and `Column_Info` tables). Finally, the scores are transformed and stored in the `Scores_Prod` table (using the `Scores_Average` and `Operational_Metrics` tables). 
 
 
 

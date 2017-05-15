@@ -91,7 +91,7 @@ In this step, the raw data is loaded into SQL in two tables called `Loan` and `B
 
 Then, if there are missing values, the data is cleaned by replacing missing values with the mode (categorical variables) or mean (float variables). This assumes that the ID variables (`loanId` and `memberId`) as well as `loanStatus` do not contain blanks. 
 
-The cleaned data is written to the SQL table `Merged_Cleaned`.
+The cleaned data is written to the SQL table `Merged_Cleaned`. The Statistics are written to SQL if you want to run a batch scoring from SQL after a development stage in R. 
 
 ### Input:
 * Raw data: **Loan.csv** and **Borrower.csv**.
@@ -99,6 +99,7 @@ The cleaned data is written to the SQL table `Merged_Cleaned`.
 ### Output:
 * `Loan` and `Borrower` SQL tables with the raw data. 
 * `Merged_Cleaned` SQL table , with missing values replaced if applicable.
+* `Stats` SQL table , with global means or modes for every variable. 
 
 ### Related files:
 * **step1_preprocessing.R**
@@ -119,12 +120,11 @@ This is done by following these steps:
 
 1. Create the label `isBad` with `rxDataStep` function into the table `Merged_Labeled`. 
 
-2. Split the data set into a training and a testing set. This is done by selecting randomly a proportion (equal to the user-specified splitting ratio) of `loanId` to be part of the training set, written to the SQL table `Train_Id`. 
-The splitting is performed prior to feature engineering instead of in the training step because the feature engineering creates bins based on conditional inference trees that should be built only on the training set. If the bins were computed with the whole data set, the evaluation step would be rigged. 
+2.  Split the data set into a training and a testing set. This is done by selecting randomly 70% of `loanId` to be part of the training set. In order to ensure repeatability, `loanId` values are mapped to integers through a hash function, with the mapping and `loanId` written to the `Hash_Id` SQL table. The splitting is performed prior to feature engineering instead of in the training step because the feature engineering creates bins based on conditional inference trees that should be built only on the training set. If the bins were computed with the whole data set, the evaluation step would be rigged. 
 
-3. Compute the bins that will be used to create the categorical variables. It uses the CRAN R package `smbinning` that builds a conditional inference tree on the training set (to which we append the binary label isBad) in order to get the optimal bins to be used for the numeric variables we want to bucketize. Because some of the numeric variables have too few unique values, or because the binning function did not return significant splits, we decided to manually specify default bins in case smbinning does not return the splits. These default bins have been determined through an analysis of the data or through running smbinning on a larger data set.
+3. Compute the bins that will be used to create the categorical variables. It uses the CRAN R package `smbinning` that builds a conditional inference tree on the training set (to which we append the binary label isBad) in order to get the optimal bins to be used for the numeric variables we want to bucketize. Because some of the numeric variables have too few unique values, or because the binning function did not return significant splits, we decided to manually specify default bins in case smbinning does not return the splits. These default bins have been determined through an analysis of the data or through running `smbinning` on a larger data set. 
 
-The bins computation is optimized by running `smbinning` in parallel across the different cores of the server, through the use of `rxExec` function applied in a Local Parallel (`localpar`) compute context. The `rxElemArg` argument it takes is used to specify the list of variables (here the numeric variables names) we want to apply smbinning on. 
+The bins computation is optimized by running `smbinning` in parallel across the different cores of the server, through the use of `rxExec` function applied in a Local Parallel (`localpar`) compute context. The `rxElemArg` argument it takes is used to specify the list of variables (here the numeric variables names) we want to apply smbinning on. They are saved to SQL in case you want to run a production stage with SQL after running a development stage in R.  
 
 4.  Bucketize the variables based on the computed/specified bins with the function `bucketize`, wrapped into an `rxDataStep` function. The final output is written into the SQL table `Merged_Features`.
 
@@ -135,7 +135,8 @@ The bins computation is optimized by running `smbinning` in parallel across the 
 ### Output:
 
 * `Merged_Features` SQL table containing new features.
-* `Train_Id` SQL table containing the `loanId` that will end in the training set. 
+* `Hash_Id` SQL table containing the `loanId` and the mapping through the hash function. 
+* `Bins` SQL table containing the serialized list of cutoffs to be used in a future Production stage.   
 
 
 ### Related files:
@@ -175,13 +176,14 @@ Finally, we compute predictions on the testing set, as well as performance metri
 ### Input:
 
 * `Merged_Features` SQL table containing new features.
-* `Train_Id` SQL table containing the loanId that will end in the training set. 
+* `Hash_Id` SQL table containing the `loanId` and the mapping through the hash function.  
 
 ### Output:
 
 * `Model` SQL table containing the serialized logistic regression model.
 * `Logistics_Coeff` data frame returned by the function.  It contains variables names and coefficients of the logistic regression formula. They are sorted in decreasing order of the absolute value of the coefficients. 
 * `Predictions_Logistic` SQL table containing the predictions made on the testing set.
+* `Column_Info` SQL table containing the serialized list of factor levels to be used in a future Production stage. 
 * Performance metrics returned by the step 3 function. 
 
 ### Related files:
@@ -199,20 +201,20 @@ In this step, we create two functions `compute_operational_metrics`, and `apply_
 
 The first, `compute_operational_metrics` will:
 
-1. Apply a sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1] and make them more interpretable. This sigmoid uses the average predicted score.
+1. Apply a sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1] and make them more interpretable. This sigmoid uses the average predicted score, which is saved to SQL in case you want to run a production stage through SQL after a development stage with R.
 
 2. Compute bins for the scores, based on quantiles (we compute the 1%-99% percentiles). 
 
 3. Take each lower bound of each bin as a decision threshold for default loan classification, and compute the rate of bad loans among loans with a score higher than the threshold. 
 
-It outputs the data frame `Operational_Scores`, which is also saved to SQL. It can be read in the following way: 
+It outputs the data frame `Operational_Metrics`, which is also saved to SQL. It can be read in the following way: 
 If the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449, this means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
 
 The second, `apply_score_transformation` will: 
 
 1. Apply the same sigmoid function to the output scores of the logistic regression, in order to spread them in [0,1].
 
-2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Scores` table. 
+2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Metrics` table. 
 
 ### Input:
 
@@ -220,16 +222,17 @@ The second, `apply_score_transformation` will:
 
 ### Output:
 
-* `Operational_Scores` SQL table and data frame containing the percentiles from 1% to 99%, the scores thresholds each one corresponds to, and the observed bad rate among loans with a score higher than the corresponding threshold. 
+* `Operational_Metrics` SQL table and data frame containing the percentiles from 1% to 99%, the scores thresholds each one corresponds to, and the observed bad rate among loans with a score higher than the corresponding threshold. 
 * `Scores` SQL table containing the transformed scores for each record of the testing set, together with the percentiles they belong to, the corresponding score cutoff, and the observed bad rate among loans with a higher score than this cutoff.
+* `Scores_Average` SQL table , with the average score on the testing set, to be used in a future Production stage.  
 
 ### Related files:
 
 * **step4_operational_metrics.R**
 
-The **modeling_main.R** script uses the `Operational_Scores` table to plot the rates of bad loans among those with scores higher than each decision threshold. The decision thresholds correspond to the beginning of each percentile-based bin.
+The **modeling_main.R** script uses the `Operational_Metrics` table to plot the rates of bad loans among those with scores higher than each decision threshold. The decision thresholds correspond to the beginning of each percentile-based bin.
 
-![Visualize](images/Operational_Scores.png?raw=true)
+![Visualize](images/Operational_Metrics.png?raw=true)
 
 For example, if the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449. This means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold. 
 
