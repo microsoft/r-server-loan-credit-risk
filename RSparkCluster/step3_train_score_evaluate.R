@@ -41,7 +41,7 @@ training_evaluation <- function(LocalWorkDir,
     ## The block below will split the data into training and testing set 
     ##########################################################################################################################################
     
-    print("Randomly Splitting into a training and a testing set using the splitVector created in step 2...")
+    print("Randomly Splitting into a training and a testing set using the hashCode created in step 2...")
     
     # Split the analytical data set into a training and a testing set. 
     ## Note that the training set in step 2 was used only to compute the bins.
@@ -52,17 +52,17 @@ training_evaluation <- function(LocalWorkDir,
     rxDataStep(inData = MergedFeaturesFactors_xdf,
                outFile = Train_xdf,
                overwrite = TRUE,
-               rowSelection = (splitVector < splitting_ratio), 
+               rowSelection = (hashCode %% 100 < 100*splitting_ratio), 
                transformObjects = list(splitting_ratio = splitting_ratio),
-               varsToDrop = c("splitVector") 
+               varsToDrop = c("hashCode") 
     )
     
     rxDataStep(inData = MergedFeaturesFactors_xdf,
                outFile = Test_xdf,
                overwrite = TRUE,
-               rowSelection = (splitVector >= splitting_ratio), 
+               rowSelection = (hashCode %% 100 >= 100*splitting_ratio), 
                transformObjects = list(splitting_ratio = splitting_ratio),
-               varsToDrop = c("splitVector") 
+               varsToDrop = c("hashCode") 
     )
     
     ##########################################################################################################################################

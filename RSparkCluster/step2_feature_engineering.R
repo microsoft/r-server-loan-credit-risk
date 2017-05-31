@@ -36,7 +36,7 @@ feature_engineer <- function(LocalWorkDir,
   #############################################################################################################################################
   ## For the development stage, the block below will:
   ## 1. Create the label, isBad, based on the loanStatus variable. 
-  ## 2. Create a random variable, splitVector, with values uniformly distributed between 0 and 1. (Used for splitting)
+  ## 2. Create a variable, hashCode, which correspond to the mapping of loanId to integers using murmur3.32 hash function.
   ############################################################################################################################################
   if(Stage == "Dev"){
     print("Creating the label isBad based on loanStatus...")
@@ -45,13 +45,15 @@ feature_engineer <- function(LocalWorkDir,
     MergedLabeled_xdf <- RxXdfData(file.path(HDFSIntermediateDir, "MergedLabeled"), fileSystem = RxHdfsFileSystem())
     
     # Create the target variable, isBad, based on loanStatus.
-    # We also create a random variable, splitVector, with values uniformly distributed between 0 and 1.
+    # We also map the loanId to integers with the murmur3.32 hash function.
     rxDataStep(inData = MergedCleaned_xdf ,
                outFile = MergedLabeled_xdf, 
                overwrite = TRUE, 
                transforms = list(
                  isBad = ifelse(loanStatus %in% c("Current"), "0", "1"),
-                 splitVector = runif(.rxNumRows)) 
+                 hashCode = sapply(as.character(loanId), murmur3.32)
+               ), 
+               transformPackages = "hashFunction"
     )
   }
   
@@ -69,7 +71,7 @@ feature_engineer <- function(LocalWorkDir,
                  isBad = sample(c("0", "1"), size = .rxNumRows, replace = T)) 
     )
   }
-
+  
   #############################################################################################################################################
   ## Development: The block below will create Training set to compute bins. 
   ############################################################################################################################################
@@ -84,7 +86,7 @@ feature_engineer <- function(LocalWorkDir,
     rxDataStep(inData = MergedLabeled_xdf,
                outFile = Train_xdf,
                overwrite = TRUE,
-               rowSelection = (splitVector < splitting_ratio), 
+               rowSelection = (hashCode %% 100 < 100*splitting_ratio), 
                transformObjects = list(splitting_ratio = splitting_ratio))
   }
   
@@ -131,7 +133,7 @@ feature_engineer <- function(LocalWorkDir,
     bins$numChargeoff1year <- c(0, 8)
     bins$numInquiries6Mon <- c(0, 1, 2)
     
-  
+    
     # Function to compute smbinning on every variable. 
     ## For large data sets, we take a random subset to speed up computations with smbinning.
     compute_bins <- function(name, data){
@@ -226,7 +228,7 @@ feature_engineer <- function(LocalWorkDir,
   ## Development: set the type of the newly created variables to factor and save the variable information for Production/Web Scoring use. 
   ## Production/ Web Scoring: factor the variables and specify their levels accordingly to the Development data. 
   ############################################################################################################################################
- 
+  
   # Create an XDF pointer to the output data. 
   MergedFeaturesFactors_xdf <- RxXdfData(file.path(HDFSIntermediateDir, "MergedFeaturesFactors"), fileSystem = RxHdfsFileSystem())
   
@@ -290,6 +292,7 @@ feature_engineer <- function(LocalWorkDir,
   
   print("Step 2 Completed.")
 } # end of step 2 function. 
+
 
 
 

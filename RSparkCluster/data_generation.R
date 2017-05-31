@@ -237,7 +237,7 @@ LB$numOpenCreditLines <- ifelse(sample(c(1, 2), no_of_unique_id, replace = T, pr
 
 
 ##########################################################################################################################################
-## Separate in Loan and Borrower and write to disk. 
+## Separate in Loan and Borrower and write to disk on the edge node. 
 ##########################################################################################################################################
 
 colnames_loan <- c("loanId", "memberId", "date", "purpose", "isJointApplication", 
@@ -254,17 +254,19 @@ Borrower <- LB[, colnames_borrower]
 write.csv(Loan, file = "Loan.csv", row.names = FALSE , quote = FALSE, na = "")
 write.csv(Borrower, file = "Borrower.csv", row.names = FALSE , quote = FALSE, na = "")
 
+##########################################################################################################################################
+## Copy the data to HDFS. 
+##########################################################################################################################################
 
-rxSparkConnect(consoleOutput = TRUE, reset = TRUE)
 source = paste0(getwd(), "/*.csv");
-source
 DataDir = "/Loans/Data"
-# Copy the data from source to input
+
+# Copy the data from the edge node to HDFS. 
 rxHadoopCopyFromLocal(source, DataDir)
 
-# remove local files
+# Remove local files.
 file.remove("Loan.csv")
 file.remove("Borrower.csv")
 
-# clean up 
+# Clean up the environment.  
 rm(list = ls())

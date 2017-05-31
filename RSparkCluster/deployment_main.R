@@ -26,7 +26,7 @@ library(mrsdeploy)
 remoteLogin(
   "http://localhost:12800",
   username = "admin",
-  password = "D@tascience2016",
+  password = "D@tascience2017",
   session = FALSE
 )
 
@@ -79,9 +79,6 @@ model_objects <- list(Numeric_Means = Numeric_Means,
 ## Define main function
 ##############################################################################################################################
 
-## The user should replace the directory in "source" function with the directory of his own.
-## The directory should be the full path containing the source scripts.
-
 ## If Loan and Borrower are data frames, the web scoring is done in_memory. 
 ## Use paths to csv files on HDFS for large data sets that do not fit in-memory. 
 
@@ -89,10 +86,12 @@ loan_web_scoring <- function(Loan,
                              Borrower, 
                              LocalWorkDir,
                              HDFSWorkDir,
-                             Stage = "Web")
+                             Stage = "Web",
+                             Username = Sys.info()[["user"]])
 {
+  
   if((class(Loan) == "data.frame") & (class(Borrower) == "data.frame")){ # In-memory scoring. 
-    source("/home/sshuser/in_memory_scoring.R")
+    source(paste("/home/", Username,"/in_memory_scoring.R", sep=""))
     print("Scoring in-memory...")
     return(in_memory_scoring(Loan, Borrower, Stage = Stage))
     
@@ -103,10 +102,10 @@ loan_web_scoring <- function(Loan,
     
     # step0: intermediate directories creation.
     print("Creating Intermediate Directories on Local and HDFS...")
-    source("/home/sshuser/step0_directories_creation.R")
+    source(paste("/home/", Username,"/step0_directories_creation.R", sep=""))
     
     # step1: data processing
-    source("/home/sshuser/step1_preprocessing.R")
+    source(paste("/home/", Username,"/step1_preprocessing.R", sep=""))
     print("Step 1: Data Processing.")
     
     data_preprocess(Loan, 
@@ -116,7 +115,7 @@ loan_web_scoring <- function(Loan,
                     Stage = Stage)
     
     # step2: feature engineering
-    source("/home/sshuser/step2_feature_engineering.R")
+    source(paste("/home/", Username,"/step2_feature_engineering.R", sep=""))
     print("Step 2: Feature Engineering.")
     ## splitting_ratio is not used in this stage. 
     
@@ -126,7 +125,7 @@ loan_web_scoring <- function(Loan,
                      Stage = Stage)
     
     # step3: making predictions. 
-    source("/home/sshuser/step3_train_score_evaluate.R")
+    source(paste("/home/", Username,"/step3_train_score_evaluate.R", sep=""))
     print("Step 3: Making Predictions.")
     ## splitting_ratio is not used in this stage. 
     training_evaluation (LocalWorkDir,
@@ -135,7 +134,7 @@ loan_web_scoring <- function(Loan,
                          Stage = Stage)
     
     # Step 4: scores transformation.  
-    source("/home/sshuser/step4_operational_metrics.R")
+    source(paste("/home/", Username,"/step4_operational_metrics.R", sep=""))
     print("Step 4: Scores Transformation.")
     
     ## Transform the scores using the computed thresholds. 
@@ -153,7 +152,7 @@ loan_web_scoring <- function(Loan,
 ##############################################################################################################################
 
 # Specify the version of the web service
-version <- "v1.2.278"
+version <- "v1.2.287"
 
 # Publish the api for the character input case (ie. Loan and Borrower are data paths.)
 api_string <- publishService(
@@ -164,7 +163,8 @@ api_string <- publishService(
                 Borrower = "character",
                 LocalWorkDir = "character",
                 HDFSWorkDir = "character",
-                Stage = "character"),
+                Stage = "character",
+                Username = "character"),
   outputs = list(answer = "character"),
   v = version
 )
@@ -179,7 +179,8 @@ api_frame <- publishService(
                 Borrower = "data.frame",
                 LocalWorkDir = "character",
                 HDFSWorkDir = "character",
-                Stage = "character"),
+                Stage = "character",
+                Username = "character"),
   outputs = list(answer = "data.frame"),
   v = version
 )
@@ -202,7 +203,8 @@ result_string <- api_string$loan_web_scoring(
   Borrower = Borrower_str,
   LocalWorkDir = LocalWorkDir,
   HDFSWorkDir = HDFSWorkDir,
-  Stage = "Web"
+  Stage = "Web",
+  Username = Sys.info()[["user"]]
 )
 
 # Verify the data frame input case.
@@ -211,7 +213,8 @@ result_frame <- api_frame$loan_web_scoring(
   Borrower = Borrower_df,
   LocalWorkDir = LocalWorkDir,
   HDFSWorkDir = HDFSWorkDir,
-  Stage = "Web"
+  Stage = "Web",
+  Username = Sys.info()[["user"]]
 )
 
 ## To get the data frame result in a readable format: 

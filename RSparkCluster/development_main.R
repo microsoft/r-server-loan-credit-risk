@@ -12,12 +12,25 @@
 
 ##########################################################################################################################################
 
+# Current working directory should be set with setwd() to the location of the .R files.
+
 ##########################################################################################################################################
 ## Open Spark Connection and load RevoScaleR library. 
 ##########################################################################################################################################
 
 rxSparkConnect(consoleOutput = TRUE, reset = TRUE)
 library(RevoScaleR)
+
+##########################################################################################################################################
+## Data sets full path
+##########################################################################################################################################
+
+# Generate data with 1 Mn rows and copy it to the data directory "/Loans/Data" on HDFS. 
+source(paste(getwd(),"/data_generation.R", sep =""))
+
+# Write the full path to the 2 data sets.
+Loan <- "/Loans/Data/Loan.csv"
+Borrower <- "/Loans/Data/Borrower.csv"
 
 ##########################################################################################################################################
 ## Directories
@@ -30,16 +43,6 @@ LocalWorkDir <- paste("/var/RevoShare/", Sys.info()[["user"]], "/LoanCreditRisk/
 # HDFS directory for user calculation. We assume it already exists. 
 HDFSWorkDir <- paste("/",Sys.info()[["user"]],"/LoanCreditRisk/dev", sep="")
 #rxHadoopMakeDir(HDFSWorkDir)
-
-# Current working directory should be set with setwd() to the location of the .R files.
-
-##########################################################################################################################################
-## Data sets full path
-##########################################################################################################################################
-
-# We assume the data already exists on HDFS, and write the full path to the 2 data sets.
-Loan <- "/Loans/Data/Loan.csv"
-Borrower <- "/Loans/Data/Borrower.csv"
 
 ##############################################################################################################################
 ## Define main function
@@ -117,7 +120,7 @@ loan_dev <- function(Loan,
   
   # Finally, we copy the global means, modes and quantiles and the trained model for use in Production and Web Scoring.
   # You can change the value of update_prod_flag to 0 or comment out the code below to avoid overwriting those currently in use for Production.
- 
+  
   update_prod_flag = 1 
   if (update_prod_flag == 1){
     # Production directory that will hold the development data. 
@@ -128,7 +131,7 @@ loan_dev <- function(Loan,
     source(paste(getwd(),"/copy_dev_to_prod.R", sep =""))
     copy_dev_to_prod(DevModelDir, ProdModelDir)
   } 
- 
+  
   return(metrics)
 }
 

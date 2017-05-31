@@ -33,6 +33,9 @@ in_memory_scoring <- function(Loan_df,
   }
   
   if(Stage == "Prod"){
+    # Directory that holds the tables and model from the Development stage.
+    LocalModelsDir <- file.path(LocalWorkDir, "model")
+    
     Numeric_Means <- readRDS(file.path(LocalModelsDir, "Numeric_Means.rds"))
     Categorical_Modes <- readRDS(file.path(LocalModelsDir, "Categorical_Modes.rds"))
     bins <- readRDS(file.path(LocalModelsDir, "bins.rds"))
@@ -49,6 +52,13 @@ in_memory_scoring <- function(Loan_df,
   ############################################################################################################################################
   # Merge the input tables on memberId. 
   Merged <- rxMerge(Loan_df, Borrower_df, type = "inner", matchVars = "memberId")
+  
+  # Convert characters to factors. 
+  for (name in colnames(Merged)){
+    if(class(Merged[[name]]) == "character"){
+      Merged[[name]] <- factor(Merged[[name]])
+    }
+  }
   
   # Get the variables types. 
   var_all <- colnames(Merged)[!colnames(Merged) %in% c("loanId", "memberId", "loanStatus", "date")]
@@ -174,4 +184,5 @@ in_memory_scoring <- function(Loan_df,
   return(Scores)
   
 }
+
 
