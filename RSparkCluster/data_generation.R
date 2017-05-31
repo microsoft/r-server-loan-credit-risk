@@ -254,8 +254,10 @@ Borrower <- LB[, colnames_borrower]
 write.csv(Loan, file = "Loan.csv", row.names = FALSE , quote = FALSE, na = "")
 write.csv(Borrower, file = "Borrower.csv", row.names = FALSE , quote = FALSE, na = "")
 
+
 rxSparkConnect(consoleOutput = TRUE, reset = TRUE)
 source = paste0(getwd(), "/*.csv");
+source
 DataDir = "/Loans/Data"
 # Copy the data from source to input
 rxHadoopCopyFromLocal(source, DataDir)
