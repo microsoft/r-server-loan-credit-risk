@@ -265,3 +265,6 @@ rxHadoopCopyFromLocal(source, DataDir)
 # remove local files
 file.remove("Loan.csv")
 file.remove("Borrower.csv")
+
+# clean up 
+rm(list = ls())
