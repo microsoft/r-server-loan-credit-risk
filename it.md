@@ -22,14 +22,11 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-      As businesses are starting to acknowledge the power of data, leveraging machine learning techniques to grow has become a must. In particular, customer-oriented businesses can learn patterns from their data to intelligently design acquisition campaigns and convert the highest possible number of customers. 
+When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View <a href="input_data.html">more information about the data.</a>
           </div>
 </div>
 <p>
-Among the key variables to learn from data are XXX. This template provides XXX
-</p>
-
-XXX? While this solution demonstrates the code with 100,000 leads for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring.  The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.
+While this solution demonstrates the code with 100,000 leads for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring. The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.
 
 ## System Requirements
 -----------------------
@@ -56,10 +53,8 @@ Access RStudio on the cluster edge node by using the url of the form `http://CLU
 --------------
 
 
-The following data files are available in the **XXX** directory in the storage account associated with the cluster:
+The following data files are available in the **{{ site.folder_name }}/Data** directory in the storage account associated with the cluster:
 
  {% include data.md %}
-
-<a name="step1">
 
 

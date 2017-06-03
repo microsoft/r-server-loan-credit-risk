@@ -16,7 +16,7 @@ solution.
 <div class="onp">
 If you don't have RStudio <a href="https://www.rstudio.com/products/rstudio/download2/" target="_blank">get it here</a>.
 </div>
-<div class="sql">
+<div class="cig">
 RStudio is already installed on your VM and configured for you.  
 </div>
 <div class="hdi">
