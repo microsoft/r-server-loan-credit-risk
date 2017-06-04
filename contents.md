@@ -81,9 +81,19 @@ These files are in the **SQLR** directory.
 These files are in the **RSparkCluster** directory.
 
 <table class="table table-striped table-condensed">
-<tr><th> File </th><th> Description </th></tr>
-XXXX FILL THIS OUT
-<tr><td>  </td><td>  </td></tr>
+<tr><th> File </th><th> Description </th></tr> 
+<tr><td> copy_dev_to_prod.R</td><td>Defines function, copy_to_prod, used in development_main.R </td></tr>
+<tr><td> data_generation.R</td><td>Used to generate data, used in development_main.R</td></tr>
+<tr><td> deployment_main.R</td><td>Deploys web scoring function as a web service.</td></tr>
+<tr><td> development_main.R</td><td> Full development process</td></tr>
+<tr><td> in_memory_scoring.R</td><td>Performs in-memory scoring for batch scoring or for scoring remotely with a web service  </td></tr>
+<tr><td> production_main.R</td><td> Scores new data using subset of development steps</td></tr>
+<tr><td> step0_directories_creation.R</td><td>Creates initial directories, used in development_main.R </td></tr>
+<tr><td> step1_preprocessing.R</td><td>Merges data and then cleans the merged data sets: replace NAs with the global mean (numeric variables) or global mode (character variables), used in both development and production</td></tr>
+<tr><td> step2_feature_engineering.R</td><td>Performs Feature Engineering, used in both development and production  </td></tr>
+<tr><td> step3_train_score_evaluate.R</td><td>Builds the logistic regression classification model, scores the test data and evaluates, used in development_main.R </td></tr>
+<tr><td> step4_operational_metrics.R</td><td> Computes operational metrics and performs scores transformations in development, uses metrics and performs score transformations in production </td></tr>
+
 
 </table>
 
