@@ -39,7 +39,7 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <li class="onp hdi">Select the first query (<code>TestData</code>) and then click on the <code>Advanced Editor</code> in the toolbar.</li>
 <li class="onp">Replace <code>localhost</code> with your server name and click on <code>Done</code>. (If you are using an Azure VM, such as the one deployed by Cortana Ingelligence Gallery, use the IP address for the server name.)</li>
 <li class="hdi">Replace <code>sdglcr2</code> with your cluster name and click on <code>Done</code>. (The full address will be <strong>http://CLUSTERNAME.azurehdinsight.net</strong>.)
-<img src="images/testdata.png"> </li>
+<img src="images/scoresdata.png"> </li>
 <li class="onp hdi">After a moment you'll see an alert asking for Permision to run the query.  Click on <code>Edit Permission</code> </li>
 
 

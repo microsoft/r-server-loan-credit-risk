@@ -13,9 +13,9 @@ If we had a crystal ball, we would only loan money to someone if we knew they wo
     <label class="radio">
       <input type="radio" name="optradio" class="rb" value="onp"> {{ site.onp_text }}
     </label>
-   <!--<label class="radio">
+   <label class="radio">
       <input type="radio" name="optradio" class="rb" value="hdi"> {{ site.hdi_text }}, deployed from <a href="{{ site.deploy_url_hdi }}">Cortana Intelligence Gallery</a>
-    </label>  -->
+    </label> 
 </form>
 </div>
 <p></p>
