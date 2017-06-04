@@ -96,12 +96,9 @@ Debra will develop her R scripts in  the Open Source Edition of RStudio Server, 
 <p/>
 <div class="alert alert-info" role="alert">
 When you first visit the url to access RStudio, you will see two different logins.  Use the username and  password you created when you deployed the HDInsight solution for both of these prompts.
-
 </div>
 
-<p></p>
-XXXAnything else for HDI?
-<p></p>
+
 
 </div>
 

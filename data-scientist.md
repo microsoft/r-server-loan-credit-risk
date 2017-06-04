@@ -389,7 +389,7 @@ If the score cutoff of the 91th score percentile is 0.9834, and we read a bad ra
 
 <p>The <strong>modeling_main.R</strong> script uses the <code>Operational_Metrics</code> table to plot the rates of bad loans among those with scores higher than each decision threshold. The decision thresholds correspond to the beginning of each percentile-based bin.</p>
 
-<p><img src="images/Operational_Metrics.png?raw=true" alt="Visualize" /></p>
+<p><img src="images/step4bis.png?raw=true" alt="Visualize" /></p>
 
 <p>For example, if the score cutoff of the 91th score percentile is 0.9834, and we read a bad rate of 0.6449. This means that if 0.9834 is used as a threshold to classify loans as bad, we would have a bad rate of 64.49%. This bad rate is equal to the number of observed bad loans over the total number of loans with a score greater than the threshold.</p>
 
@@ -407,7 +407,7 @@ If the score cutoff of the 91th score percentile is 0.9834, and we read a bad ra
 
 <p>In the Production stage, the goal is to perform a batch scoring.</p>
 
-<p>The script “production_main.R” will complete this task by invoking the scripts described above. The batch scoring can be done either:</p>
+<p>The script <strong>production_main.R</strong> will complete this task by invoking the scripts described above. The batch scoring can be done either:</p>
 
 <ul>
   <li>In-memory : The input should be provided as data frames. All the preprocessing and scoring steps are done in-memory on the edge node (local compute context). In this case, the main batch scoring function calls the R script “in_memory_scoring.R”.</li>

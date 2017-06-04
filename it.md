@@ -44,7 +44,7 @@ HDInsight Spark cluster billing starts once a cluster is created and stops when 
 
 ## Workflow Automation
 -------------------
-Access RStudio on the cluster edge node by using the url of the form `http://CLUSTERNAME.azurehdinsight.net/rstudio`  Run the script **XXX.R** to perform all the steps of the solution.
+Access RStudio on the cluster edge node by using the url of the form `http://CLUSTERNAME.azurehdinsight.net/rstudio`  Run the script **development_main.R** followed by **deployment_main.R** to perform all the steps of the solution.
 
  
 <a name="step0">
