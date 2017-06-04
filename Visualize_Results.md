@@ -38,7 +38,8 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <li class="onp hdi">Click on <code>Edit Query</code></li>
 <li class="onp hdi">Select the first query (<code>TestData</code>) and then click on the <code>Advanced Editor</code> in the toolbar.</li>
 <li class="onp">Replace <code>localhost</code> with your server name and click on <code>Done</code>. (If you are using an Azure VM, such as the one deployed by Cortana Ingelligence Gallery, use the IP address for the server name.)</li>
-<li class="hdi">Replace <code>XXX</code> with your cluster name and click on <code>Done</code>. (The full address will be <strong>http://CLUSTERNAME.azurehdinsight.net</strong>.) </li>
+<li class="hdi">Replace <code>sdglcr2</code> with your cluster name and click on <code>Done</code>. (The full address will be <strong>http://CLUSTERNAME.azurehdinsight.net</strong>.)
+<img src="images/testdata.png"> </li>
 <li class="onp hdi">After a moment you'll see an alert asking for Permision to run the query.  Click on <code>Edit Permission</code> </li>
 
 
@@ -53,7 +54,7 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <li class="sql">Select <code>OK</code> on the Encrypting Support alert.</li>
 <li class="onp hdi">The TestData table will appear.</li>
 <li class="onp"> Select each of the remaining queries on the left.  For each one use the <code>Advanced Editor</code> in the toolbar and replace <code>localhost</code> with your server name. You won't need to provide credentials again.</li>
-<li class="hdi"> Select each of the remaining queries on the left.  For each one use the <code>Advanced Editor</code> in the toolbar and replace <code>XXX</code> with your cluster name. You won't need to provide credentials again.</li>
+<li class="hdi"> Select each of the next two queries on the left (Operational_Metrics and ScoresData_Prod).  For each one use the <code>Advanced Editor</code> in the toolbar and replace <code>sdglcr2</code> with your cluster name. You won't need to provide credentials again.</li>
 <li class="onp hdi">Now close the Query Editor.  Select <code>Yes</code> to the prompt to apply your changes.</li>
 <li> You are now viewing data from your <span class="sql">SQL Database</span><span class="hdi">Hive tables</span>, rather than the imported data that was part of the initial solution package.</li>
 <li>Subsequent clicks of <code>Refresh</code> will work without further authentication steps.</li>

@@ -20,7 +20,6 @@ title: Site Map
 * [Quick Start](START_HERE.html)
     * [On-Prem: Setup SQL Server 2016 ](SetupSQL.html)
     * [SQL: PowerShell Instructions](Powershell_Instructions.html)
-    * [SQL: Set up Connection between SQL Server and PowerBI](ODBC.html)
 * [Visualizing Results with PowerBI](Visualize_Results.html)
 * [Input Data](input_data.html)
 * [SQL: Description of SQL Database Tables](tables.html)
