@@ -16,10 +16,10 @@ The following is the directory structure for this template:
 
 In this template with SQL Server R Services, two versions of the SQL implementation, and another version for HDInsight implementation:
 
-1. [**Model Development in R IDE**](#model-development-in-r)  . Run the R code in R IDE (e.g., RStudio, R Tools for Visual Studio).
+1. [**Model Development in R IDE**](#model-development-in-r). Run the R code in R IDE (e.g., RStudio, R Tools for Visual Studio).
 2. [**Operationalize in SQL**](#operationalize-in-sql-2016). Run the SQL code in SQL Server using SQLR scripts from SSMS or from the PowerShell script.
 
-3. [**HDInsight Solution on Spark Cluster**](hdinsight-solution-on-spark-cluster).  Run this R code in RStudio on the edge node of the Spark cluster.
+3. [**HDInsight Solution on Spark Cluster**](#hdinsight-solution-on-spark-cluster).  Run this R code in RStudio on the edge node of the Spark cluster.
 
 
 ### Copy of Input Datasets

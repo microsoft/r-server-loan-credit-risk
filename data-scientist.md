@@ -28,7 +28,7 @@ solution.
                 <li><a href="#step4">Step 4: Operational Metrics Computation and Scores Transformation</a></li>
             </ul>
             <li class="hdi"><a href="#update">Updating the Production Stage Directory</a></li>
-            <li class="hdi"><a href="#production">Production Stage</a></li>
+            <li><a href="#production">Production Stage</a></li>
             <li class="hdi"><a href="#web">Deploy as a Web Service</a></li>
             <li><a href="#viz">Visualize Results</a></li>
             <li class="hdi"><a href="#data">Using Your Own Data Set</a></li>
@@ -401,9 +401,18 @@ If the score cutoff of the 91th score percentile is 0.9834, and we read a bad ra
 <p>If you do not wish to overwrite the model currently in use in a Production stage, you can either save them to a different directory, or set <code>update_prod_flag</code> to <code>0</code> inside the main function.</p>
 </div>
 
-<div class="hdi">
-<h2 id="production">Production Stage</h2>
+<a id="production"/>
+<h2>Production Stage</h2>
 <hr />
+<div class="sql">
+<p>The R code from each of the above steps is operationalized in the SQL Server as stored procedures.
+In the Production pipeline, the data from the files <strong>Loan_Prod.csv</strong> and <strong>Borrower_Prod.csv</strong> is uploaded through PowerShell to the <code>Loan_Prod</code> and <code>Borrower_Prod</code> tables.
+The tables <code>Stats</code>, <code>Bins</code>, <code>Column_Info</code>, <code>Model</code>, <code>Operational_Metrics</code> and <code>Scores_Average</code> created during the Development pipeline are then moved to the Production database.
+
+</div>
+
+<div class="hdi">
+
 
 <p>In the Production stage, the goal is to perform a batch scoring.</p>
 
@@ -486,7 +495,7 @@ Note that you cannot publish a new web service with the same name and version tw
 The final scores reside in the table <code>Scores</code> of the <code>Loans</code> database. The production data is in a new database, <code>Loans_Prod</code>, in the table <code>Scores_Prod</code>. The final step of this solution visualizes both predictions tables in PowerBI.
 </div>
 <div class="hdi">
-The final scores reside in the Hive table <code>Scores</code>. The production results are in the Hive table <code>Scores_Prod</code> and <code>Merged_Prod</code>. The final step of this solution visualizes predictions of both the test and productions results. 
+The final scores reside in the Hive table <code>Scores</code>. The production results are in the Hive tables <code>Scores_Prod</code> and <code>Merged_Prod</code>. The final step of this solution visualizes predictions of both the test and productions results. 
 </div>
 
 <p></p>
