@@ -1,3 +1,6 @@
+// use strict mode
+"use strict";
+
 $(document).ready( function(){
     var platform;
 
