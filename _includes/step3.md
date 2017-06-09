@@ -26,13 +26,11 @@ While this task is complete for the current set of borrowers, we will need to sc
 In the steps above, we saw the first way of scoring new data, using <strong>production_main.R</strong> script. 
 Debra may also create an analytic web service  with <a href="https://msdn.microsoft.com/en-us/microsoft-r/operationalize/about">R Server Operationalization</a> that incorporates these same steps: data processing, feature engineering, and scoring.
 <p/>
- <strong>deployment_main.R</strong> will create a web service and test it on the edge node.  If you wish, you can also download the file <strong>local_scoring.R</strong> and access the web service on any computer with Microsoft R Server 9.0.1 installed.  
+ <strong>deployment_main.R</strong> will create a web service and test it on the edge node.  
 <p/>
 <div class="alert alert-info" role="alert">
-Before running  <strong>local_scoring.R</strong> on any computer, you must first connect to edge node from that computer.
-Once you have connected you can also use the web server admin utility to reconfigure or check on the status of the server.
-<p></p>
-Follow <a href="deployr.html">instructions here</a> to connect to the edge node and/or use the admin utility.
+The operationalization server has been configured for you on the edge node of your cluster.
+Follow <a href="deployr.html">instructions here</a> if you wish to connect to the edge node and/or use the admin utility.
 </div>
 <p/>
 The service can also be used by application developers, which is not shown here.

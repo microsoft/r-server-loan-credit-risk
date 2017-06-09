@@ -33,7 +33,7 @@ For instructions on how to use the terminal to connect to your HDInsight Spark c
 * Once you have connected to the edge node you can access the Administration Utilities for the web server with:
 
 ```
-sudo dotnet /usr/lib64/microsoft-deployr/9.0.1/Microsoft.DeployR.Utils.AdminUtil/Microsoft.DeployR.Utils.AdminUtil.dll
+sudo dotnet /usr/lib64/microsoft-deployr/9.1.0/Microsoft.DeployR.Utils.AdminUtil/Microsoft.DeployR.Utils.AdminUtil.dll
 ```
 
 Your server has been configuered with a password of  `D@tascience2017` for the  `admin` user.  You can use this utitlity to change the password if you wish. (If you do so, you will need to change the password in the  <strong>deployment_main.R</strong> script.)
@@ -46,9 +46,7 @@ You can also use this utility to check on the status of the web server.
 * You should see “Overall Health: pass”;
 * Now press `e` followed by ‘8’ to exit this tool
 
-<div class="alert alert-info">
-Do <strong>not</strong> close the terminal window - it should remain open when you execute <strong>local_scoring.R</strong> to try the web API on your local computer, after it is created with <strong>deployment_main.R</strong> from RStudio the cluster.
-</div>
+
 
 
  
