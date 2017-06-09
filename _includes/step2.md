@@ -58,7 +58,9 @@ The first few steps prepare the data for training.
 <p></p>
 </li>
 
-<li> Finally  <strong>step4_operational_metrics.R</strong> computes the expected bad rate for various classification decision thresholds and  applies a score transformation based on operational metrics. </li>
+<li> Finally  <strong>step4_operational_metrics.R</strong> computes the expected bad rate for various classification decision thresholds and  applies a score transformation based on operational metrics. 
+<p></p>
+</li>
 <li>After step4, the development script runs <strong>copy_dev_to_prod.R</strong> to copy the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder for use in production or web deployment.
 <p></p>
 </li>
