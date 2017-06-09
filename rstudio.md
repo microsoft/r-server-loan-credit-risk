@@ -41,4 +41,4 @@ RStudio needs to use R Server for the code in this solution.  Follow the instruc
 
  
 
-<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>
+<a href="Typical.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>

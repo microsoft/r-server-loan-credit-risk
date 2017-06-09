@@ -52,7 +52,7 @@ All the steps can be executed on SQL Server client environment (such as SQL Serv
 -----------------------
 
 The following are required to run these scripts:
- * SQL server 2016 with Microsoft R server (version 9.0.1 or above) installed and configured;
+ * SQL server 2016 with Microsoft R server (version 9.1.0 or above) installed and configured;
  * The SQL user name and password, and the user is configured properly to execute R scripts in-memory;
  * SQL Database for which the user has write permission and can execute stored procedures (see create_user.sql);
  * Implied authentification is enabled so a connection string can be automatically created in R codes embedded into SQL Stored Procedures (see create_user.sql).

@@ -9,24 +9,21 @@ title: Operationalization with R Server
 solution.
 </div> 
 
-##  Operationalization with R Server
+## Configuring Operationalization with R Server
 ---------------------------------------
-To use R Server Operationalization services from your local computer, you must first connect to the edge node using the steps below.   
+To access R Server Operationalization administrative services from your local computer, you must first connect to the edge node using the steps below.   
 
 ## Connect to Edge Node
-<ul>
-<li> <strong>Windows users:</strong>
+
+* **Windows users:**
 For instructions on how to use PuTTY to connect to your HDInsight Spark cluster, visit the
-<a href="http://go.microsoft.com/fwlink/p/?LinkID=620303#connect-to-a-linux-based-hdinsight-cluster"> Azure documentation. </a> Your edge node address is of the form <code>CLUSTERNAME-ed-ssh.azurehdinsight.net</code>.  
-</li>
-<li><strong>Linux, Unix, and OS X users:</strong>
-For instructions on how to use the terminal to connect to your HDInsight Spark cluster, visit this
-<a href="http://go.microsoft.com/fwlink/p/?LinkID=619886">Azure documentation</a>.  The edge node address is of the form <code>sshuser@CLUSTERNAME-ed-ssh.azurehdinsight.net</code>
-</li>
-<li>
-<strong>All platforms:</strong> Your login name and password are the ones you created when you deployed this solution from the <a href="http://aka.ms/loan-credit-risk-hdi">Cortana Intelligence Gallery</a>  
-</li>
-</ul>
+[Azure documentation](http://go.microsoft.com/fwlink/p/?LinkID=620303#connect-to-a-linux-based-hdinsight-cluster).  Your edge node address is of the form `CLUSTERNAME-ed-ssh.azurehdinsight.net`.  
+
+* **Linux, Unix, and OS X users**
+For instructions on how to use the terminal to connect to your HDInsight Spark cluster, visit this [Azure documentation](http://go.microsoft.com/fwlink/p/?LinkID=619886).  The edge node address is of the form `sshuser@CLUSTERNAME-ed-ssh.azurehdinsight.net`
+
+* **All platforms:** Your login name and password are the ones you created when you deployed this solution from the [Cortana Intelligence Gallery](http://aka.ms/loan-credit-risk-hdi)
+
 
 ## Configure Deployment Server
 

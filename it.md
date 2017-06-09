@@ -26,7 +26,7 @@ When a financial institution examines a request for a loan, it is crucial to ass
           </div>
 </div>
 <p>
-While this solution demonstrates the code with 100,000 leads for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring. The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.
+While this solution demonstrates the code with 100,000 borrowers for developing the model, using HDInsight Spark clusters makes it simple to extend to large data, both for training and scoring. The only thing that changes is the size of the data and the number of clusters; the code remains exactly the same.</p>
 
 ## System Requirements
 -----------------------

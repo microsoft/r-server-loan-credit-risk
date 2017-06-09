@@ -115,7 +115,7 @@ The database is created if it does not not already exist, and the connection str
   <li>Updates the tables of the Production stage directory, ProdModelDir, with the contents of LocalModelsDir (inside the loan_dev main function).</li>
 </ul>
 <p><a name="step0"></a></p>
-<h3>Step 0: Intermediate Directories Creation</h3>
+<h2>Step 0: Intermediate Directories Creation</h2>
 <hr />
 
 <p>In this step, we create or clean intermediate directories both on the edge node and HDFS. These directories will hold all the intermediate processed data sets in subfolders.</p>
@@ -406,7 +406,7 @@ If the score cutoff of the 91th score percentile is 0.9834, and we read a bad ra
 <hr />
 <div class="sql">
 <p>The R code from each of the above steps is operationalized in the SQL Server as stored procedures.
-In the Production pipeline, the data from the files <strong>Loan_Prod.csv</strong> and <strong>Borrower_Prod.csv</strong> is uploaded through PowerShell to the <code>Loan_Prod</code> and <code>Borrower_Prod</code> tables.
+In the Production pipeline, the data from the files <strong>Loan_Prod.csv</strong> and <strong>Borrower_Prod.csv</strong> is uploaded through PowerShell to the <code>Loan_Prod</code> and <code>Borrower_Prod</code> tables.</p>
 The tables <code>Stats</code>, <code>Bins</code>, <code>Column_Info</code>, <code>Model</code>, <code>Operational_Metrics</code> and <code>Scores_Average</code> created during the Development pipeline are then moved to the Production database.
 
 </div>
@@ -508,7 +508,7 @@ The final scores reside in the Hive table <code>Scores</code>. The production re
 
 The following are required to run the scripts in this solution:
 <ul>
-<li>SQL Server 2016 with Microsoft R Server  (version 9.0.1) installed and configured.  </li>   
+<li>SQL Server 2016 with Microsoft R Server  (version 9.1.0) installed and configured.  </li>   
 <li>The SQL user name and password, and the user configured properly to execute R scripts in-memory.</li> 
 <li>SQL Database which the user has write permission and execute stored procedures.</li> 
 <li>For more information about SQL server 2016 and R service, please visit: <a href="https://msdn.microsoft.com/en-us/library/mt604847.aspx">https://msdn.microsoft.com/en-us/library/mt604847.aspx</a></li> 

@@ -12,11 +12,12 @@ The following is the directory structure for this template:
 - [**R**](#model-development-in-r)  This contains the R code to simulate the input datasets, pre-process them, create the analytical datasets, train the models, identify the champion model and provide recommendations.
 - [**Resources**](#resources-for-the-solution-packet) This directory contains other resources for the solution package.
 - [**SQLR**](#operationalize-in-sql-2016) This contains T-SQL code to pre-process the datasets, train the models, identify the champion model and provide recommendations. It also contains a PowerShell script to automate the entire process, including loading the data into the database (not included in the T-SQL code).
-[**RSparkCluster**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide recommendations on a Spark cluster. 
+- [**RSparkCluster**](#hdinsight-solution-on-spark-cluster) This contains the R code to pre-process the datasets, train the models, identify the champion model and provide recommendations on a Spark cluster. 
 
 In this template with SQL Server R Services, two versions of the SQL implementation, and another version for HDInsight implementation:
 
 1. [**Model Development in R IDE**](#model-development-in-r). Run the R code in R IDE (e.g., RStudio, R Tools for Visual Studio).
+
 2. [**Operationalize in SQL**](#operationalize-in-sql-2016). Run the SQL code in SQL Server using SQLR scripts from SSMS or from the PowerShell script.
 
 3. [**HDInsight Solution on Spark Cluster**](#hdinsight-solution-on-spark-cluster).  Run this R code in RStudio on the edge node of the Spark cluster.
@@ -38,17 +39,17 @@ These files  in the **R** directory for the SQL solution.
 <tr><td>LoanCreditRisk.sln  </td><td>Visual Studio Solution File</td></tr>
 <tr><td>{{ site.jupyter_name }}  </td><td> Contains the Jupyter Notebook file that runs all the .R scripts </td></tr>
 <tr><td>modeling_main.R </td><td>Specifies input paramaters and calls the different functions for the Modeling Pipeline</td></tr>
-<tr><td>step1_preprocessing.R</td><td>Clean the merged data sets: replace NAs with the global mean (numeric variables) or global mode (character variables) </td></tr>
+<tr><td>step1_preprocessing.R</td><td>Cleans the merged data sets: replaces NAs with the global mean (numeric variables) or global mode (character variables) </td></tr>
 <tr><td>step2_feature_engineering.R  </td><td> Performs Feature Engineering  </td></tr>
 <tr><td>step3_train_score_evaluate.R </td><td> Builds the logistic regression classification model, scores the test data and evaluates </td></tr>
 <tr><td>step4_operational_metrics.R  </td><td>Computes operational metrics and performs scores transformations  </td></tr>
 
 </table>
 
-* See [For the Data Scientist](data_scientist.htm?path=cig) for more details about these files.
+* See [For the Data Scientist](data-scientist.html?path=cig) for more details about these files.
 * See [Typical Workflow](Typical.html?path=cig)  for more information about executing these scripts.
 
-### Operationalize in SQL 2016 
+### Operationalize in SQL Server 2016 
 -------------------------------------------------------
 
 These files are in the **SQLR** directory.
@@ -58,8 +59,8 @@ These files are in the **SQLR** directory.
 <tr><th> File </th><th> Description </th></tr>
 <tr><td>Load_Data.ps1 </td><td>Loads initial data into SQL Server  </td></tr>
 <tr><td>Loan_Credit_Risk.ps1  </td><td>Automates execution of all .sql files and creates stored procedures  </td></tr>
-<tr><td>create_tables_prod.sql   </td><td>creates the production tables   </td></tr>
-<tr><td>create_user.sql  </td><td>Used during initial SQL Server setup to create the user and password and grant permissions. </td></tr>
+<tr><td>create_tables_prod.sql   </td><td>Creates the production tables   </td></tr>
+<tr><td>create_user.sql  </td><td>Used during initial SQL Server setup to create the user and password and grant permissions </td></tr>
 <tr><td>modeling_proc.sql   </td><td>Stored procedure for the modeling/development pipeline  </td></tr>
 <tr><td>production_proc.sql   </td><td>Stored procedure for the production pipeline  </td></tr>
 <tr><td> step1_data_processing.sql  </td><td> Replaces Missing values in dataset with the modes or means </td></tr>
@@ -84,20 +85,20 @@ These files are in the **RSparkCluster** directory.
 <tr><th> File </th><th> Description </th></tr> 
 <tr><td> copy_dev_to_prod.R</td><td>Defines function, copy_to_prod, used in development_main.R </td></tr>
 <tr><td> data_generation.R</td><td>Used to generate data, used in development_main.R</td></tr>
-<tr><td> deployment_main.R</td><td>Deploys web scoring function as a web service.</td></tr>
+<tr><td> deployment_main.R</td><td>Deploys web scoring function as a web service</td></tr>
 <tr><td> development_main.R</td><td> Full development process</td></tr>
 <tr><td> in_memory_scoring.R</td><td>Performs in-memory scoring for batch scoring or for scoring remotely with a web service  </td></tr>
 <tr><td> production_main.R</td><td> Scores new data using subset of development steps</td></tr>
-<tr><td> step0_directories_creation.R</td><td>Creates initial directories, used in development_main.R </td></tr>
+<tr><td> step0_directories_creation.R</td><td>Creates initial directories</td></tr>
 <tr><td> step1_preprocessing.R</td><td>Merges data and then cleans the merged data sets: replace NAs with the global mean (numeric variables) or global mode (character variables), used in both development and production</td></tr>
 <tr><td> step2_feature_engineering.R</td><td>Performs Feature Engineering, used in both development and production  </td></tr>
-<tr><td> step3_train_score_evaluate.R</td><td>Builds the logistic regression classification model, scores the test data and evaluates, used in development_main.R </td></tr>
+<tr><td> step3_train_score_evaluate.R</td><td>Builds the logistic regression classification model, scores the test data and evaluates, used in both development and production </td></tr>
 <tr><td> step4_operational_metrics.R</td><td> Computes operational metrics and performs scores transformations in development, uses metrics and performs score transformations in production </td></tr>
 
 
 </table>
 
-* See [For the Data Scientist](data_scientist.html?path=hdi) for more details about these files.
+* See [For the Data Scientist](data-scientist.html?path=hdi) for more details about these files.
 * See [Typical Workflow](Typical.html?path=hdi)  for more information about executing these scripts.
 
 

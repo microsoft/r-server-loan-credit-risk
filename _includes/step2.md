@@ -1,8 +1,8 @@
 
-Now you're ready to follow along with Debra as she creates the scripts needed for this solution. <span class="sql"> If you are using Visual Studio, you will see these file in the <code>Solution Explorer</code> tab on the right. In RStudio, the files can be found in the <code>Files</code> tab, also on the right. </span> 
+You are ready to follow along with Debra as she creates the scripts needed for this solution. <span class="sql"> If you are using Visual Studio, you will see these file in the <code>Solution Explorer</code> tab on the right. In RStudio, the files can be found in the <code>Files</code> tab, also on the right. </span> 
 
-<div class="hdi">T
-he steps described below each create a function to perform their task.  The individual steps are described in more detail below.  The following scripts are then used to execute the steps. 
+<div class="hdi">
+The steps described below each create a function to perform their task.  The individual steps are described in more detail below.  The following scripts are then used to execute the steps. 
 <p></p> 
 <ul>
 <li>To create the model and score test data, Debra runs <strong>development_main.R</strong> which invokes steps 1-4 described below.
@@ -12,8 +12,7 @@ The default input for this script generates 1,000,000 rows for training models, 
 </li>
 <li>After completing the model, Debra next runs <strong>production_main.R</strong>, which invokes steps 1, 2, and 3 using the production mode setting.
 <strong>production_main.R</strong> uses the previously trained model and invokes the steps to process data, perform feature engineering and scoring. 
-<p></p>
-The input to this script defaults to 22 applicants to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>ScoresData_Prod</code> now contains the scores for these  applicants.  
+The input to this script defaults to 22 applicants to be scored with the model in the <strong>prod</strong> directory. After running this script the Hive table <code>ScoresData_Prod</code> now contains the scores for these  applicants.  Note that if the data to be scored is sufficiently small, it is faster to provide it as a data frame; the scoring will then be performed in-memory and will be much faster.  If the input  provided is paths to the input files, scoring will be performed in the Spark Compute Context.
 <p></p>
 </li>
 <li> Once all the above code has been executed, Debra will create a PowerBI dashboard to visualize the scores created from her model. 
@@ -59,7 +58,8 @@ The first few steps prepare the data for training.
 <p></p>
 </li>
 
-<li> Finally  <strong>step4_operational_metrics.R</strong> computes the expected bad rate for various classification decision thresholds and  applies a score transformation based on operational metrics. It also copies the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder for use in production or web deployment.
+<li> Finally  <strong>step4_operational_metrics.R</strong> computes the expected bad rate for various classification decision thresholds and  applies a score transformation based on operational metrics. </li>
+<li>After step4, the development script runs <strong>copy_dev_to_prod.R</strong> to copy the model information from the <strong>dev</strong> folder to the <strong>prod</strong> folder for use in production or web deployment.
 <p></p>
 </li>
 <li>A summary of this process and all the files involved is described in more detail on the <a href="data-scientist.html">For the Data Scientist</a> page.
