@@ -6,7 +6,7 @@ title: Using RStudio with R Server
 <strong>
 <span class="cig">{{ site.cig_text }}</span>
 <span class="onp">{{ site.onp_text }}</span>
-<span class="hdi">{{ site.hdi }}</span>
+<span class="hdi">{{ site.hdi_text }}</span>
 </strong>
 solution.
 {% include choices.md %}
@@ -23,7 +23,7 @@ RStudio is already installed on your VM and configured for you.
 RStudio is already installed and configured on the edge node of your cluster.  To install it on your local computer <a href="https://www.rstudio.com/products/rstudio/download2/" target="_blank">get it here</a>.
 </div>
 
-## Set Up RStudio for R Client
+## Set Up RStudio for R Server
 RStudio needs to use R Server for the code in this solution.  Follow the instructions below to set up RStudio to use R Server and/or to verify that you are using the correct version.  
 <div class="hdi">(These steps are is not necessary for the version on the cluster edge node.)</div>
 <ol>
