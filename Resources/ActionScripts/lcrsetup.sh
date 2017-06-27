@@ -5,7 +5,7 @@ git clone  -b spark --single-branch  https://github.com/Microsoft/r-server-loan-
 cp loans/RSparkCluster/* /home/$1
 chmod 777 /home/$1/*.R
 rm -rf loans-s 
-sed -i 's/SQLPW/$2/g' /home/$1/*.R
+sed -i 's/XXYOURSQLPW/$2/g' /home/$1/*.R
 
 # Configure edge node as one-box setup for R Server Operationalization
 /usr/local/bin/dotnet /usr/lib64/microsoft-r/rserver/o16n/9.1.0/Microsoft.RServer.Utils.AdminUtil/Microsoft.RServer.Utils.AdminUtil.dll -silentoneboxinstall "$2"
