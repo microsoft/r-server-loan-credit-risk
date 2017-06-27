@@ -4,7 +4,7 @@
 git clone  -b spark --single-branch  https://github.com/Microsoft/r-server-loan-credit-risk.git  loans
 cp loans/RSparkCluster/* /home/$1
 chmod 777 /home/$1/*.R
-rm -rf loans-s 
+rm -rf loans
 sed -i 's/XXYOURSQLPW/$2/g' /home/$1/*.R
 
 # Configure edge node as one-box setup for R Server Operationalization
