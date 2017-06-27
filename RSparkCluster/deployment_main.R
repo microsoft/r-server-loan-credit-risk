@@ -26,7 +26,7 @@ library(mrsdeploy)
 remoteLogin(
   "http://localhost:12800",
   username = "admin",
-  password = "SQLPW",
+  password = "XXYOURSQLPW",
   session = FALSE
 )
 
