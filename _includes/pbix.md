@@ -3,7 +3,14 @@
 <p/>
 <ul>
   <li>
-    <p>Visit the <a href="{{ site.pbix_view_url }}">online version</a>.</p>
+    <p>Visit the 
+    <span class="sql">
+    <a href="{{ site.pbix_view_url }}">online version</a>.
+    </span>
+    <span class="hdi">
+    <a href="{{ site.pbix_hdiview_url }}">online version</a>.
+    </span>
+    </p>
   </li>
   <li class="cig">
     <p>Open the PowerBI file from the <strong>{{ site.folder_name }}</strong> directory on the deployed VM desktop.</p>
@@ -15,7 +22,7 @@
   
   <li class="hdi">
     <p><a href="https://powerbi.microsoft.com/en-us/desktop/" target="_blank">Install PowerBI Desktop</a> on your computer and 
-    download and open the <a href="{{ site.pbix_hdidownload_url }}" target="_blank"> {{ site.pbix_name }}</a> file.</p>
+    download and open the <a href="{{ site.pbix_hdidownload_url }}" target="_blank"> {{ site.pbix_hdiname }}</a> file.</p>
     </li>
     
 </ul>

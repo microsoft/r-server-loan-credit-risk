@@ -27,7 +27,7 @@ This solution shows how to preprocess data, create new features, train R models,
 Microsoft R Server on HDInsight Spark clusters provides distributed and scalable machine learning capabilities for big data, leveraging the combined power of R Server and Apache Spark. This solution demonstrates how to develop machine learning models for loan credit risk (including data processing, feature engineering, training and evaluating models), deploy the models as a web service (on the edge node) and consume the web service remotely with Microsoft R Server on Azure HDInsight Spark clusters. 
 
 <p></p>
-The final table is saved to a Hive table containing XXX. This data is then visualized in Power BI.
+Hive tables are saved containing the predicted scores during both development and production. This data is then visualized in Power BI.
 <p></p>
 </div>
 

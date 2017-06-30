@@ -6,7 +6,7 @@ title: Using RStudio with R Server
 <strong>
 <span class="cig">{{ site.cig_text }}</span>
 <span class="onp">{{ site.onp_text }}</span>
-<span class="hdi">{{ site.hdi }}</span>
+<span class="hdi">{{ site.hdi_text }}</span>
 </strong>
 solution.
 {% include choices.md %}
@@ -16,14 +16,14 @@ solution.
 <div class="onp">
 If you don't have RStudio <a href="https://www.rstudio.com/products/rstudio/download2/" target="_blank">get it here</a>.
 </div>
-<div class="sql">
+<div class="cig">
 RStudio is already installed on your VM and configured for you.  
 </div>
 <div class="hdi">
 RStudio is already installed and configured on the edge node of your cluster.  To install it on your local computer <a href="https://www.rstudio.com/products/rstudio/download2/" target="_blank">get it here</a>.
 </div>
 
-## Set Up RStudio for R Client
+## Set Up RStudio for R Server
 RStudio needs to use R Server for the code in this solution.  Follow the instructions below to set up RStudio to use R Server and/or to verify that you are using the correct version.  
 <div class="hdi">(These steps are is not necessary for the version on the cluster edge node.)</div>
 <ol>
@@ -41,4 +41,4 @@ RStudio needs to use R Server for the code in this solution.  Follow the instruc
 
  
 
-<a href="CIG_Workflow.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>
+<a href="Typical.html#step2">Return to Typical Workflow for Cortana Intelligence Gallery Deployment<a>
