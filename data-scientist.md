@@ -419,7 +419,7 @@ The tables <code>Stats</code>, <code>Bins</code>, <code>Column_Info</code>, <cod
 
 <ul>
   <li>In-memory : The input should be provided as data frames. All the preprocessing and scoring steps are done in-memory on the edge node (local compute context). In this case, the main batch scoring function calls the R script “in_memory_scoring.R”.</li>
-  <li>Using data stored on HDFS: The input should be provided as paths to the Production data sets. All the preprocessing and scoring steps are one on HDFS in Spark Compute Context.</li>
+  <li>Using data stored on HDFS: The input should be provided as paths to the Production data sets. All the preprocessing and scoring steps are done on HDFS in Spark Compute Context.</li>
 </ul>
 
 <p>When the data set to be scored is relatively small and can fit in memory on the edge node, it is recommended to perform an in-memory scoring because of the overhead of using Spark which would make the scoring much slower.</p>
@@ -451,7 +451,7 @@ If you get the following: “Error: file.exists(inData1) is not TRUE”, you sho
 
 <ul>
   <li>In-memory : The input should be provided as data frames. All the preprocessing and scoring steps are done in-memory on the edge node (local compute context). In this case, the main batch scoring function calls the R script <strong>in_memory_scoring.R</strong>.</li>
-  <li>Using data stored on HDFS: The input should be provided as paths to the Production data sets. All the preprocessing and scoring steps are one on HDFS in Spark Compute Context.</li>
+  <li>Using data stored on HDFS: The input should be provided as paths to the Production data sets. All the preprocessing and scoring steps are done on HDFS in Spark Compute Context.</li>
 </ul>
 
 <p>When the data set to be scored is relatively small and can fit in memory on the edge node, it is recommended to perform an in-memory scoring because of the overhead of using Spark which would make the scoring much slower.</p>
@@ -464,7 +464,7 @@ If you get the following: “Error: file.exists(inData1) is not TRUE”, you sho
 
 <li>  Specify the paths to the input data sets Loan and Borrower or point to them if they are data frames loaded in memory on the edge node.</li>
 
-<li>  Load the static .rds files needed for scoring and created in the Development Stage. They are wrapped into a list called “dev_objects” which will be published along with the scoring function.</li>
+<li>  Load the static .rds files needed for scoring and created in the Development Stage. They are wrapped into a list called “model_objects” which will be published along with the scoring function.</li>
 
 <li>  Define the web scoring function which calls the steps like for the Production stage.</li>
 
@@ -491,10 +491,10 @@ Note that you cannot publish a new web service with the same name and version tw
 <h2>Visualize Results</h2>
 <hr />
 <div class="sql">
-The final scores reside in the table <code>Scores</code> of the <code>Loans</code> database. The production data is in a new database, <code>Loans_Prod</code>, in the table <code>Scores_Prod</code>. The final step of this solution visualizes both predictions tables in PowerBI.
+The score results are reside in the table <code>Scores</code> of the <code>Loans</code> database. The production data is in a new database, <code>Loans_Prod</code>, in the table <code>Scores_Prod</code>. The final step of this solution visualizes both predictions tables in PowerBI.
 </div>
 <div class="hdi">
-The final scores reside in the Hive table <code>Scores</code>. The production results are in the Hive tables <code>Scores_Prod</code> and <code>Merged_Prod</code>. The final step of this solution visualizes predictions of both the test and productions results. 
+The score results are in the Hive table <code>ScoresData</code> (testing set from the Development Stage), and <code>ScoresData_Prod</code> (data set from the Production stage). The final step of this solution visualizes predictions of both the test and productions results. 
 </div>
 
 <p></p>
