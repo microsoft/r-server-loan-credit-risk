@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # put R code in users home directory
-git clone  -b spark --single-branch  https://github.com/Microsoft/r-server-loan-credit-risk.git  loans
+git clone  --single-branch  https://github.com/Microsoft/r-server-loan-credit-risk.git  loans
 cp loans/RSparkCluster/* /home/$1
 chmod 777 /home/$1/*.R
 rm -rf loans
