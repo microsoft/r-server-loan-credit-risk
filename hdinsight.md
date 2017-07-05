@@ -44,7 +44,5 @@ Once you've saved your files you can [use these steps to delete your cluster.](h
 
 You can use the Azure portal to  [create a new cluster by following these steps](https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-r-server-get-started).  Make sure you select your existing storage account instead of creating a new one, and you can pick up where you left off.
 
-When creating your cluster, use the default names in the blades: `admin` for the cluster login, and `sshuser` for the ssh login if you want to be consistent with the original cluster created for you from the Cortana Intelligence Gallery.
-
 Once your cluster is ready, go to RStudio and Import the files by with the <code>Upload</code> button.  Select the zip file that you exported prior to deleting the original cluster.
 
