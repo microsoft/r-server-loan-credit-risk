@@ -33,18 +33,12 @@ Follow the instructions below to set up a connection between your Hive table and
 </li>
 <li>
 Select <code>Microsoft Spark ODBC Driver</code> and click <code>Finish</code><span class=""></span>
-<img src="images/odbcs2.png" width="50%" >
 </li>
-<li class="hdi">
-Under Name, Enter <code>loan credit risk</code>. Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  
+<li >
+Under Name, Enter <code>loan credit risk</code>. (Make sure you use this name exactly as shown here as it is the one PowerBI expects.)  Add the Host name (of the form <i>myclustername.azurehdinsight.net</i>).  
 <br/>
 <img src="images/odbcs3.png" width="50%" >
 </li>
-
-<li>Press <code>Finish</code>.
-</li>
-</div>
-
 
 <li>
 Press <code>Test</code>.
@@ -58,5 +52,5 @@ Press <code>Test</code>.
 <li>	Finally, click <code>OK</code> and close the window.
 </li>
 <p></p>
-You are now ready to use this connection in PowerBI.
+You are now ready to use this connection in PowerBI. <a href="Visualize_Results.html">Return to  Visualizing Results with PowerBI</a>.
 <p></p>
