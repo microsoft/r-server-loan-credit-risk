@@ -78,7 +78,7 @@ training_evaluation <- function()
   Test_sql <- RxSqlServerData(sqlQuery = 
                               "SELECT *   
                                FROM Merged_Features 
-                               WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)",
+                               WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode > 70)",
                               connectionString = connection_string, colInfo = column_info)
   
   
