@@ -31,6 +31,16 @@ data_preprocess <- function(Loan,
   # Define the directory where summary statistics will be saved in the Development stage or loaded from in Production.
   LocalModelsDir <- file.path(LocalWorkDir, "model")
   
+  # For the Production or Web-Scoring stages, in order to avoid overwriting hive tables from the Development stage, 
+  # we will add the suffix Prod to the table names. This is encoded in the variable hive_name that will be
+  ## an empty string for Dev
+  ## "Prod" for Prod or Web. 
+  if(Stage == "Dev"){
+    hive_name <- ""
+  }else{
+    hive_name <- "_Prod"
+  }
+  
   ##############################################################################################################################
   ## The block below will convert the data format to xdf in order to increase the efficiency of rx functions. 
   ##############################################################################################################################
@@ -82,7 +92,7 @@ data_preprocess <- function(Loan,
   colInfo$incomeVerified$type <- "factor"
   colInfo$incomeVerified$levels <- c("0", "1")
   
-  Merged_hive <- RxHiveData(table = "Merged", colInfo = colInfo) 
+  Merged_hive <- RxHiveData(table = sprintf("Merged%s", hive_name), colInfo = colInfo) 
   
   # Merge Loan and Borrower on memberId. 
   rxMerge(inData1 = Loan_xdf, 

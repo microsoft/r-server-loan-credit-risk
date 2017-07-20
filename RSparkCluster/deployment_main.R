@@ -30,6 +30,12 @@ remoteLogin(
   session = FALSE
 )
 
+# Grant additional permissions on HDFS and the edge node. 
+system("hadoop fs -mkdir /user/RevoShare/rserve2")
+system("hadoop fs -chmod 777 /user/RevoShare/rserve2")
+dir.create("/var/RevoShare/rserve2", recursive = TRUE)
+system("sudo chmod 777 /var/RevoShare/rserve2")
+
 ##########################################################################################################################################
 ## Directories
 ##########################################################################################################################################
@@ -197,16 +203,6 @@ Borrower_str <- "/Loans/Data/Borrower_Prod.csv"
 Loan_df <- rxImport(RxTextData(file = Loan_str, fileSystem = RxHdfsFileSystem()), stringsAsFactors = T)
 Borrower_df <- rxImport(RxTextData(file = Borrower_str, fileSystem = RxHdfsFileSystem()), stringsAsFactors = T)
 
-# Verify the string input case.
-result_string <- api_string$loan_web_scoring(
-  Loan = Loan_str,
-  Borrower = Borrower_str,
-  LocalWorkDir = LocalWorkDir,
-  HDFSWorkDir = HDFSWorkDir,
-  Stage = "Web",
-  Username = Sys.info()[["user"]]
-)
-
 # Verify the data frame input case.
 result_frame <- api_frame$loan_web_scoring(
   Loan = Loan_df,
@@ -221,3 +217,20 @@ result_frame <- api_frame$loan_web_scoring(
 rows_number <- length(result_frame$outputParameters$answer$badRate)
 Scores <- data.frame(matrix(unlist(result_frame$outputParameters$answer), nrow = rows_number), stringsAsFactors = F)
 colnames(Scores) <- names(result_frame$outputParameters$answer)
+
+# Verify the string input case.
+## This alternative is slow and should only be used if the data set to score is too large to fit in memory.
+#result_string <- api_string$loan_web_scoring(
+#  Loan = Loan_str,
+#  Borrower = Borrower_str,
+#  LocalWorkDir = LocalWorkDir,
+#  HDFSWorkDir = HDFSWorkDir,
+#  Stage = "Web",
+#  Username = Sys.info()[["user"]]
+#)
+
+# NOTE: If the api_string takes a very long time to run (> 15 minutes), you can try to kill all the YARN applications first.
+# To do so, look for all the currently running YARN applications by running: 
+## system("yarn application -list")
+# Then kill each one of the applications. For example, if you see application_1498842980780_0027, run: 
+## system("yarn application -kill application_1498842980780_0027")

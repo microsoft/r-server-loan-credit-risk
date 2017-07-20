@@ -62,16 +62,16 @@ loan_prod <- function(Loan,
   # Directory that holds the tables and model from the Development stage.
   LocalModelsDir <- file.path(LocalWorkDir, "model")
   
+  # Intermediate directories creation.
+  print("Creating Intermediate Directories on Local and HDFS...")
+  source(paste(getwd(),"/step0_directories_creation.R", sep =""))
+  
   if((class(Loan) == "data.frame") & (class(Borrower) == "data.frame")){ # In-memory scoring. 
     source(paste(getwd(),"/in_memory_scoring.R", sep =""))
     print("Scoring in-memory...")
     return(in_memory_scoring(Loan, Borrower, Stage = Stage))
     
   } else{ # Using Spark for scoring. 
-    
-    # step0: intermediate directories creation.
-    print("Creating Intermediate Directories on Local and HDFS...")
-    source(paste(getwd(),"/step0_directories_creation.R", sep =""))
     
     # step1: data processing
     source(paste(getwd(),"/step1_preprocessing.R", sep =""))
@@ -121,12 +121,32 @@ loan_prod <- function(Loan,
 ## Apply the main function
 ##############################################################################################################################
 
-# Case 1: Input are paths to csv files. Scoring using Spark. 
-scores_directory <- loan_prod (Loan_str, Borrower_str, LocalWorkDir, HDFSWorkDir, Stage = "Prod")
+# Case 1: Input are data frames. Scoring is performed in-memory. 
+Scores <- loan_prod (Loan_df, Borrower_df, LocalWorkDir, HDFSWorkDir, Stage = "Prod")
+
+# Write the Merged and Scores to a Hive table for visualizations in PowerBI.
+## The 2 data frames should be converted to xdf first. 
+rxSetComputeContext('local')
+Merged <- rxMerge(Loan_df, Borrower_df, type = "inner", matchVars = "memberId")
+
+Scores_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "ScoresPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = T)
+Merged_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "MergedPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = T)
+
+rxDataStep(inData = Scores, outFile = Scores_xdf, overwrite = TRUE)
+rxDataStep(inData = Merged, outFile = Merged_xdf, overwrite = TRUE)
+
+## The xdf files are then converted to Hive tables.
+rxSparkConnect(consoleOutput = TRUE, reset = FALSE)
+
+ScoresData_hive <- RxHiveData(table = "ScoresData_Prod")  
+Merged_hive <- RxHiveData(table = "Merged_Prod")  
+rxDataStep(inData = Scores_xdf, outFile = ScoresData_hive, overwrite = TRUE)
+rxDataStep(inData = Merged_xdf, outFile = Merged_hive, overwrite = TRUE)
+
+
+# Case 2: Input are paths to csv files. Scoring using Spark. 
+## This alternative is slow and should only be used if the data set to score is too large to fit in memory.
+# scores_directory <- loan_prod (Loan_str, Borrower_str, LocalWorkDir, HDFSWorkDir, Stage = "Prod")
 
 # Warning: in case you get the following error: "Error: file.exists(inData1) is not TRUE", 
 # you should reset your R session with Ctrl + Shift + F10 (or Session -> Restart R) and try running it again.
-
-# Case 2: Input are data frames. Scoring is performed in-memory. 
-Scores <- loan_prod (Loan_df, Borrower_df, LocalWorkDir, HDFSWorkDir, Stage = "Prod")
-
