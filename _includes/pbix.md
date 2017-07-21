@@ -22,7 +22,7 @@
   
   <li class="hdi">
     <p><a href="https://powerbi.microsoft.com/en-us/desktop/" target="_blank">Install PowerBI Desktop</a> on your computer and 
-    download and open the <a href="{{ site.pbix_hdidownload_url }}" target="_blank"> {{ site.pbix_hdiname }}</a> file.</p>
+    download and open the <a href="{{ site.pbix_hdidownload_url }}" target="_blank"> {{ site.hdipbix_name }}</a> file.</p>
     </li>
     
 </ul>
