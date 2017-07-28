@@ -65,12 +65,12 @@ Test_sql <- RxSqlServerData(sqlQuery = sprintf("%s", inquery),
 # The prediction results are directly written to a SQL table.
 if(length(logistic_model) > 0){
 
-  Predictions_Logistic_sql <- RxSqlServerData(table = output, connectionString = connection_string, stringsAsFactors = T)
+  Predictions_Logistic_sql <- RxSqlServerData(table = output, connectionString = connection_string, stringsAsFactors = TRUE)
 
   rxPredict(logistic_model, 
             data = Test_sql, 
             outData = Predictions_Logistic_sql, 
-            overwrite = T, 
+            overwrite = TRUE, 
             type = "response",
             extraVarsToWrite = c("isBad", "loanId"))
 

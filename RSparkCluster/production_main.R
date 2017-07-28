@@ -64,17 +64,17 @@ loan_prod <- function(Loan,
   
   # Intermediate directories creation.
   print("Creating Intermediate Directories on Local and HDFS...")
-  source(paste(getwd(),"/step0_directories_creation.R", sep =""))
+  source("./step0_directories_creation.R")
   
   if((class(Loan) == "data.frame") & (class(Borrower) == "data.frame")){ # In-memory scoring. 
-    source(paste(getwd(),"/in_memory_scoring.R", sep =""))
+    source("./in_memory_scoring.R")
     print("Scoring in-memory...")
     return(in_memory_scoring(Loan, Borrower, Stage = Stage))
     
   } else{ # Using Spark for scoring. 
     
     # step1: data processing
-    source(paste(getwd(),"/step1_preprocessing.R", sep =""))
+    source("./step1_preprocessing.R")
     print("Step 1: Data Processing.")
     
     data_preprocess(Loan, 
@@ -84,7 +84,7 @@ loan_prod <- function(Loan,
                     Stage = Stage)
     
     # step2: feature engineering
-    source(paste(getwd(),"/step2_feature_engineering.R", sep =""))
+    source("./step2_feature_engineering.R")
     print("Step 2: Feature Engineering.")
     ## splitting_ratio is not used in Production stage. 
     
@@ -94,7 +94,7 @@ loan_prod <- function(Loan,
                      Stage = Stage)
     
     # step3: making predictions. 
-    source(paste(getwd(),"/step3_train_score_evaluate.R", sep =""))
+    source("./step3_train_score_evaluate.R")
     print("Step 3: Making Predictions.")
     ## splitting_ratio is not used in Production stage. 
     training_evaluation (LocalWorkDir,
@@ -103,7 +103,7 @@ loan_prod <- function(Loan,
                          Stage = Stage)
     
     # Step 4: scores transformation.  
-    source(paste(getwd(),"/step4_operational_metrics.R", sep =""))
+    source("./step4_operational_metrics.R")
     print("Step 4: Scores Transformation.")
     
     ## Transform the scores using the computed thresholds. 
@@ -129,8 +129,8 @@ Scores <- loan_prod (Loan_df, Borrower_df, LocalWorkDir, HDFSWorkDir, Stage = "P
 rxSetComputeContext('local')
 Merged <- rxMerge(Loan_df, Borrower_df, type = "inner", matchVars = "memberId")
 
-Scores_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "ScoresPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = T)
-Merged_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "MergedPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = T)
+Scores_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "ScoresPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = TRUE)
+Merged_xdf <- RxXdfData(file.path(HDFSWorkDir,"temp", "MergedPBI"), fileSystem = RxHdfsFileSystem(), createCompositeSet = TRUE)
 
 rxDataStep(inData = Scores, outFile = Scores_xdf, overwrite = TRUE)
 rxDataStep(inData = Merged, outFile = Merged_xdf, overwrite = TRUE)

@@ -55,12 +55,12 @@ data_preprocess <- function(Loan,
   if((class(Loan) == "character") & (class(Borrower) == "character")){
     
     # Text pointers to the inputs. 
-    Loan_txt <- RxTextData(Loan, firstRowIsColNames = T, fileSystem = RxHdfsFileSystem(), stringsAsFactors = T)
-    Borrower_txt <- RxTextData(Borrower, firstRowIsColNames = T, fileSystem = RxHdfsFileSystem(), stringsAsFactors = T) 
+    Loan_txt <- RxTextData(Loan, firstRowIsColNames = TRUE, fileSystem = RxHdfsFileSystem(), stringsAsFactors = TRUE)
+    Borrower_txt <- RxTextData(Borrower, firstRowIsColNames = TRUE, fileSystem = RxHdfsFileSystem(), stringsAsFactors = TRUE) 
     
     # Conversion to xdf. 
-    rxDataStep(inData = Loan_txt, outFile = Loan_xdf, overwrite = T)
-    rxDataStep(inData = Borrower_txt, outFile = Borrower_xdf, overwrite = T)
+    rxDataStep(inData = Loan_txt, outFile = Loan_xdf, overwrite = TRUE)
+    rxDataStep(inData = Borrower_txt, outFile = Borrower_xdf, overwrite = TRUE)
     
   } else {
     stop("invalid input format")
@@ -104,7 +104,7 @@ data_preprocess <- function(Loan,
   
   # Convert back to xdf. 
   Merged_xdf <- RxXdfData(file.path(HDFSIntermediateDir, "Merged"), fileSystem = RxHdfsFileSystem())
-  rxDataStep(inData = Merged_hive, outFile = Merged_xdf, overwrite = T)
+  rxDataStep(inData = Merged_hive, outFile = Merged_xdf, overwrite = TRUE)
   
   ############################################################################################################################################
   ## The block below will do the following:
@@ -117,17 +117,17 @@ data_preprocess <- function(Loan,
   
   # Use rxSummary function to get the names of the variables with missing values.
   ## Assumption: no NAs in the id variables (loan_id and member_id) and loan_status or the date.
-  colnames <- names(Merged_xdf)
-  var <- colnames[!colnames %in% c("loanId", "memberId", "loanStatus", "date")]
-  formula <- as.formula(paste("~", paste(var, collapse = "+")))
+  col_names <- names(Merged_xdf)
+  var_names <- col_names[!col_names %in% c("loanId", "memberId", "loanStatus", "date")]
+  formula <- as.formula(paste("~", paste(var_names, collapse = "+")))
   summary <- rxSummary(formula, Merged_xdf , byTerm = TRUE)
   
   ## Get the variables types.
   categorical_all <- unlist(lapply(summary$categorical, FUN = function(x){colnames(x)[1]}))
-  numeric_all <- setdiff(var, categorical_all)
+  numeric_all <- setdiff(var_names, categorical_all)
   
   ## Get the variables names with NA. 
-  var_with_NA <- summary$sDataFrame[summary$sDataFrame$MissingObs > 0, 1]
+  var_with_NA <- summary$sDataFrame[summary$sDataFrame$MissingObs > 0, "Name"]
   categorical_NA <- intersect(categorical_all, var_with_NA)
   numeric_NA <- intersect(numeric_all, var_with_NA)
   
@@ -144,7 +144,7 @@ data_preprocess <- function(Loan,
     names(Summary_Counts) <- lapply(Summary_Counts, FUN = function(x){colnames(x)[1]})
     
     ## Compute for each count table the value with the highest count. 
-    modes <- unlist(lapply(Summary_Counts, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = F)
+    modes <- unlist(lapply(Summary_Counts, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = FALSE)
     Categorical_Modes <- data.frame(Name = categorical_all, Mode = modes)
     
     # Save the statistics for Production or Web Scoring use. 
@@ -186,18 +186,18 @@ data_preprocess <- function(Loan,
     
     # Function to replace missing values with mean or mode. It will be wrapped into rxDataStep. 
     Mean_Mode_Replace <- function(data) {
-      data <- data.frame(data, stringsAsFactors = F)
+      data <- data.frame(data, stringsAsFactors = FALSE)
       # Replace numeric variables with the mean. 
       if(length(num_with_NA) > 0){
         for(i in 1:length(num_with_NA)){
-          row_na <- which(is.na(data[, num_with_NA[i]]) == TRUE) 
+          row_na <- which(is.na(data[, num_with_NA[i]])) 
           data[row_na, num_with_NA[i]] <- num_NA_mean[i]
         }
       }
       # Replace categorical variables with the mode. 
       if(length(cat_with_NA) > 0){
         for(i in 1:length(cat_with_NA)){
-          row_na <- which(is.na(data[, cat_with_NA[i]]) == TRUE) 
+          row_na <- which(is.na(data[, cat_with_NA[i]])) 
           data[row_na, cat_with_NA[i]] <- cat_NA_mode[i]
         }
       }
@@ -211,7 +211,7 @@ data_preprocess <- function(Loan,
     # Perform the data cleaning with rxDataStep. 
     rxDataStep(inData = Merged_xdf, 
                outFile = MergedCleaned_xdf, 
-               overwrite = T, 
+               overwrite = TRUE, 
                transformFunc = Mean_Mode_Replace,
                transformObjects = list(num_with_NA = numeric_NA , num_NA_mean = numeric_NA_mean,
                                        cat_with_NA = categorical_NA, cat_NA_mode = categorical_NA_mode))  

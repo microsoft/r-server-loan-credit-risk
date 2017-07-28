@@ -55,12 +55,12 @@ feature_engineer <- function()
   
   # Create the Hash_Id table containing loanId hashed to integers. 
   # The advantage of using a hashing function for splitting is to permit repeatability of the experiment.  
-  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Hash_Id;", sep = ""))
+  rxExecuteSQLDDL(outOdbcDS, sSQLString = "DROP TABLE if exists Hash_Id;")
   
-  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste(
+  rxExecuteSQLDDL(outOdbcDS, sSQLString = 
     "SELECT loanId, ABS(CAST(CAST(HashBytes('MD5', CAST(loanId AS varchar(20))) AS VARBINARY(64)) AS BIGINT) % 100) AS hashCode  
-    INTO Hash_Id
-    FROM Merged_Labeled ;", sep = ""))
+     INTO Hash_Id
+     FROM Merged_Labeled ;")
   
   # Point to the training set. 
   Train_sql <- RxSqlServerData(sqlQuery = 
@@ -77,12 +77,6 @@ feature_engineer <- function()
   
   # Compute the bins. 
   print("Computing the bins to be used to create buckets...")
-  
-  # Names of the variables for which we are going to look for the bins with smbinning. 
-  smb_buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome", "dtiRatio", "lengthCreditHistory",
-                         "numTotalCreditLines", "numOpenCreditLines", "numOpenCreditLines1Year", "revolvingBalance",
-                         "revolvingUtilizationRate", "numDerogatoryRec", "numDelinquency2Years", "numChargeoff1year", 
-                         "numInquiries6Mon")
   
   # Using the smbinning has some limitations, such as: 
   # - The variable should have more than 10 unique values. 
@@ -124,7 +118,7 @@ feature_engineer <- function()
     output <- smbinning(data, y = "isBad", x = name, p = 0.05)
     if (class(output) == "list"){ # case where the binning was performed and returned bins.
       cuts <- output$cuts  
-      return (cuts)
+      return(cuts)
     }
   }
   
@@ -134,14 +128,14 @@ feature_engineer <- function()
   ## numCoresToUse = -1 will enable the use of the maximum number of cores.
   rxOptions(numCoresToUse = 3) # use 3 cores.
   rxSetComputeContext('localpar')
-  q <- rxExec(compute_bins, name = rxElemArg(smb_buckets_names), data = Train_df)
-  names(q) <- smb_buckets_names
+  bins_smb <- rxExec(compute_bins, name = rxElemArg(names(bins)), data = Train_df)
+  names(bins_smb) <- names(bins)
   
-  # Fill bins with bins obtained in q with smbinning. 
+  # Fill bins with bins obtained in bins_smb with smbinning. 
   ## We replace the default values in bins if and only if smbinning returned a non NULL result. 
-  for(name in smb_buckets_names){
-    if (!is.null(q[[name]])){ 
-      bins[[name]] <- q[[name]]
+  for(name in names(bins)){
+    if (!is.null(bins_smb[[name]])){ 
+      bins[[name]] <- bins_smb[[name]]
     }
   }
   
@@ -182,45 +176,26 @@ feature_engineer <- function()
   print("Bucketizing variables...")
   
   # Function to bucketize numeric variables. It will be wrapped into rxDataStep. 
-  bucketize <- function(data) {
-    data <- data.frame(data)
-    for(name in  buckets_names){
-      # Deal with the last bin.
-      name2 <- paste(name, "Bucket", sep = "")
-      data[, name2] <- as.character(length(b[[name]]) + 1)
-      # Deal with the first bin. 
-      rows <- which(data[, name] <= b[[name]][[1]])
-      data[rows, name2] <- "1"
-      # Deal with the rest.
-      if(length(b[[name]]) > 1){
-        for(i in seq(1, (length(b[[name]]) - 1))){
-          rows <- which(data[, name] <= b[[name]][[i + 1]] & data[, name] > b[[name]][[i]])
-          data[rows, name2] <- as.character(i + 1)
-        }
-      }
+  bucketize <- function(data) { 
+    for(name in  names(b)) { 
+      name2 <- paste(name, "Bucket", sep = "") 
+      data[[name2]] <- as.character(as.numeric(cut(data[[name]], c(-Inf, b[[name]], Inf)))) 
     }
-    return(data)  
+    return(data) 
   }
   
   # Perform feature engineering on the cleaned data set.
-   
-    # Output:
-    Merged_Features_sql <- RxSqlServerData(table = "Merged_Features", connectionString = connection_string)
-    
-    # Create buckets for various numeric variables with the function Bucketize. 
-    rxDataStep(inData = Merged_Labeled_sql,
-               outFile = Merged_Features_sql, 
-               overwrite = TRUE, 
-               transformFunc = bucketize,
-               transformObjects =  list(
-                b = bins, buckets_names = smb_buckets_names)
-    )
-    
+  # Output:
+  Merged_Features_sql <- RxSqlServerData(table = "Merged_Features", connectionString = connection_string)
+  
+  # Create buckets for various numeric variables with the function Bucketize. 
+  rxDataStep(inData = Merged_Labeled_sql,
+             outFile = Merged_Features_sql, 
+             overwrite = TRUE, 
+             transformFunc = bucketize,
+             transformObjects =  list(
+               b = bins))
+
   print("Step 2 Completed.")
   
 } # end of step 2 function. 
-
-
-
-
-
