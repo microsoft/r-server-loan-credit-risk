@@ -84,13 +84,12 @@ data_process <- function(Loan,
   rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Merged;"
                                                   , sep=""))
     
-  rxExecuteSQLDDL(outOdbcDS, sSQLString = paste(
+  rxExecuteSQLDDL(outOdbcDS, sSQLString = 
     "SELECT loanId, [date], purpose, isJointApplication, loanAmount, term, interestRate, monthlyPayment,
             grade, loanStatus, Borrower.*
      INTO Merged
      FROM Loan JOIN Borrower
-     ON Loan.memberId = Borrower.memberId;"
-      , sep=""))
+     ON Loan.memberId = Borrower.memberId;")
   
   ############################################################################################################################################
   ## The block below will do the following:
@@ -101,48 +100,39 @@ data_process <- function(Loan,
   
   # Use rxSummary function to get the names of the variables with missing values.
   # Assumption: no NAs in the id variables (loan_id and member_id), target variable and date.
-  # For rxSummary to give correct info on characters, stringsAsFactors = T should be used. 
-  Merged_sql <- RxSqlServerData(table = "Merged", connectionString = connection_string, stringsAsFactors = T)
-  colnames <- rxGetVarNames(Merged_sql)
-  var <- colnames[!colnames %in% c("loanId", "memberId", "loanStatus", "date")]
-  formula <- as.formula(paste("~", paste(var, collapse = "+")))
-  summary <- rxSummary(formula, Merged_sql, byTerm = TRUE)
+  # For rxSummary to give correct info on characters, stringsAsFactors = TRUE should be used. 
+  Merged_sql <- RxSqlServerData(table = "Merged", connectionString = connection_string, stringsAsFactors = TRUE)
+  col_names <- rxGetVarNames(Merged_sql)
+  var_names <- setdiff(col_names, c("loanId", "memberId", "loanStatus", "date"))
+  formula <- as.formula(paste("~", paste(var_names, collapse = "+")))
+  summary_vars <- rxSummary(formula, Merged_sql, byTerm = TRUE)
   
   # Get the variables types.
-  categorical_all <- unlist(lapply(summary$categorical, FUN = function(x){colnames(x)[1]}))
-  numeric_all <- setdiff(var, categorical_all)
+  categorical_all <- unlist(lapply(summary_vars$categorical, FUN = function(x){colnames(x)[1]}))
+  numeric_all <- setdiff(var_names, categorical_all)
   
   # Get the variables names with missing values. 
-  var_with_NA <- summary$sDataFrame[summary$sDataFrame$MissingObs > 0, 1]
+  var_with_NA <- summary_vars$sDataFrame[summary_vars$sDataFrame$MissingObs > 0, "Name"]
   categorical_NA <- intersect(categorical_all, var_with_NA)
   numeric_NA <- intersect(numeric_all, var_with_NA)
 
-  # Compute the global means. 
-  Summary_DF <- summary$sDataFrame
-  Numeric_Means <- Summary_DF[Summary_DF$Name %in% numeric_all, c("Name", "Mean")]
-  Numeric_Means$Mean  <- round(Numeric_Means$Mean) 
-  
-  # Compute the global modes. 
-  ## Get the counts tables.
-  Summary_Counts <- summary$categorical
-  names(Summary_Counts) <- lapply(Summary_Counts, FUN = function(x){colnames(x)[1]})
-  
   ## Compute for each count table the value with the highest count. 
-  modes <- unlist(lapply(Summary_Counts, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = F)
-  Categorical_Modes <- data.frame(Name = categorical_all, Mode = modes)
+  modes <- unlist(lapply(summary_vars$categorical, FUN = function(x){as.character(x[which.max(x[,2]),1])}), use.names = FALSE)
   
   # Set the compute context to local to export the summary statistics to SQL. 
   ## The schema of the Statistics table is adapted to the one created in the SQL code. 
   rxSetComputeContext('local')
   
-  Numeric_Means$Mode <- NA
-  Numeric_Means$type <- "float" 
-  
-  Categorical_Modes$Mean <- NA
-  Categorical_Modes$type <- "char"
-  
-  Stats <- rbind(Numeric_Means, Categorical_Modes)[, c("Name", "type", "Mode", "Mean")]
-  colnames(Stats) <- c("variableName", "type", "mode", "mean")
+  library(dplyr)
+  Stats <- bind_rows(
+    summary_vars$sDataFrame %>%
+    filter(Name %in% numeric_all) %>%
+    mutate(Type = "float", Mean = round(Mean)),
+    summary_vars$sDataFrame %>%
+    filter(Name %in% categorical_all) %>%
+    mutate(Type = "char", Mode = modes)
+) %>% 
+  select(variableName = Name, Type, Mode, Mean)
   
   # Save the statistics to SQL for Production use. 
   Stats_sql <- RxSqlServerData(table = "Stats", connectionString = connection_string)
@@ -154,13 +144,8 @@ data_process <- function(Loan,
   # If no missing values, we move the data to a new table Merged_Cleaned. 
   if(length(var_with_NA) == 0){
     print("No missing values: no treatment will be applied.")
-    
-    rxExecuteSQLDDL(outOdbcDS, sSQLString = paste("DROP TABLE if exists Merged_Cleaned;"
-                                                  , sep=""))
-   
-     rxExecuteSQLDDL(outOdbcDS, sSQLString = paste(
-      "SELECT * INTO Merged_Cleaned FROM Merged;"
-      , sep=""))
+    rxExecuteSQLDDL(outOdbcDS, sSQLString = "DROP TABLE if exists Merged_Cleaned;")
+    rxExecuteSQLDDL(outOdbcDS, sSQLString = "SELECT * INTO Merged_Cleaned FROM Merged;")
 
   } else{    
      
@@ -174,25 +159,25 @@ data_process <- function(Loan,
     print("Replacing missing values with the global mean or mode...")
     
     # Get the global means of the numeric variables with missing values.
-    numeric_NA_mean <- round(Numeric_Means[Numeric_Means$Name %in% numeric_NA,]$Mean)
+    numeric_NA_mean <- round(Stats[Stats$Name %in% numeric_NA, "Mean"])
     
     # Get the global modes of the categorical variables with missing values. 
-    categorical_NA_mode <- as.character(Categorical_Modes[Categorical_Modes$Name %in% categorical_NA,]$Mode)
+    categorical_NA_mode <- as.character(Stats[Stats$Name %in% categorical_NA, "Mode"])
     
     # Function to replace missing values with mean or mode. It will be wrapped into rxDataStep. 
     Mean_Mode_Replace <- function(data) {
-      data <- data.frame(data, stringsAsFactors = F)
+      data <- data.frame(data, stringsAsFactors = FALSE)
       # Replace numeric variables with the mean. 
       if(length(num_with_NA) > 0){
-        for(i in 1:length(num_with_NA)){
-          row_na <- which(is.na(data[, num_with_NA[i]]) == TRUE) 
+        for(i in seq_along(num_with_NA)){
+          row_na <- which(is.na(data[, num_with_NA[i]]))
           data[row_na, num_with_NA[i]] <- num_NA_mean[i]
         }
       }
       # Replace categorical variables with the mode. 
       if(length(cat_with_NA) > 0){
-        for(i in 1:length(cat_with_NA)){
-          row_na <- which(is.na(data[, cat_with_NA[i]]) == TRUE) 
+        for(i in seq_along(cat_with_NA)){
+          row_na <- which(is.na(data[, cat_with_NA[i]]))
           data[row_na, cat_with_NA[i]] <- cat_NA_mode[i]
         }
       }
@@ -208,7 +193,7 @@ data_process <- function(Loan,
     # Perform the data cleaning with rxDataStep. 
     rxDataStep(inData = Merged_sql, 
                outFile = Merged_Cleaned_sql, 
-               overwrite = T, 
+               overwrite = TRUE, 
                transformFunc = Mean_Mode_Replace,
                transformObjects = list(num_with_NA = numeric_NA , num_NA_mean = numeric_NA_mean,
                                        cat_with_NA = categorical_NA, cat_NA_mode = categorical_NA_mode))  

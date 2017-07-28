@@ -65,18 +65,18 @@ sql <- RxInSqlServer(connectionString = connection_string)
 ##############################################################################################################################
 
 # Step 1: data processing.
-source(paste(getwd(),"/step1_preprocessing.R", sep=""))
+source("./step1_preprocessing.R")
 print("Step 1: Data Processing.")
 data_process(Loan, Borrower)
   
 # Step 2: feature engineering.
-source(paste(getwd(),"/step2_feature_engineering.R", sep=""))
+source("./step2_feature_engineering.R")
 
 print("Step 2: Feature Engineering.")
 feature_engineer()
   
 # Step 3: training, scoring and evaluation of Logistic Regression. 
-source(paste(getwd(),"/step3_train_score_evaluate.R", sep=""))
+source("./step3_train_score_evaluate.R")
 print("Step 3: Training, Scoring and Evaluating.")
 Coeff_metrics <- training_evaluation()
 
@@ -85,7 +85,7 @@ metrics <- Coeff_metrics[[2]]
 print(metrics)
 
 # Step 4: operational metrics computation and scores transformation.  
-source(paste(getwd(),"/step4_operational_metrics.R", sep=""))
+source("./step4_operational_metrics.R")
 print("Step 4: Operational Metrics Computation and Scores Transformation.")
 
 ## Compute operational metrics and plot the rates of bad loans for various thresholds obtained through binning. 
