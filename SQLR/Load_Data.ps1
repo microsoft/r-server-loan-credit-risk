@@ -32,6 +32,17 @@ $username ="",
 [String]
 $password ="",
 
+[parameter(Mandatory=$true,ParameterSetName = "LC")]
+[ValidateNotNullOrEmpty()]
+[String]
+$sqlUsername ="",
+
+
+[parameter(Mandatory=$true,ParameterSetName = "LC")]
+[ValidateNotNullOrEmpty()]
+[String]
+$sqlPassword ="",
+
 [parameter(Mandatory=$false,ParameterSetName = "LC")]
 [ValidateNotNullOrEmpty()]
 [String]
@@ -56,7 +67,7 @@ param(
 [String]
 $sqlscript
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -InputFile $sqlscript -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $sqlUsername -Password $sqlPassword -InputFile $sqlscript -QueryTimeout 200000
 }
 
 ##########################################################################
@@ -68,25 +79,25 @@ param(
 [String]
 $sqlquery
 )
-    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $username -Password $password -Query $sqlquery -QueryTimeout 200000
+    Invoke-Sqlcmd -ServerInstance $ServerName  -Database $DBName -Username $sqlUsername -Password $sqlPassword -Query $sqlquery -QueryTimeout 200000
 }
 
 ##########################################################################
 # Check if the SQL server or database exists
 ##########################################################################
 $query = "IF NOT EXISTS(SELECT * FROM sys.databases WHERE NAME = '$DBName') CREATE DATABASE $DBName"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password $password -Query $query -ErrorAction SilentlyContinue
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $sqlUsername -Password $sqlPassword -Query $query -ErrorAction SilentlyContinue
 if ($? -eq $false)
 {
     Write-Host -ForegroundColor Red "Failed the test to connect to SQL server: $ServerName database: $DBName !"
     Write-Host -ForegroundColor Red "Please make sure: `n`t 1. SQL Server: $ServerName exists;
                                      `n`t 2. SQL database: $DBName exists;
-                                     `n`t 3. SQL user: $username has the right credential for SQL server access."
+                                     `n`t 3. SQL user: $sqlUsername has the right credential for SQL server access."
     exit
 }
 
 $query = "USE $DBName;"
-Invoke-Sqlcmd -ServerInstance $ServerName -Username $username -Password $password -Query $query 
+Invoke-Sqlcmd -ServerInstance $ServerName -Username $sqlUsername -Password $sqlPassword -Query $query 
 
 
 if($is_production -eq 'n' -or $is_production -eq 'N')
@@ -113,8 +124,8 @@ try{
             $destination = $dataPath + $dataFile + ".csv"
             $tableName = $DBName + ".dbo." + $dataFile
             $tableSchema = $dataPath + $dataFile + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ',' 
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $username -P $password 
+            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
         }
     }
     catch
@@ -157,8 +168,8 @@ try{
             $destination = $dataPath + $dataFile + ".csv"
             $tableName = $DBName + ".dbo." + $dataFile
             $tableSchema = $dataPath + $dataFile + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $username -S $ServerName -P $password  -t ',' 
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $username -P $password 
+            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
         }
     }
     catch
