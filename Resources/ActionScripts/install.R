@@ -1,6 +1,3 @@
-# installing packages for SQL Server 
-
-
 install.packages("smbinning", lib="C:/Program Files/Microsoft SQL Server/MSSQL13.MSSQLSERVER/R_SERVICES/library")
 install.packages("sqldf", lib="C:/Program Files/Microsoft SQL Server/MSSQL13.MSSQLSERVER/R_SERVICES/library")
 install.packages("gsubfn", lib="C:/Program Files/Microsoft SQL Server/MSSQL13.MSSQLSERVER/R_SERVICES/library")
