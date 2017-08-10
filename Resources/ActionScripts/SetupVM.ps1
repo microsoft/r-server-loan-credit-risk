@@ -83,7 +83,7 @@ $helpShortCutFilePath = $solutionResourcePath + "\LoanCreditRiskHelp.url"
 Write-Host -ForeGroundColor magenta "Installing R Packages"
 cd $solutionResourcePath
 # install R Packages
-Rscript install.R
+#Rscript install.R testing to see what breaks 
 
 $passwords = "$password" | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$serverName\$username", $passwords)
