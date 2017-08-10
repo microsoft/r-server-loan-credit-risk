@@ -64,8 +64,11 @@ Start-Service SQLSERVERAGENT
 Write-Host -ForegroundColor 'Cyan' "Done switching SQL Server to Mixed Mode"
 
 ##cd $basedir\SQLR testing 
-cd $solutionBase\SQLR
+cd $solutionBase + "\SQLR"
+
+Write-Host -ForegroundColor 'Cyan' $solutionBase + "\SQLR"
 Write-Host -ForegroundColor 'Cyan' "Creating database user"
+
 
 # Variables to pass to createuser.sql script
 # Cannot use -v option as sqlcmd does not like special characters which maybe part of the randomly generated password.
