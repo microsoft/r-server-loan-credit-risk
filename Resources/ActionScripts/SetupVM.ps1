@@ -83,7 +83,8 @@ $helpShortCutFilePath = $solutionResourcePath + "\LoanCreditRiskHelp.url"
 Write-Host -ForeGroundColor magenta "Installing R Packages"
 cd $solutionResourcePath
 # install R Packages
-#Rscript install.R testing to see what breaks 
+Rscript install.R  
+Write-Host -ForeGroundColor magenta "Finished Installing R Packages"
 
 $passwords = "$password" | ConvertTo-SecureString -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential("$serverName\$username", $passwords)
@@ -91,13 +92,14 @@ $configure = "configureSolution.ps1"
 $shortcuts ="createShortcuts.ps1"
 
 Enable-PSRemoting -Force
-Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionBase, $sqlUsername, $sqlPassword, $checkoutDir
+Write-Host -ForeGroundColor magenta "Invoking ps1 scripts"
+Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionBase, $sqlUsername, $sqlPassword, $checkoutDir
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $shortcuts -ArgumentList $helpShortCutFilePath, $solutionBase, $checkoutDir
 Disable-PSRemoting -Force
 
 Write-Host -ForeGroundColor magenta "Installing latest Power BI..."
 # Download PowerBI Desktop installer
-Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
+##Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
 
 # Silently install PowerBI Desktop
 msiexec.exe /i powerbi-desktop.msi /qn /norestart  ACCEPT_EULA=1
