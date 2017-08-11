@@ -79,7 +79,6 @@ cd $solutionBase
 
 $solutionResourcePath = $solutionBase + "\Resources\ActionScripts"
 $helpShortCutFilePath = $solutionResourcePath + "\LoanCreditRiskHelp.url"
-$solutionPath = $solutionbase + "\Resources"
 
 Write-Host -ForeGroundColor magenta "Installing R Packages"
 cd $solutionResourcePath
@@ -97,7 +96,7 @@ Write-Host -ForeGroundColor magenta "Invoking ps1 scripts"
 
 #Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionResourcePath, $sqlUsername, $sqlPassword, $checkoutDir
 
-Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionPath, $sqlUsername, $sqlPassword, $checkoutDir
+Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionBase, $sqlUsername, $sqlPassword, $checkoutDir
 
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $shortcuts -ArgumentList $helpShortCutFilePath, $solutionResourcePath, $checkoutDir
 Disable-PSRemoting -Force
