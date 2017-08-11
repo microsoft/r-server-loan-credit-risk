@@ -93,9 +93,9 @@ $shortcuts ="createShortcuts.ps1"
 
 Enable-PSRemoting -Force
 Write-Host -ForeGroundColor magenta "Invoking ps1 scripts"
-#Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionBase, $sqlUsername, $sqlPassword, $checkoutDir
+
 Invoke-Command -Credential $credential -ComputerName $serverName -FilePath $configure -ArgumentList $solutionResourcePath, $sqlUsername, $sqlPassword, $checkoutDir
-#Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $shortcuts -ArgumentList $helpShortCutFilePath, $solutionBase, $checkoutDir
+
 Invoke-Command  -Credential $credential -ComputerName $serverName -FilePath $shortcuts -ArgumentList $helpShortCutFilePath, $solutionResourcePath, $checkoutDir
 Disable-PSRemoting -Force
 
