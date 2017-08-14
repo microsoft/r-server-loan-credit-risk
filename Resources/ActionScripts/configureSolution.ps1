@@ -83,6 +83,7 @@ foreach ($var in $sqlcmdvars.GetEnumerator()) {
 try {
     #sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
     #Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
+    ## testing new path 
     Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile $solutionpath + "\createuser.sql"
 } catch {
     Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
