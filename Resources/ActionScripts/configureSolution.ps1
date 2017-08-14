@@ -97,9 +97,10 @@ try {
 }
 Write-Host -ForegroundColor 'Cyan' "Done creating database user"
 
-
+$Inputfile = $solutionpath + "\Loan_Credit_Risk.ps1"
 # Run the solution
-.\Loan_Credit_Risk.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted y
+$Inputfile -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted y
+#.\Loan_Credit_Risk.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted y
 
 # copy Jupyter Notebook files
 cp $basedir\R\*.ipynb  c:\dsvm\notebooks
