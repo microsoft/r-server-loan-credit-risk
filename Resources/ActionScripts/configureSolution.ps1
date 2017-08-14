@@ -84,7 +84,8 @@ try {
     #sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
     #Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
     ## testing new path 
-    Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile $solutionpath + "\createuser.sql"
+    $Inputfile = $solutionpath + "\createuser.sql"
+    Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile $Inputfile
 } catch {
     Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
     Write-Host -ForegroundColor 'Red' $Error[0].Exception 
