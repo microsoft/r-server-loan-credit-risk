@@ -63,7 +63,7 @@ Start-Service MSSQLLaunchpad
 Start-Service SQLSERVERAGENT
 Write-Host -ForegroundColor 'Cyan' "Done switching SQL Server to Mixed Mode"
 
-cd $basedir\SQLR  
+cd $basedir + "\SQLR"  
 #cd $solutionBase +"\SQLR"
 
 
