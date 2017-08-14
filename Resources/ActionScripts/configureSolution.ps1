@@ -65,7 +65,7 @@ Write-Host -ForegroundColor 'Cyan' "Done switching SQL Server to Mixed Mode"
 
 cd $basedir + "\SQLR"  
 #cd $solutionBase +"\SQLR"
-
+$solutionpath = $basedir + "\SQLR"
 
 Write-Host -ForegroundColor 'Cyan' "Creating database user"
 
@@ -82,7 +82,8 @@ foreach ($var in $sqlcmdvars.GetEnumerator()) {
 }
 try {
     #sqlcmd -S $env:COMPUTERNAME -b -i .\createuser.sql
-    Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
+    #Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile .\createuser.sql
+    Invoke-Sqlcmd -ServerInstance $env:COMPUTERNAME -InputFile $solutionpath + "\createuser.sql"
 } catch {
     Write-Host -ForegroundColor 'Yellow' "Error creating database user, see error message output"
     Write-Host -ForegroundColor 'Red' $Error[0].Exception 
