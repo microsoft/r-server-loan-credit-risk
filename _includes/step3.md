@@ -12,7 +12,7 @@ She has also created a summary dashboard which she will hand off to Bernie - see
 While this task is complete for the current set of borrowers, we will need to score new loans on an ongoing basis.  Instead of going back to Debra each time, Danny can operationalize the code in TSQL files which he can then run himself whenver new loans appear.
 Debra hands over her scripts to Danny who adds the code to the database as stored procedures, using embedded R code, or SQL queries.  You can see these procedures by logging into SSMS and opening the <code>Programmability>Stored Procedures</code> section of the <code>Loans</code> database.
 <p/>
-Log into SSMS using the <code>rdemo</code> user with SQL Server Authentication - the default password upon creating the solution was <code>D@tascience</code>, unless you changed this password.
+Log into SSMS using the credentails you created.
 <p/>
 You can find this script in the <strong>SQLR</strong> directory, and execute it yourself by following the <a href="Powershell_Instructions.html">PowerShell Instructions</a>.  
 <span class="cig">As noted earlier, this was already executed when your VM was first created.</span>

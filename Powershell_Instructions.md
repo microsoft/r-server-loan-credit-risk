@@ -77,7 +77,7 @@ Running this PowerShell script will create stored procedures for the the operati
         .\{{ site.ps1_name }} -ServerName "Server Name" -DBName "Database Name" -username "" -password "" -is_production "N" -uninterrupted "N"  
         ```
 
-    * For example, uninterrupted mode for the <code>rdemo</code> user created by the <strong>create_user.sql</strong> script on your local machine, the command would be: 
+    * For example, uninterrupted mode for an <code>rdemo</code> user with password 'D@tascience' the command would be: 
 
         ```
         .\{{ site.ps1_name }} -ServerName "localhost" -DBName "{{ site.db_name }}" -username "rdemo" -password "D@tascience" -is_production "N" -uninterrupted "Y"  
