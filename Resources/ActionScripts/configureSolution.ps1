@@ -103,7 +103,7 @@ $Inputfile = $solutionpath + "\Loan_Credit_Risk.ps1"
 # Run the solution
 #$Inputfile -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted y
 .\Loan_Credit_Risk.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted "Y" -is_production "N"
-#.\Loan_Credit_Risk.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted y
+.\Loan_Credit_Risk.ps1 -ServerName $env:COMPUTERNAME -DBName $dbname -username $sqlUsername -password $sqlPassword  -uninterrupted "Y" -is_production "Y"
 
 # copy Jupyter Notebook files
 cp $basedir\R\*.ipynb  c:\dsvm\notebooks
