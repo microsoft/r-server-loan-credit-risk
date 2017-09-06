@@ -103,7 +103,7 @@ Disable-PSRemoting -Force
 
 Write-Host -ForeGroundColor magenta "Installing latest Power BI..."
 # Download PowerBI Desktop installer
-##Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
+Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
 
 # Silently install PowerBI Desktop
 msiexec.exe /i powerbi-desktop.msi /qn /norestart  ACCEPT_EULA=1
