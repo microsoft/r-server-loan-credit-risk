@@ -68,7 +68,7 @@ Start-Transcript -Path $setupLog -Append
 
 cd $solutionTemplatePath
 ### DON'T FORGET TO CHANGE TO MASTER BEFORE PUBLISHING...
-git clone --branch dev --single-branch https://github.com/Microsoft/r-server-loan-credit-risk.git $checkoutDir
+git clone --branch master --single-branch https://github.com/Microsoft/r-server-loan-credit-risk.git $checkoutDir
 
 $solutionBase = $solutionTemplatePath + "\" + $checkoutDir 
 cd $solutionBase
