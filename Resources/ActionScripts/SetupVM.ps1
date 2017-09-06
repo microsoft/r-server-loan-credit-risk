@@ -59,7 +59,7 @@ $originalLocation = Get-Location
 # This is the directory for the data/code download
 $solutionTemplateName = "Solutions"
 $solutionTemplatePath = "C:\" + $solutionTemplateName
-$checkoutDir = "LoanCreditRisk"
+$checkoutDir = "Loans"
 
 New-Item -Path "C:\" -Name $solutionTemplateName -ItemType directory -force
 
