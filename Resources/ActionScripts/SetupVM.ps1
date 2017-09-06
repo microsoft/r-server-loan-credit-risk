@@ -78,7 +78,7 @@ cd $solutionBase
  rm -r RSparkCluster
 
 $solutionResourcePath = $solutionBase + "\Resources\ActionScripts"
-$helpShortCutFilePath = $solutionResourcePath + "\LoanCreditRiskHelp.url"
+$helpShortCutFilePath = $solutionResourcePath + "\SolutionHelp.url"
 
 Write-Host -ForeGroundColor magenta "Installing R Packages"
 cd $solutionResourcePath
