@@ -63,9 +63,11 @@ Start-Service MSSQLLaunchpad
 Start-Service SQLSERVERAGENT
 Write-Host -ForegroundColor 'Cyan' "Done switching SQL Server to Mixed Mode"
 
-cd $basedir + "\SQLR"  
+ 
 #cd $solutionBase +"\SQLR"
 $solutionpath = $basedir + "\SQLR"
+cd $solutionpath
+Write-Host $solutionpath
 
 Write-Host -ForegroundColor 'Cyan' "Creating database user"
 
