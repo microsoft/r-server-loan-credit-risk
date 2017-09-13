@@ -28,10 +28,9 @@ Borrower <- "../Data/Borrower.csv"
 ## User ID and Password. Change them below if you modified the default values.  
 db_name <- "Loans"
 server <- "localhost"
-user_id <- "rdemo"
-password <- "D@tascience"
 
-connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;UID=%s;PWD=%s", server, db_name, user_id, password)
+
+connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;Trusted_Connection=Yes", server, db_name)
 
 ##############################################################################################################################
 ## Database Creation. 
