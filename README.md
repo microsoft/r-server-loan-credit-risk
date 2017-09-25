@@ -3,6 +3,7 @@
 # Loan Credit Risk 
 ## Implemented on SQL Server 2016 R Services
 
+> Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
 
 Deploy this solution from the Cortana Intelligence Gallery with [SQL Server](https://aka.ms/loan-credit-risk) or [HDInsight Spark Cluster](https://aka.ms/loan-credit-risk-hdi).
 
