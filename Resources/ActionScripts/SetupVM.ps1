@@ -80,13 +80,13 @@ $clone = "git clone --branch $Branch --single-branch https://github.com/Microsof
 if (Test-Path $SolutionPath) { Write-Host " Solution has already been cloned"}
 ELSE {Invoke-Expression $clone}
 
-If ($InstalR -eq 'Yes')
-{
+##If ($InstalR -eq 'Yes')
+##{
 Write-Host -ForeGroundColor magenta "Installing R Packages"
 Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
 # install R Packages
 Rscript install.R 
-}
+##}
 
 
 #################################################################
