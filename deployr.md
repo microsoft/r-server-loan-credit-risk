@@ -33,7 +33,7 @@ For instructions on how to use the terminal to connect to your HDInsight Spark c
 sudo dotnet /usr/lib64/microsoft-deployr/9.1.0/Microsoft.DeployR.Utils.AdminUtil/Microsoft.DeployR.Utils.AdminUtil.dll
 ```
 
-Your server has been configuered with a password of  `D@tascience2017` for the  `admin` user.  You can use this utitlity to change the password if you wish. (If you do so, you will need to change the password in the  <strong>deployment_main.R</strong> script.)
+Your server has been configuered  for the  `admin` user with with the password you created during deployment.  You can use this utitlity to change the password if you wish. (If you do so, you will need to change the password in the  <strong>deployment_main.R</strong> script.)
 
 You can also use this utility to check on the status of the web server. 
 
