@@ -35,7 +35,9 @@ WRITE-HOST " ServerName set to $ServerName"
 
 $db = if ($Prompt -eq 'Y') {Read-Host  -Prompt "Enter Desired Database Base Name"} else {$SolutionName} 
 
-$dataList = ("Borrower", "Loan", "Borrower_Prod", "Loan_Prod")
+##$dataList = ("Borrower", "Loan", "Borrower_Prod", "Loan_Prod")
+
+$dataList = ("BorrowerTemp", "LoanTemp")
 
 
 
@@ -229,9 +231,7 @@ foreach ($dataFile in $dataList)
     $tableSchema = $dataPath + "\" + $dataFile + ".xml"
     $dataSet = Import-Csv $destination
  Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
- bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
- bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000
- ##   Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+ Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
 
     
  Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
