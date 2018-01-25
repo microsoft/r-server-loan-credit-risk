@@ -115,8 +115,8 @@ Write-Host "  Creating SQL Database for R "
 
 Write-Host -ForeGroundColor 'cyan' (" Using $ServerName SQL Instance") 
 
-##$dbName = $db + "_R"
-$dbName = $db 
+$dbName = $db + "_R"
+ 
 
 
 ## Create RServer DB 
