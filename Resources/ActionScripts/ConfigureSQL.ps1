@@ -229,7 +229,9 @@ foreach ($dataFile in $dataList)
     $tableSchema = $dataPath + "\" + $dataFile + ".xml"
     $dataSet = Import-Csv $destination
  Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
-    Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+ bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+ bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000
+ ##   Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
 
     
  Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
