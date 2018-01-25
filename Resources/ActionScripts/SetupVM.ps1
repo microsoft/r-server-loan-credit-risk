@@ -27,7 +27,7 @@ $Prompt = 'N'
 
 
 ##Change Values here for Different Solutions 
-$SolutionName = "Loan"
+$SolutionName = "Loans"
 $SolutionFullName = "r-server-loan-credit-risk" 
 $JupyterNotebook = "Loan_Credit_Risk_Notebook.ipynb"
 $Shortcut = "SolutionHelp.url"
