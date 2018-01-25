@@ -165,15 +165,16 @@ Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about
 
 
 # upload csv files into SQL tables
-foreach ($dataFile in $dataList)
+#foreach ($dataFile in $dataList)
 {
-$destination = $SolutionData + $dataFile + ".csv" 
-$tableName = $DBName + ".dbo." + $dataFile
-$tableSchema = $dataPath + "\" + $dataFile + ".xml"
-$dataSet = Import-Csv $destination
-Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
-Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
-
+#$destination = $SolutionData + $dataFile + ".csv" 
+#$tableName = $DBName + ".dbo." + $dataFile
+#$tableSchema = $dataPath + "\" + $dataFile + ".xml"
+#$dataSet = Import-Csv $destination
+#Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
+#Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+dtexec /File C:\Solutions\Loans\Resources\ActionScripts\ImportBorrower.dstx
+dtexec /File C:\Solutions\Loans\Resources\ActionScripts\ImportLoans.dstx
 
 Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
 }
