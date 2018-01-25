@@ -108,6 +108,12 @@ The stored procedure, `[fill_NA_mode_mean]`, will replace the missing values wit
 ### Related files:
 * **step1_data_preprocessing.sql**
 
+### Example:
+
+    EXEC merging 'Loan' 'Borrower' 'Merged'
+    EXEC compute_stats 'Merged'
+    EXEC fill_NA_mode_mean 'Merged' 'Merged_Clean'
+
 <a name="step2a">
 
 ## Step 2a: Splitting the data set
@@ -129,6 +135,9 @@ In this step, we create a stored procedure `[dbo].[splitting]` that splits the d
 
 * **step2a_splitting.sql**
 
+### Example:
+
+    EXEC splitting 'Merged_Clean'
 
 <a name="step2b">
 
@@ -162,6 +171,15 @@ Variables names and types (and levels for factors) of the raw data set are then 
 
 * **step2b_feature_engineering.sql**
 
+### Example:
+
+    EXEC compute_bins 'SELECT Merged_Cleaned.*, 
+            isBad = CASE WHEN loanStatus IN (''Current'') THEN ''0'' ELSE ''1'' END
+            FROM  Merged_Cleaned JOIN Hash_Id ON Merged_Cleaned.loanId = Hash_Id.loanId
+            WHERE hashCode <= 70'
+    EXEC feature_engineering 'Merged_Cleaned', 'Merged_Features'
+    EXEC get_column_info 'Merged_Features'
+
 ![Visualize](images/steps12.png?raw=true)
 
 
@@ -186,6 +204,10 @@ Training a Logistic Regression for loan credit risk prediction is a standard pra
 
 * **step3a_training.sql**
 
+### Example
+
+    EXEC train_model 'Merged_Features'
+
 <a name="step3b">
 
 
@@ -206,6 +228,10 @@ In this step, we create a stored procedure `[dbo].[score]` that scores the train
 
 * **step3b_scoring.sql**
 
+### Example:
+
+    EXEC score 'SELECT * FROM Merged_Features WHERE loanId NOT IN (SELECT loanId from Hash_Id WHERE hashCode <= 70)', 'Predictions_Logistic'
+
 <a name="step3c">
 
 ## Step 3c: Evaluating 
@@ -217,7 +243,7 @@ In this step, we create a stored procedure `[dbo].[evaluate]` that computes clas
 * Various classification performance metrics computed on the confusion matrix. These are dependent on the threshold chosen to decide whether to classify a predicted probability as good or bad. Here, we use as a threshold the point on the x axis in the KS plot where the curves are the farthest possible.   
 * AUC (Area Under the Curve) for the ROC. It represents how well the model can differenciate between the Good Credit applicants from the Bad Credit applicants given a good decision threshold in the testing set.
 
-## Input:
+### Input:
 
 * `Predictions_Logistic` table storing the predictions from the tested model.
 
@@ -229,6 +255,10 @@ In this step, we create a stored procedure `[dbo].[evaluate]` that computes clas
 ### Related files:
 
 * **step3c_evaluating.sql**
+
+### Example:
+
+    EXEC evaluate 'Predictions_Logistic'
 
 ![Visualize](images/step3.png?raw=true)
 
@@ -259,19 +289,24 @@ The second, `[apply_score_transformation]` will:
 2. Asssign each score to a percentile bin with the bad rates given by the `Operational_Metrics` table. These bad rates are either observed (Modeling pipeline) or expected (Production pipeline).
 
 
-## Input:
+### Input:
 
 * `Predictions_Logistic` table storing the predictions from the tested model.
 
-## Output:
+### Output:
 
 * `Operational_Metrics` table containing the percentiles from 1% to 99%, the scores thresholds each one corresponds to, and the observed bad rate among loans with a score higher than the corresponding threshold. 
 * `Scores_Average` table containing the single value of the average score output from the logistic regression. It is used for the sigmoid transformation in Modeling and Production pipeline.
 * `Scores` table containing the transformed scores for each record of the testing set, together with the percentiles they belong to, the corresponding score cutoff, and the observed bad rate among loans with a higher score than this cutoff.
 
-## Related files:
+### Related files:
 
 * **step4_operational_metrics.sql**
+
+### Example: 
+
+    EXEC compute_operational_metrics 'Predictions_Logistic'
+    EXEC apply_score_transformation 'Predictions_Logistic', 'Scores'
 
 <a name="step4">
 
@@ -279,9 +314,18 @@ The second, `[apply_score_transformation]` will:
 -------------------------
 
 In the Production pipeline, the data from the files **Loan_Prod.csv** and **Borrower_Prod.csv** is uploaded through PowerShell to the `Loan_Prod` and `Borrower_Prod` tables.
-The tables `Stats`, `Bins`, `Column_Info`, `Model`, `Operational_Metrics` and `Scores_Average` created during the Development pipeline are then moved to the Production database through the stored procedure `[dbo].[copy_modeling_tables]` located in the file **create_tables_prod.sql**.
+
+<!-- The tables `Stats`, `Bins`, `Column_Info`, `Model`, `Operational_Metrics` and `Scores_Average` created during the Development pipeline are then moved to the Production database through the stored procedure `[dbo].[copy_modeling_tables]` located in the file **create_tables_prod.sql**. -->
 
 The `Loan_Prod` and `Borrower_Prod` tables are then merged and cleaned like in Step 1 (using the `Stats` table), and a feature engineered table is created like in Step 2 (using the `Bins` table). The featurized table is then scored on the logistic regression model (using the `Model` and `Column_Info` tables). Finally, the scores are transformed and stored in the `Scores_Prod` table (using the `Scores_Average` and `Operational_Metrics` tables). 
 
+### Example: 
+
+    EXEC merging 'Loan_Prod', 'Borrower_Prod', 'Merged_Prod'
+    EXEC fill_NA_mode_mean 'Merged_Prod', 'Merged_Cleaned_Prod'
+    EXEC feature_engineering 'Merged_Cleaned_Prod', 'Merged_Features_Prod'
+    EXEC score 'SELECT * FROM Merged_Features_Prod', 'Predictions_Logistic_Prod'
+    exec apply_score_transformation 'Predictions_Logistic_Prod', 'Scores_Prod'
+    ALTER TABLE Scores_Prod DROP COLUMN isBad
 
 
