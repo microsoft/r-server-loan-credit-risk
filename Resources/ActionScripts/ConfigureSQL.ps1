@@ -37,7 +37,7 @@ $db = if ($Prompt -eq 'Y') {Read-Host  -Prompt "Enter Desired Database Base Name
 
 ##$dataList = ("Borrower", "Loan", "Borrower_Prod", "Loan_Prod")
 
-$dataList = ("BorrowerTemp", "LoanTemp")
+$dataList = ("Borrower", "Loan")
 
 
 
@@ -172,7 +172,9 @@ $tableName = $DBName + ".dbo." + $dataFile
 $tableSchema = $dataPath + "\" + $dataFile + ".xml"
 $dataSet = Import-Csv $destination
 Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
-Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+#Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
+bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
 
 
 Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
