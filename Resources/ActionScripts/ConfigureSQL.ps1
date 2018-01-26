@@ -163,8 +163,8 @@ $RStart = Get-Date
 
         invoke-expression "bcp Borrower in C:\Solutions\Loans\Data\Borrower.txt -S $ServerName -d $dbName -T -c"
         invoke-expression "bcp Loan in C:\Solutions\Loans\Data\Loan.txt -S $ServerName -d $dbName -T -c"
-        invoke-expression "bcp Borrower_Prod in C:\Solutions\Loans\Data\Borrower_Prod.csv -S $ServerName -d $dbName -T -c"
-        invoke-expression "bcp Loan_Prod in C:\Solutions\Loans\Data\Loan_Prod.csv -S $ServerName -d $dbName -T -c"
+        invoke-expression "bcp Borrower_Prod in C:\Solutions\Loans\Data\Borrower_Prod.txt -S $ServerName -d $dbName -T -c"
+        invoke-expression "bcp Loan_Prod in C:\Solutions\Loans\Data\Loan_Prod.txt -S $ServerName -d $dbName -T -c"
      <#   
         try
         {
