@@ -195,7 +195,7 @@ Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
             $tableName = $DBName + ".dbo." + $dataFile
             $tableSchema = $dataPath + $dataFile + ".xml"
             bcp $tableName format nul -c -x -f $tableSchema  -U $Username -S $ServerName -P $Password  -t ',' 
-            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $username -P $password 
         }
 
 
