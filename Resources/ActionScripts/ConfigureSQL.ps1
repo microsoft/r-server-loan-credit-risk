@@ -13,7 +13,13 @@ param(
 [string]$InstallR,
 
 [parameter(Mandatory=$true, Position=5)]
-[string]$Prompt
+[string]$Prompt,
+
+[parameter(Mandatory=$true, Position=6)]
+[string]$userName,
+
+[parameter(Mandatory=$true, Position=7)]
+[string]$password
 )
 
 
@@ -188,7 +194,7 @@ Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
             $destination = $dataPath + $dataFile + ".csv"
             $tableName = $DBName + ".dbo." + $dataFile
             $tableSchema = $dataPath + $dataFile + ".xml"
-            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+            bcp $tableName format nul -c -x -f $tableSchema  -U $Username -S $ServerName -P $Password  -t ',' 
             bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
         }
 
