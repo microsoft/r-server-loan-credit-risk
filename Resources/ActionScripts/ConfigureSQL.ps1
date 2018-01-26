@@ -163,7 +163,7 @@ try
 Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about 30 Seconds Per File")
  ##Move this to top 
 
-
+<#
 # upload csv files into SQL tables
 foreach ($dataFile in $dataList)
 {
@@ -179,7 +179,28 @@ bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RA
 
 Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
 }
+#>
+
+
+		# upload csv files into SQL tables
+        foreach ($dataFile in $dataList)
+        {
+            $destination = $dataPath + $dataFile + ".csv"
+            $tableName = $DBName + ".dbo." + $dataFile
+            $tableSchema = $dataPath + $dataFile + ".xml"
+            bcp $tableName format nul -c -x -f $tableSchema  -U $sqlUsername -S $ServerName -P $sqlPassword  -t ',' 
+            bcp $tableName in $destination -t ',' -S $ServerName -f $tableSchema -F 2 -C "RAW" -b 50000 -U $sqlUsername -P $sqlPassword 
+        }
+
+
+
+
+
 }
+
+
+
+
 catch
 {
 Write-Host -ForegroundColor DarkYellow "Exception in populating database tables:"
