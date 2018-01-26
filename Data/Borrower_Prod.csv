@@ -1,0 +1,23 @@
+memberId	residentialState	yearsEmployment	homeOwnership	annualIncome	incomeVerified	dtiRatio	lengthCreditHistory	numTotalCreditLines	numOpenCreditLines	numOpenCreditLines1Year	revolvingBalance	revolvingUtilizationRate	numDerogatoryRec	numDelinquency2Years	numChargeoff1year	numInquiries6Mon
+16334480	IL	6-9 years	mortgage	50975	0	17.71	1	11	9	5	15868	83.01	0	9	5	10
+16334481	TN	2-5 years	own	51887	1	23.84	5	19	16	12	12709	65.63	0	0	0	1
+16334482	PA	10+ years	mortgage	53254	1	22.53	2	22	19	12	16928	78.35	0	0	0	1
+16334483	TX	1 year	own	59643	1	15.26	6	13	7	6	17301	61.74	0	0	0	0
+16334484	CA	< 1 year	mortgage	60630	1	9.67	4	16	15	10	16655	64.82	0	0	0	0
+16334485	NY	10+ years	rent	49207	1	18.09	7	16	16	14	15089	62.79	0	0	0	8
+16334486	CA	< 1 year	rent	54070	1	21.47	3	19	11	4	15801	70.65	0	0	0	2
+16334487	MD	< 1 year	rent	53539	1	24.42	38	18	13	8	14789	74.11	0	0	0	0
+16334488	KY	10+ years	own	52252	0	13.04	5	25	22	16	11624	96.96	4	0	0	3
+16334489	DC	< 1 year	mortgage	50263	0	15.75	6	18	13	7	11572	44.55	0	0	0	0
+16334490	DC	2-5 years	rent	55007	1	24.17	9	10	5	2	13016	40.5	0	0	0	0
+16334491	IL	< 1 year	mortgage	56040	1	21.77	6	9	8	8	18230	35.41	0	0	0	0
+16334492	SC	10+ years	mortgage	49576	1	19.75	7	15	14	11	15884	46.07	0	0	0	2
+16334493	NE	1 year	mortgage	57185	1	19.21	23	15	14	5	14845	39.4	0	0	0	0
+16334494	CA	10+ years	rent	52553	1	12.22	13	15	12	11	19144	62.52	0	0	0	1
+16334495	TN	10+ years	mortgage	52437	0	15.53	6	21	13	9	16104	78.74	0	0	0	0
+16334496	TX	2-5 years	rent	53820	0	17.3	13	8	7	5	13964	43.23	10	0	0	3
+16334497	CA	10+ years	own	62734	0	18.62	4	11	7	4	12099	91.28	0	0	0	0
+16334498	PA	2-5 years	rent	58057	1	18.37	15	10	8	5	12761	51.19	0	0	0	0
+16334499	FL	10+ years	rent	51699	1	18.43	5	21	14	6	13694	85.62	0	0	0	0
+16334500	TX	6-9 years	rent	53610	1	20.36	5	17	14	13	13887	54.04	0	0	0	1
+16334501	IL	< 1 year	mortgage	51217	1	15.32	9	13	9	6	16563	68.08	0	0	0	1
