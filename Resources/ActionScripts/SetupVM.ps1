@@ -175,7 +175,7 @@ Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
 
 ####Run Configure SQL to Create Databases and Populate with needed Data
-$ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt $username $password"
+$ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
 Invoke-Expression $ConfigureSQL 
 
 Write-Host -ForegroundColor 'Cyan' " Done with configuration changes to SQL Server"
