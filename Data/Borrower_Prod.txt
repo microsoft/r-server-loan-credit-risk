@@ -1,3 +1,4 @@
+memberId	residentialState	yearsEmployment	homeOwnership	annualIncome	incomeVerified	dtiRatio	lengthCreditHistory	numTotalCreditLines	numOpenCreditLines	numOpenCreditLines1Year	revolvingBalance	revolvingUtilizationRate	numDerogatoryRec	numDelinquency2Years	numChargeoff1year	numInquiries6Mon
 16334480	IL	6-9 years	mortgage	50975	0	17.71	1	11	9	5	15868	83.01	0	9	5	10
 16334481	TN	2-5 years	own	51887	1	23.84	5	19	16	12	12709	65.63	0	0	0	1
 16334482	PA	10+ years	mortgage	53254	1	22.53	2	22	19	12	16928	78.35	0	0	0	1
