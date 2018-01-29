@@ -22,7 +22,7 @@ solution.
         <li><a href="#step0">Step 0: Creating Tables</a></li>
         <li><a href="#step1">Step 1: Merging and Cleaning</a></li>
         <li><a href="#step2a">Step 2a: Splitting the Data Set</a></li>
-        <li><a href="#step2b">*Step 2b: Feature Engineering</a></li>
+        <li><a href="#step2b">Step 2b: Feature Engineering</a></li>
         <li><a href="#step3a">Step 3a: Training</a></li>
         <li><a href="#step3b">Step 3b: Scoring</a></li>
         <li><a href="#step3c">Step 3c: Evaluating</a></li>
@@ -180,6 +180,7 @@ Variables names and types (and levels for factors) of the raw data set are then 
     EXEC feature_engineering 'Merged_Cleaned', 'Merged_Features'
     EXEC get_column_info 'Merged_Features'
 
+
 ![Visualize](images/steps12.png?raw=true)
 
 
@@ -259,6 +260,7 @@ In this step, we create a stored procedure `[dbo].[evaluate]` that computes clas
 ### Example:
 
     EXEC evaluate 'Predictions_Logistic'
+
 
 ![Visualize](images/step3.png?raw=true)
 
