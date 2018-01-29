@@ -12,7 +12,7 @@ solution.
 
 ## Setup for Local Code Execution
 
-You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by the Cortana Intelligence Gallery. But first you must perform the following steps. 
+You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by the Azure AI Gallery. But first you must perform the following steps. 
 
 ## On the VM: Configure VM for Remote Access
 
@@ -21,10 +21,7 @@ Connect to the VM to perform the following steps.
 You must open the Windows firewall on the VM to allow a connection to the SQL Server. To open the firewall, execute the following command in a PowerShell window on the VM:
 
     netsh advfirewall firewall add rule name="SQLServer" dir=in action=allow protocol=tcp localport=1433 
-
-SQL Server on the VM has been set up with a user `rdemo` and a default password of `D@tascience`.  Once you open the firewall, you may also want to also change the password, as anyone who knows the IP address can now access the server.  To do so, log into SSMS with Windows Authentication and execute the following query:
-    
-        ALTER LOGIN rdemo WITH PASSWORD = 'newpassword';  
+ 
        
 ## On your local computer:  Install R Client and Obtain Code
 
