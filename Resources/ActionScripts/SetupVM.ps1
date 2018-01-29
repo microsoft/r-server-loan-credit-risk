@@ -216,6 +216,14 @@ Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\R\
 
 
 
+## copy Jupyter Notebook files
+Move-Item $SolutionPath\R\modeling_main.r  c:\tmp\
+sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\modeling_main.r
+sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\modeling_main.r
+Move-Item  c:\tmp\modeling_main.r $SolutionPath\R\
+
+
+
 
 #cp $SolutionData*.csv  c:\dsvm\notebooks
  # substitute real username and password in notebook file

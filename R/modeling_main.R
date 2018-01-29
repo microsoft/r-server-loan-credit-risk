@@ -26,8 +26,10 @@ Borrower <- "../Data/Borrower.txt"
 ## Database name. If it already exists, tables will be overwritten. If not, it will be created.
 ## Server name. If conecting remotely to the DSVM, the full DNS address should be used with the port number 1433 (which should be enabled) 
 ## User ID and Password. Change them below if you modified the default values.  
-db_name <- "Loans_R"
+db_name <- "Loans"
 server <- "localhost"
+password <- "XXYOURSQLPW"
+user_id <- "XXYOURSQLUSER"
 
 
 connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;Trusted_Connection=Yes", server, db_name)
