@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "On-Prem: Setup SQL Server 2017"
+title: "On-Prem: Setup SQL Server"
 ---
 
 ## On-Prem: Setup SQL Server
