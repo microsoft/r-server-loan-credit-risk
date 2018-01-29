@@ -19,8 +19,8 @@ library(RevoScaleR)
 ##########################################################################################################################################
 
 # Data sets full path. The paths below work if the working directory is set to the R scripts location. 
-Loan <- "../Data/Loan.csv"
-Borrower <- "../Data/Borrower.csv"
+Loan <- "../Data/Loan.txt"
+Borrower <- "../Data/Borrower.txt"
 
 # Creating the connection string. Specify:
 ## Database name. If it already exists, tables will be overwritten. If not, it will be created.
@@ -28,6 +28,8 @@ Borrower <- "../Data/Borrower.csv"
 ## User ID and Password. Change them below if you modified the default values.  
 db_name <- "Loans"
 server <- "localhost"
+password <- "XXYOURSQLPW"
+user_id <- "XXYOURSQLUSER"
 
 
 connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;Trusted_Connection=Yes", server, db_name)
