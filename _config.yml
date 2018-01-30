@@ -1,18 +1,18 @@
 author:
         name: Microsoft
 
-description: Use SQL Server 2016 + R Services to build and deploy a machine learning model for loan credit risk.
+description: Use SQL Server 2017 + R Services to build and deploy a machine learning model for loan credit risk.
 
 # site variables
 solution_name: Loan Credit Risk 
 folder_name: Loans
-db_name: Loans
+db_name: Loans_R
 ps1_name: Loan_Credit_Risk.ps1
 image_url: images/loan.jpg
 jupyter_name: Loan_Credit_Risk_Notebook.ipynb
 
-cig_text: SQL Server 2016 on Azure
-onp_text: SQL Server 2016 On-Prem 
+cig_text: SQL Server 2017 on Azure
+onp_text: SQL Server 2017 On-Prem 
 hdi_text: HDInsight Spark 
 
 # urls, etc

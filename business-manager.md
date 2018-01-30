@@ -18,7 +18,7 @@ solution.
 This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  It uses predictive analytics to help decide whether or not to grant a loan for each borrower.
 <p></p>
 <div class="sql"> 
-SQL Server R Services takes advantage of the power of SQL Server 2016 and RevoScaleR (Microsoft R Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. 
+SQL Server R Services takes advantage of the power of SQL Server (2016 or higher) and RevoScaleR (Microsoft R Server package) by allowing R to run on the same server as the database. It includes a database service that runs outside the SQL Server process and communicates securely with the R runtime. 
 <p></p>
 This solution shows how to preprocess data, create new features, train R models, and perform predictions in-database. The final table in the SQL Server database provides a predicted value for each borrower. This predicted value, which can be interpreted as a probability of default, can help you determine whether you wish to approve the loan.
 <p></p>
