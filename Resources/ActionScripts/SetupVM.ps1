@@ -94,7 +94,7 @@ ELSE {Invoke-Expression $clone}
 Write-Host "Installing R Packages"
 Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
 # install R Packages
-.\Rscript install.R 
+Rscript install.R 
 ##}
 
 
