@@ -94,7 +94,7 @@ ELSE {Invoke-Expression $clone}
 Write-Host "Installing R Packages"
 Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
 # install R Packages
-Rscript install.R 
+.\Rscript install.R 
 ##}
 
 
@@ -166,7 +166,7 @@ if ($EnableFileStream -eq 'Yes')
     }
 ELSE
     { 
-    Write-Host -ForeGroundColor 'cyan' " Restarting SQL Services "
+    Write-Host "Restarting SQL Services "
     ### Changes Above Require Services to be cycled to take effect 
     ### Stop the SQL Service and Launchpad wild cards are used to account for named instances  
     Restart-Service -Name "MSSQ*" -Force
