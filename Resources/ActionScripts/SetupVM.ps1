@@ -18,19 +18,29 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
-$startTime = Get-Date
-
-$Query = "SELECT SERVERPROPERTY('ServerName')"
-$si = invoke-sqlcmd -Query $Query
-$si = $si.Item(0)
 
 
-$serverName = if([string]::IsNullOrEmpty($servername)) {$si}
+#################################################################
+##DSVM Does not have SQLServer Powershell Module Install or Update 
+#################################################################
+
+
+Write-Host "Installing SQLServer Power Shell Module or Updating to latest "
+
+
+if (Get-Module -ListAvailable -Name SQLServer) 
+    {Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199}
+Else 
+    {Install-Module -Name SqlServer -RequiredVersion 21.0.17199 -Scope AllUsers -AllowClobber -Force}
+
+#Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted
+    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
+
 
 
 
 #$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
-$Prompt = 'N'
+
 
 
 ##Change Values here for Different Solutions 
@@ -46,6 +56,7 @@ $InstallR = 'Yes'  ## If Solution has a R Version this should be 'Yes' Else 'No'
 $InstallPy = 'No' ## If Solution has a Py Version this should be 'Yes' Else 'No'
 $SampleWeb = 'No' ## If Solution has a Sample Website  this should be 'Yes' Else 'No' 
 $EnableFileStream = 'No' ## If Solution Requires FileStream DB this should be 'Yes' Else 'No' 
+$isMixedMode = 'No'
 $Prompt = 'N'
 
 
@@ -75,7 +86,6 @@ $SolutionData = $SolutionPath + "\Data\"
 
 ###$serverName = if($serverName -eq $null) {$si}
 
-##WRITE-HOST " ServerName set to $ServerName"
 
 
 
@@ -103,17 +113,6 @@ Rscript install.R
 #################################################################
 
 
-
-Write-Host "Installing SQLServer Power Shell Module or Updating to latest "
-
-if (Get-Module -ListAvailable -Name SQLServer) {Update-Module -Name "SQLServer"}
- else 
-    {
-    Install-Module -Name SQLServer -Scope AllUsers -AllowClobber -Force
-    Import-Module -Name SQLServer
-    }
-
-
 ## if FileStreamDB is Required Alter Firewall ports for 139 and 445
 if ($EnableFileStream -eq 'Yes')
     {
@@ -135,9 +134,25 @@ If ($EnableFileStream -eq 'Yes')
 
 #Write-Host -ForegroundColor 'Cyan' " Switching SQL Server to Mixed Mode"
 
+$Query = "SELECT SERVERPROPERTY('ServerName')"
+$si = invoke-sqlcmd -Query $Query
+$si = $si.Item(0)
+$serverName = if([string]::IsNullOrEmpty($servername)) {$si}
+
+WRITE-HOST " ServerName set to $ServerName"
+
 
 ### Change Authentication From Windows Auth to Mixed Mode 
-Invoke-Sqlcmd -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2;" -ServerInstance "LocalHost" 
+if ($isMixedMode -eq 'Yes') {
+    Invoke-Sqlcmd -Query "EXEC xp_instance_regwrite N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'LoginMode', REG_DWORD, 2;" -ServerInstance "LocalHost" 
+
+    $Query = "CREATE LOGIN $username WITH PASSWORD=N'$password', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF"
+    Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
+
+    $Query = "ALTER SERVER ROLE [sysadmin] ADD MEMBER $username"
+    Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
+}
+
 
 Write-Host -ForeGroundColor 'cyan' " Configuring SQL to allow running of External Scripts "
 ### Allow Running of External Scripts , this is to allow R Services to Connect to SQL
@@ -176,11 +191,7 @@ ELSE
 #Write-Host -ForegroundColor 'Cyan' " SQL Services Restarted"
 
 
-$Query = "CREATE LOGIN $username WITH PASSWORD=N'$password', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF"
-Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
-$Query = "ALTER SERVER ROLE [sysadmin] ADD MEMBER $username"
-Invoke-Sqlcmd -Query $Query -ErrorAction SilentlyContinue
 
 
 ####Run Configure SQL to Create Databases and Populate with needed Data
