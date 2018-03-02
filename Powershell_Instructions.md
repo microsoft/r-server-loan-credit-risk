@@ -42,41 +42,39 @@ First, make sure you have <a href="SetupSQL.html">set up your SQL Server</a>.  T
 
 Running this PowerShell script will create the data tables and stored procedures for the the operationalization of this solution in R in the `{{ site.db_name }}` database.  It will also execute these procedures to create full database with results of the steps  – dataset creation, modeling, and scoring as described  [here](dba.html).
 
+1. Log onto the computer that contains the SQL Server you wish to use.
 
-1. Log onto the machine that contains the SQL Server you wish to use.
+1. Install [Git](https://gitforwindows.org/) if it is not already present.  During the install, check the box to add LFS support.
 
 2. Download  <a href="https://raw.githubusercontent.com/Microsoft/r-server-loan-credit-risk/master/Resources/ActionScripts/SetupVM.ps1" download>SetupVM.ps1</a> to your computer.
 
-1.   Open a command or PowerShell window as Administrator.
+1. Open a command or PowerShell window as Administrator.
 
 1. CD to the directory where you downloaded the above .ps1 file and execute the command:
 
     .\SetupVM.ps1
 
-1. Answer the prompts.
+1. Make sure to accept installation of NuGet if prompted.
 
 1. This will make the following modification to your SQL Server:
     * Installs the SQL Server PowerShell module. If this is already installed, it will update it if necessary.
-    * Changes Authentication Method to Mixed Mode, which is needed in this version of the solution.
     * Creates the SLQRUserGroup for running R and Python code.
-    * Elevates the login user's credentials to SA.
     * Reconfigures SQL Server to allow running of external scripts.
     * Clones the solution code and data into the c:\Solutions\{{ site.folder_name }} directory
-    * Creates the solution database `{{ site.db_name }}` and configures an ODBC connection to the database.
+    * Creates the solution databases `{{ site.db_name }}` and configures an ODBC connection to the database.
     * Executes the stored procedure `Initial_Run_Once_R` to run the entire workflow for this solution.
 
 ## Review Data
 --------------
 
-Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` and the `{{ site.db_name }}_Prod` databases.  
+Once the PowerShell script has completed successfully, log into the SQL Server Management Studio to view all the datasets that have been created in the `{{ site.db_name }}` database.
 Hit `Refresh` if necessary.
-<br/>
 
-* View [more information](tables.html)  about each of the tables created in the `Loans` database.
+* View [more information](tables.html)  about each of the tables created in the `{{ site.db_name }}` database.
 
 * Right click on `{{ site.db_name }}.dbo.Scores` and select `View Top 1000 Rows` to preview the testing scored data.
 
-* Right click on `{{ site.db_name }}_Prod.dbo.Prod_Scores` and select `View Top 1000 Rows` to preview the production scored data.
+* Right click on `{{ site.db_name }}.dbo.Scores_Prod` and select `View Top 1000 Rows` to preview the production scored data.
 
 
 ## Visualizing Results 
