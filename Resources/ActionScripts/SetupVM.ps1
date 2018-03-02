@@ -236,44 +236,13 @@ $shortcut.Save()
 
 
 
-## copy Jupyter Notebook files
-Move-Item $SolutionPath\R\$JupyterNotebook  c:\tmp\
-sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
-sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
-Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\R\
-
-
-
-## copy Jupyter Notebook files
-Move-Item $SolutionPath\R\modeling_main.r  c:\tmp\
-sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\modeling_main.r
-sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\modeling_main.r
-Move-Item  c:\tmp\modeling_main.r $SolutionPath\R\
-
-
-
-
-#cp $SolutionData*.csv  c:\dsvm\notebooks
- # substitute real username and password in notebook file
-#XXXXXXXXXXChange to NEw NotebookNameXXXXXXXXXXXXXXXXXX# 
-
-if ($InstallPy -eq "Yes")
-{
-    Move-Item $SolutionPath\Python\$JupyterNotebook  c:\tmp\
-    sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\$JupyterNotebook
-    sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\$JupyterNotebook
-    Move-Item  c:\tmp\$JupyterNotebook $SolutionPath\Python\
-}
-
 # install modules for sample website
 if($SampleWeb  -eq "Yes")
 {
-cd $SolutionPath\Website\
+Set-Location $SolutionPath\Website\
 npm install
-Move-Item $SolutionPath\Website\server.js  c:\tmp\
-sed -i "s/XXYOURSQLPW/$password/g" c:\tmp\server.js
-sed -i "s/XXYOURSQLUSER/$username/g" c:\tmp\server.js
-Move-Item  c:\tmp\server.js $SolutionPath\Website
+(Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLPW', $password) | Set-Content $SolutionPath\Website\server.js
+(Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLUSER', $username) | Set-Content $SolutionPath\Website\server.js
 }
 
 $endTime = Get-Date
@@ -284,12 +253,9 @@ Write-Host " Total Deployment Time = $Duration"
 
 Stop-Transcript
 
-
 ##Launch HelpURL 
 Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
-##Launch HelpURL 
-Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
 
     ## Close Powershell if not run on 
@@ -300,11 +266,8 @@ Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
 ELSE 
 { 
-   
    Write-Host "To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds"
    Start-Sleep -s 20
-
-
 ## Close Powershell 
 Exit-PSHostProcess
 EXIT }
