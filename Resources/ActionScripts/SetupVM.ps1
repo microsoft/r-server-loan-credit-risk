@@ -6,11 +6,11 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$serverName,
 
-[parameter(Mandatory=$True, Position=2)]
+[parameter(Mandatory=$false, Position=2)]
 [ValidateNotNullOrEmpty()] 
 [string]$username,
 
-[parameter(Mandatory=$True, Position=3)]
+[parameter(Mandatory=$false, Position=3)]
 [ValidateNotNullOrEmpty()] 
 [string]$password,
 
@@ -18,6 +18,14 @@ param(
 [ValidateNotNullOrEmpty()] 
 [string]$Prompt
 )
+
+
+###Check to see if user is Admin
+
+$isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(`
+        [Security.Principal.WindowsBuiltInRole] "Administrator")
+        
+if ($isAdmin -eq 'True') {
 
 
 #################################################################
@@ -280,9 +288,23 @@ Stop-Transcript
 ##Launch HelpURL 
 Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
+##Launch HelpURL 
+Start-Process "https://microsoft.github.io/$SolutionFullName/Typical.html"
 
+
+    ## Close Powershell if not run on 
+   ## if ($baseurl)
+   Exit-PSHostProcess
+   EXIT
+}
+
+ELSE 
+{ 
+   
+   Write-Host "To install this Solution you need to run Powershell as an Administrator. This program will close automatically in 20 seconds"
+   Start-Sleep -s 20
 
 
 ## Close Powershell 
 Exit-PSHostProcess
-EXIT 
+EXIT }
