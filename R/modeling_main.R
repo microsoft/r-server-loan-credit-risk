@@ -28,9 +28,6 @@ Borrower <- "../Data/Borrower.txt"
 ## User ID and Password. Change them below if you modified the default values.  
 db_name <- "Loans"
 server <- "localhost"
-password <- "XXYOURSQLPW"
-user_id <- "XXYOURSQLUSER"
-
 
 connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;Trusted_Connection=Yes", server, db_name)
 
@@ -39,7 +36,7 @@ connection_string <- sprintf("Driver=SQL Server;Server=%s;Database=%s;Trusted_Co
 ##############################################################################################################################
 
 # Open an Odbc connection with SQL Server master database only to create a new database with the rxExecuteSQLDDL function.
-connection_string_master <- sprintf("Driver=SQL Server;Server=%s;Database=master;UID=%s;PWD=%s", server, user_id, password)
+connection_string_master <- sprintf("Driver=SQL Server;Server=%s;Database=master;Trusted_Connection=True", server)
 outOdbcDS_master <- RxOdbcData(table = "Default_Master", connectionString = connection_string_master)
 rxOpen(outOdbcDS_master, "w")
 
