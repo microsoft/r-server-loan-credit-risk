@@ -45,16 +45,9 @@ Else
     Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
 
 
-
-
-#$Prompt= if ($Prompt -match '^y(es)?$') {'Y'} else {'N'}
-
-
-
 ##Change Values here for Different Solutions 
 $SolutionName = "Loans"
 $SolutionFullName = "r-server-loan-credit-risk" 
-$JupyterNotebook = "Loan_Credit_Risk_Notebook.ipynb"
 $Shortcut = "SolutionHelp.url"
 
 
@@ -73,8 +66,6 @@ Start-Transcript -Path $setupLog -Append
 $startTime = Get-Date
 Write-Host "Start time:" $startTime 
 
-Write-Host "ServerName set to $ServerName"
-
 
 ###These probably don't need to change , but make sure files are placed in the correct directory structure 
 $solutionTemplateName = "Solutions"
@@ -84,17 +75,6 @@ $SolutionPath = $solutionTemplatePath + '\' + $checkoutDir
 $desktop = "C:\Users\Public\Desktop\"
 $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
 $SolutionData = $SolutionPath + "\Data\"
-
-
-
-####$Query = "SELECT SERVERPROPERTY('ServerName')"
-##$si = invoke-sqlcmd -Query $Query
-##$si = $si.Item(0)
-
-
-###$serverName = if($serverName -eq $null) {$si}
-
-
 
 
 ##########################################################################
@@ -207,8 +187,6 @@ $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL
 Invoke-Expression $ConfigureSQL 
 
 Write-Host "Done with configuration changes to SQL Server"
-
-
 
 
 Write-Host "Installing latest Power BI..."
