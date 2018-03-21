@@ -31,6 +31,11 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <span class="onp"><strong>{{ site.onp_text }}</strong> solution, or any SQL Server other than <code>localhost</code>. </span>
 <span class="hdi"><strong>{{ site.hdi_text }}</strong> solution. </span>
   
+First, try refreshing the data using the <code>Refresh</code> button on the toolbar.
+Use your Windows credentials if prompted.
+
+If this does not work, you may need to modify the connection information by using the steps below.
+
 <ol>
 <li class="cig">Open the <strong>{{ site.pbix_name }}</strong> file from the <strong>Desktop/{{ site.folder_name }}</strong> folder on your VM. </li>
 <li class="onp">Download and open the <a href="{{ site.pbix_sqldownload_url }}" target="_blank">{{ site.pbix_name }}</a> file</li>
@@ -43,8 +48,7 @@ These instructions show you how to replace the cached data in the PowerBI dashbo
 <li class="cig">Press <code>Refresh</code> on the top toolbar. </li>
 <li class="sql">On the Native Database Query dialog, click the <code>Run</code> button.</li>
 <li  class="onp">On the Please specify how to connect alert, click on <code>Edit Credentials</code></li>
-<li class="sql">Next you will see a SQL Server database login. Select the second tab,  <code>Database</code> on the left.</li>
-<li class="sql">Enter your username and password.  Then select the <code>Connect</code> button.</li>
+<li class="sql">Next you will see a SQL Server database login. Use the Windows tab to connect with your Windows credentials, or use the Database tab to supply your username and password if you have one.  Then select the <code>Connect</code> button.</li>
 <li class="sql">Select <code>OK</code> on the Encrypting Support alert.</li>
 <li class="onp">The TestData table will appear.</li>
 <li class="onp"> Select each of the remaining queries on the left.  For each one use the <code>Advanced Editor</code> in the toolbar and replace <code>localhost</code> with your server name. You won't need to provide credentials again.</li>
