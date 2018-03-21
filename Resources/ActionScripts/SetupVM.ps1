@@ -84,7 +84,7 @@ $SolutionData = $SolutionPath + "\Data\"
 
 $clone = "git clone --branch $Branch --single-branch https://github.com/Microsoft/$SolutionFullName $solutionPath"
 
-if (Test-Path $SolutionPath) { Write-Host " Solution has already been cloned"}
+if (Test-Path $SolutionPath) {Write-Host " Solution has already been cloned"}
 ELSE {Invoke-Expression $clone}
 
 ##If ($InstalR -eq 'Yes')
@@ -122,12 +122,15 @@ If ($EnableFileStream -eq 'Yes')
 
 #Write-Host -ForegroundColor 'Cyan' " Switching SQL Server to Mixed Mode"
 
-$Query = "SELECT SERVERPROPERTY('ServerName')"
-$si = invoke-sqlcmd -Query $Query
-$si = $si.Item(0)
-$serverName = if([string]::IsNullOrEmpty($servername)) {$si}
+    if([string]::IsNullOrEmpty($serverName))   
+    {$Query = "SELECT SERVERPROPERTY('ServerName')"
+    $si = Invoke-Sqlcmd  -Query $Query
+    $si = $si.Item(0)}
+    else 
+    {$si = $serverName}
+    $serverName = $si
 
-WRITE-HOST " ServerName set to $ServerName"
+Write-Host "Servername set to $serverName"
 
 
 ### Change Authentication From Windows Auth to Mixed Mode 
@@ -142,13 +145,13 @@ if ($isMixedMode -eq 'Yes') {
 }
 
 
-Write-Host -ForeGroundColor 'cyan' " Configuring SQL to allow running of External Scripts "
+Write-Host ("Configuring SQL to allow running of External Scripts ")
 ### Allow Running of External Scripts , this is to allow R Services to Connect to SQL
 Invoke-Sqlcmd -Query "EXEC sp_configure  'external scripts enabled', 1"
 
 ### Force Change in SQL Policy on External Scripts 
 Invoke-Sqlcmd -Query "RECONFIGURE WITH OVERRIDE" 
-Write-Host -ForeGroundColor 'cyan' " SQL Server Configured to allow running of External Scripts "
+Write-Host ("SQL Server Configured to allow running of External Scripts")
 
 ### Enable FileStreamDB if Required by Solution 
 if ($EnableFileStream -eq 'Yes') 
@@ -174,11 +177,6 @@ ELSE
     ### Stop the SQL Service and Launchpad wild cards are used to account for named instances  
     Restart-Service -Name "MSSQ*" -Force
 }
-### Start the SQL Service 
-#Start-Service -Name "MSSQ*"
-#Write-Host -ForegroundColor 'Cyan' " SQL Services Restarted"
-
-
 
 
 
