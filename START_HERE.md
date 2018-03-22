@@ -13,7 +13,7 @@ title: Quick Start
 
 * For an **{{ site.onp_text }}** installation, follow [these instructions](SetupSQL.html?platform=onp) to setup the server.    
 
-    * Once the server is configured, you can use the [PowerShell Instructions](Powershell_Instructions.html?platform=onp) for a quick deployment of all tables to your own machine.
+    * Once the server is configured, you can use the [PowerShell Instructions](Powershell_Instructions.html?platform=onp) for a quick deployment of all tables to your own machine.<br/>
 
 
 * For **{{ site.hdi_text }}**: Visit the [Azure AI Gallery]({{ site.deploy_url_hdi }}) and use the `Deploy` button.  All necessary software will be installed and configured for you.  You will be all set to follow along with the [Typical Workflow](Typical.html?platform=hdi) using the deployed cluster.
