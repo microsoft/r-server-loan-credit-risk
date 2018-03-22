@@ -31,7 +31,7 @@ $Prompt = 'N'
 ###$ServerName = if ($Prompt -eq 'Y') {Read-Host  -Prompt "Enter SQL Server Name Or SQL InstanceName you are installing on"} else {$si}
 
 
-WRITE-HOST " ServerName set to $ServerName"
+WRITE-HOST "ServerName set to $ServerName"
 
 $db = if ($Prompt -eq 'Y') {Read-Host  -Prompt "Enter Desired Database Base Name"} else {$SolutionName} 
 
@@ -70,7 +70,7 @@ if ($isCompatible -eq 'Yes' -and $InstallPy -eq 'Yes') {
     Write-Host "  Creating SQL Database for Py "
 
 
-    Write-Host -ForeGroundColor 'cyan' (" Using $ServerName SQL Instance") 
+    Write-Host (" Using $ServerName SQL Instance") 
 
     ## Create PY Server DB
     $dbName = $db + "_Py"
@@ -79,18 +79,18 @@ if ($isCompatible -eq 'Yes' -and $InstallPy -eq 'Yes') {
     $CreateSQLDB = "$ScriptPath\CreateDatabase.sql"
 
     $CreateSQLObjects = "$ScriptPath\CreateSQLObjectsPy.sql"
-    Write-Host -ForeGroundColor 'cyan' (" Calling Script to create the  $dbName database") 
+    Write-Host ("Calling Script to create the  $dbName database") 
     invoke-sqlcmd -inputfile $CreateSQLDB -serverinstance $ServerName -database master -Variable $SqlParameters
 
 
-    Write-Host -ForeGroundColor 'cyan' (" SQLServerDB $dbName Created")
+    Write-Host ("SQLServerDB $dbName Created")
     invoke-sqlcmd "USE $dbName;" 
 
-    Write-Host -ForeGroundColor 'cyan' (" Calling Script to create the objects in the $dbName database")
+    Write-Host ("Calling Script to create the objects in the $dbName database")
     invoke-sqlcmd -inputfile $CreateSQLObjects -serverinstance $ServerName -database $dbName
 
 
-    Write-Host -ForeGroundColor 'cyan' (" SQLServerObjects Created in $dbName Database")
+    Write-Host ("SQLServerObjects Created in $dbName Database")
 $OdbcName = "obdc" + $dbname
  ## Create ODBC Connection for PowerBI to Use 
 Add-OdbcDsn -Name $OdbcName -DriverName "ODBC Driver 13 for SQL Server" -DsnType 'System' -Platform '64-bit' -SetPropertyValue @("Server=$ServerName", "Trusted_Connection=Yes", "Database=$dbName") -ErrorAction SilentlyContinue -PassThru
@@ -102,7 +102,7 @@ Add-OdbcDsn -Name $OdbcName -DriverName "ODBC Driver 13 for SQL Server" -DsnType
 else 
 {
     if ($isCompatible -eq 'Yes' -and $InstallPy -eq 'Yes') {"This Version of SQL is not compatible with Py , Py Code and DB's will not be Created "}
-    else {" There is not a py version of this solution"}
+    else {"There is not a py version of this solution"}
 }
 
  
@@ -110,10 +110,10 @@ else
 
 If ($InstallR -eq 'Yes')
 {
-Write-Host "  Creating SQL Database for R "
+Write-Host "Creating SQL Database for R "
 
 
-Write-Host -ForeGroundColor 'cyan' (" Using $ServerName SQL Instance") 
+Write-Host ("Using $ServerName SQL Instance") 
 
 $dbName = $db + "_R"
  
@@ -125,18 +125,18 @@ $SqlParameters = @("dbName=$dbName")
 $CreateSQLDB = "$ScriptPath\CreateDatabase.sql"
 
 $CreateSQLObjects = "$ScriptPath\CreateSQLObjectsR.sql"
-Write-Host -ForeGroundColor 'cyan' (" Calling Script to create the  $dbName database") 
+Write-Host ("Calling Script to create the  $dbName database") 
 invoke-sqlcmd -inputfile $CreateSQLDB -serverinstance $ServerName -database master -Variable $SqlParameters
 
 
-Write-Host -ForeGroundColor 'cyan' (" SQLServerDB $dbName Created")
+Write-Host ("SQLServerDB $dbName Created")
 invoke-sqlcmd "USE $dbName;" 
 
-Write-Host -ForeGroundColor 'cyan' (" Calling Script to create the objects in the $dbName database")
+Write-Host ("Calling Script to create the objects in the $dbName database")
 invoke-sqlcmd -inputfile $CreateSQLObjects -serverinstance $ServerName -database $dbName
 
 
-Write-Host -ForeGroundColor 'cyan' (" SQLServerObjects Created in $dbName Database")
+Write-Host ("SQLServerObjects Created in $dbName Database")
 
 
 ###Configure Database for R 
@@ -169,7 +169,7 @@ $RStart = Get-Date
         try
         {
         
-        Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about 30 Seconds Per File")
+        Write-Host (" Import CSV File(s). This Should take about 30 Seconds Per File")
         #$dataList = "LengthOfStay"
         
         
@@ -180,11 +180,11 @@ $RStart = Get-Date
             $tableName = $DBName + ".dbo." + $dataFile
             $tableSchema = $dataPath + "\" + $dataFile + ".xml"
             $dataSet = Import-Csv $destination
-         Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
+         Write-Host ("         Loading $dataFile.csv into SQL Table") 
          Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
         
             
-         Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
+         Write-Host (" $datafile table loaded from CSV File(s).")
         }
         }
         catch
@@ -193,12 +193,12 @@ $RStart = Get-Date
         Write-Host -ForegroundColor Red $Error[0].Exception 
         throw
         }
-        Write-Host -ForeGroundColor 'cyan' (" Finished loading .csv File(s).")
+        Write-Host (" Finished loading .csv File(s).")
 #>
 
-Write-Host -ForeGroundColor 'cyan' (" Finished loading .csv File(s).")
+Write-Host ("Finished loading .csv File(s).")
 
-Write-Host -ForeGroundColor 'Cyan' (" Training Model and Scoring Data...")
+Write-Host ("Training Model and Scoring Data...")
 
 
 
@@ -209,10 +209,10 @@ SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $quer
 $Rend = Get-Date
 
 $Duration = New-TimeSpan -Start $RStart -End $Rend 
-Write-Host -ForegroundColor 'green'(" R Server Configured in $Duration")
+Write-Host ("R Server Configured in $Duration")
 }
 ELSE 
-{Write-Host -ForegroundColor 'Green' "There is not a R Version for this Solution so R will not be Installed"}
+{Write-Host ("There is not a R Version for this Solution so R will not be Installed")}
 
 
 ###Conifgure Database for Py 
@@ -232,7 +232,7 @@ $dbname = $db + "_Py"
 try
 {
 
-Write-Host -ForeGroundColor 'cyan' (" Import CSV File(s). This Should take about 30 Seconds Per File")
+Write-Host ("Import CSV File(s). This Should take about 30 Seconds Per File")
 #$dataList = "LengthOfStay"
 
 
@@ -243,11 +243,11 @@ foreach ($dataFile in $dataList)
     $tableName = $DBName + ".dbo." + $dataFile
     $tableSchema = $dataPath + "\" + $dataFile + ".xml"
     $dataSet = Import-Csv $destination
- Write-Host -ForegroundColor 'cyan' ("         Loading $dataFile.csv into SQL Table") 
+ Write-Host ("Loading $dataFile.csv into SQL Table") 
  Write-SqlTableData -InputData $dataSet  -DatabaseName $dbName -Force -Passthru -SchemaName dbo -ServerInstance $ServerName -TableName $dataFile
 
     
- Write-Host -ForeGroundColor 'cyan' (" $datafile table loaded from CSV File(s).")
+ Write-Host ("$datafile table loaded from CSV File(s).")
 }
 }
 catch
@@ -256,15 +256,15 @@ Write-Host -ForegroundColor DarkYellow "Exception in populating database tables:
 Write-Host -ForegroundColor Red $Error[0].Exception 
 throw
 }
-Write-Host -ForeGroundColor 'cyan' (" Finished loading .csv File(s).")
+Write-Host ("Finished loading .csv File(s).")
 
-Write-Host -ForeGroundColor 'Cyan' (" Training Model and Scoring Data...")
+Write-Host ("Training Model and Scoring Data...")
 $query = "EXEC Inital_Run_Once_Py"
 SqlServer\Invoke-Sqlcmd -ServerInstance LocalHost -Database $dbName -Query $query -ConnectionTimeout  0 -QueryTimeout 0
 
 $Pyend = Get-Date
 
 $Duration = New-TimeSpan -Start $PyStart -End $Pyend 
-Write-Host -ForegroundColor 'green'(" Py Server Configured in $Duration")
+Write-Host ("Py Server Configured in $Duration")
 
 }
