@@ -27,22 +27,11 @@ $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIde
         
 if ($isAdmin -eq 'True') {
 
-
-#################################################################
-##DSVM Does not have SQLServer Powershell Module Install or Update 
-#################################################################
-
-
-Write-Host "Installing SQLServer Power Shell Module or Updating to latest "
-
-
-if (Get-Module -ListAvailable -Name SQLServer) 
-    {Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199}
-Else 
-    {Install-Module -Name SqlServer -RequiredVersion 21.0.17199 -Scope AllUsers -AllowClobber -Force}
-
-#Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted
-    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
+$setupLog = "c:\tmp\lcr_setup_log.txt"
+Start-Transcript -Path $setupLog -Append
+$startTime = Get-Date
+Write-Host 
+("Start time: $startTime") 
 
 
 ##Change Values here for Different Solutions 
@@ -61,12 +50,6 @@ $isMixedMode = 'No'
 $Prompt = 'N'
 
 
-$setupLog = "c:\tmp\lcr_setup_log.txt"
-Start-Transcript -Path $setupLog -Append
-$startTime = Get-Date
-Write-Host "Start time:" $startTime 
-
-
 ###These probably don't need to change , but make sure files are placed in the correct directory structure 
 $solutionTemplateName = "Solutions"
 $solutionTemplatePath = "C:\" + $solutionTemplateName
@@ -75,6 +58,36 @@ $SolutionPath = $solutionTemplatePath + '\' + $checkoutDir
 $desktop = "C:\Users\Public\Desktop\"
 $scriptPath = $SolutionPath + "\Resources\ActionScripts\"
 $SolutionData = $SolutionPath + "\Data\"
+
+
+if ($SampleWeb -eq "Yes")             
+    {    
+    if([string]::IsNullOrEmpty($username)) 
+        {
+        $Credential = $Host.ui.PromptForCredential("Need credentials", "Please supply an user name and password to configure SQL for mixed authentication.", "", "")
+        $username = $credential.Username
+        $password = $credential.GetNetworkCredential().password 
+        }  
+    }
+
+
+#################################################################
+##DSVM Does not have SQLServer Powershell Module Install or Update 
+#################################################################
+
+
+Write-Host 
+("Installing SQLServer Power Shell Module or Updating to latest")
+
+
+
+if (Get-Module -ListAvailable -Name SQLServer) 
+    {Update-Module -Name "SQLServer" -MaximumVersion 21.0.17199}
+Else 
+    {Install-Module -Name SqlServer -RequiredVersion 21.0.17199 -Scope AllUsers -AllowClobber -Force}
+
+#Set-PSRepository -Name PSGallery -InstallationPolicy Untrusted
+    Import-Module -Name SqlServer -MaximumVersion 21.0.17199 -Force
 
 
 ##########################################################################
@@ -89,7 +102,8 @@ ELSE {Invoke-Expression $clone}
 
 ##If ($InstalR -eq 'Yes')
 ##{
-Write-Host "Installing R Packages"
+Write-Host 
+("Installing R Packages")
 Set-Location "C:\Solutions\$SolutionName\Resources\ActionScripts\"
 # install R Packages
 Rscript install.R 
@@ -106,13 +120,15 @@ if ($EnableFileStream -eq 'Yes')
     {
     netsh advfirewall firewall add rule name="Open Port 139" dir=in action=allow protocol=TCP localport=139
     netsh advfirewall firewall add rule name="Open Port 445" dir=in action=allow protocol=TCP localport=445
-    Write-Host -ForeGroundColor cyan " Firewall as been opened for filestream access..."
+    Write-Host 
+    ("Firewall as been opened for filestream access")
     }
 If ($EnableFileStream -eq 'Yes')
     {
     Set-Location "C:\Program Files\Microsoft\ML Server\PYTHON_SERVER\python.exe" 
     .\setup.py install
-    Write-Host "Py Instal has been updated to latest version..."
+    Write-Host 
+    ("Py Instal has been updated to latest version")
     }
 
 
@@ -130,7 +146,8 @@ If ($EnableFileStream -eq 'Yes')
     {$si = $serverName}
     $serverName = $si
 
-Write-Host "Servername set to $serverName"
+Write-Host 
+("Servername set to $serverName")
 
 
 ### Change Authentication From Windows Auth to Mixed Mode 
@@ -145,13 +162,15 @@ if ($isMixedMode -eq 'Yes') {
 }
 
 
-Write-Host ("Configuring SQL to allow running of External Scripts ")
+Write-Host 
+("Configuring SQL to allow running of External Scripts")
 ### Allow Running of External Scripts , this is to allow R Services to Connect to SQL
 Invoke-Sqlcmd -Query "EXEC sp_configure  'external scripts enabled', 1"
 
 ### Force Change in SQL Policy on External Scripts 
 Invoke-Sqlcmd -Query "RECONFIGURE WITH OVERRIDE" 
-Write-Host ("SQL Server Configured to allow running of External Scripts")
+Write-Host 
+("SQL Server Configured to allow running of External Scripts")
 
 ### Enable FileStreamDB if Required by Solution 
 if ($EnableFileStream -eq 'Yes') 
@@ -172,7 +191,8 @@ if ($EnableFileStream -eq 'Yes')
     }
 ELSE
     { 
-    Write-Host "Restarting SQL Services "
+    Write-Host 
+    ("Restarting SQL Services")
     ### Changes Above Require Services to be cycled to take effect 
     ### Stop the SQL Service and Launchpad wild cards are used to account for named instances  
     Restart-Service -Name "MSSQ*" -Force
@@ -184,10 +204,12 @@ ELSE
 $ConfigureSql = "C:\Solutions\$SolutionName\Resources\ActionScripts\ConfigureSQL.ps1  $ServerName $SolutionName $InstallPy $InstallR $Prompt"
 Invoke-Expression $ConfigureSQL 
 
-Write-Host "Done with configuration changes to SQL Server"
+Write-Host 
+("Done with configuration changes to SQL Server")
 
 
-Write-Host "Installing latest Power BI..."
+Write-Host 
+("Installing latest Power BI")
 # Download PowerBI Desktop installer
 Start-BitsTransfer -Source "https://go.microsoft.com/fwlink/?LinkId=521662&clcid=0x409" -Destination powerbi-desktop.msi
 
@@ -202,30 +224,30 @@ if (!$?) {
 ##Create Shortcuts and Autostart Help File 
 Copy-Item "$ScriptPath\$Shortcut" C:\Users\Public\Desktop\
 Copy-Item "$ScriptPath\$Shortcut" "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp\"
-Write-Host  "Help Files Copied to Desktop"
-
+Write-Host  
+("Help Files Copied to Desktop")
 
 $WsShell = New-Object -ComObject WScript.Shell
 $shortcut = $WsShell.CreateShortcut($desktop + $checkoutDir + ".lnk")
 $shortcut.TargetPath = $solutionPath
 $shortcut.Save()
 
-
-
 # install modules for sample website
 if($SampleWeb  -eq "Yes")
 {
 Set-Location $SolutionPath\Website\
-npm install
+.\npm install
 (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLPW', $password) | Set-Content $SolutionPath\Website\server.js
 (Get-Content $SolutionPath\Website\server.js).replace('XXYOURSQLUSER', $username) | Set-Content $SolutionPath\Website\server.js
 }
 
 $endTime = Get-Date
 
-Write-Host " $SolutionFullName Workflow Finished Successfully!"
+Write-Host 
+("$SolutionFullName Workflow Finished Successfully!")
 $Duration = New-TimeSpan -Start $StartTime -End $EndTime 
-Write-Host " Total Deployment Time = $Duration"
+Write-Host 
+("Total Deployment Time = $Duration")
 
 Stop-Transcript
 
