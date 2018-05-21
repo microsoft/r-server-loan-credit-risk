@@ -2,6 +2,10 @@
 layout: default
 title: HOME
 ---
+<div class="alert alert-warning cig">
+Are you unable to connect to your Virtual Machine? See this important information for
+<a href="https://blogs.technet.microsoft.com/mckittrick/unable-to-rdp-to-virtual-machine-credssp-encryption-oracle-remediation/">how to resolve.</a>
+</div>
 
 If we had a crystal ball, we would only loan money to someone if we knew they would pay us back. A lending institution can make use of predictive analytics to reduce the number of loans it offers to those borrowers most likely to default, increasing the profitablity of its loan portfolio.   This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  It uses predictive analytics to help decide whether or not to grant a loan for each borrower.
 <div class="alert alert-success">
