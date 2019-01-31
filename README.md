@@ -1,7 +1,18 @@
 <img src="Resources/images/loan.jpg" align="right" width="50%">
 
 # Loan Credit Risk 
-## Implemented on SQL Server 2016 R Services
+
+### Deploy to Azure on SQL Server
+[![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk.json)
+
+### Deploy to Azure on HDInsight
+[![Deploy to Azure (HDInsight)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk_hdi.json)
+
+## More samples and information
+
+> Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
+
+Deploy this solution from the Cortana Intelligence Gallery with [SQL Server](https://aka.ms/loan-credit-risk) or [HDInsight Spark Cluster](https://aka.ms/loan-credit-risk-hdi).
 
 For all documentation, visit the [Loan Credit Risk website](https://microsoft.github.io/r-server-loan-credit-risk/).
 
