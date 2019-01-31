@@ -59,7 +59,7 @@ loan_dev <- function(Loan,
   
   # step0: intermediate directories creation.
   print("Creating Intermediate Directories on Local and HDFS...")
-  source(paste(getwd(),"/step0_directories_creation.R", sep =""))
+  source("./step0_directories_creation.R")
   
   ## Define and create the directory where summary statistics, models etc. will be saved in the Development stage.
   LocalModelsDir <- file.path(LocalWorkDir, "model")
@@ -70,7 +70,7 @@ loan_dev <- function(Loan,
   }
   
   # step1: data processing
-  source(paste(getwd(),"/step1_preprocessing.R", sep =""))
+  source("./step1_preprocessing.R")
   print("Step 1: Data Processing.")
   
   data_preprocess(Loan, 
@@ -80,7 +80,7 @@ loan_dev <- function(Loan,
                   Stage = Stage)
   
   # step2: feature engineering
-  source(paste(getwd(),"/step2_feature_engineering.R", sep =""))
+  source("./step2_feature_engineering.R")
   print("Step 2: Feature Engineering.")
   
   feature_engineer(LocalWorkDir,
@@ -89,7 +89,7 @@ loan_dev <- function(Loan,
                    Stage = Stage)
   
   # step3: training, scoring and evaluation of Logistic Regression. 
-  source(paste(getwd(),"/step3_train_score_evaluate.R", sep =""))
+  source("./step3_train_score_evaluate.R")
   print("Step 3: Training, Scoring and Evaluating.")
   
   metrics <- training_evaluation (LocalWorkDir,
@@ -98,7 +98,7 @@ loan_dev <- function(Loan,
                                   Stage = Stage)
   
   # Step 4: operational metrics computation and scores transformation.  
-  source(paste(getwd(),"/step4_operational_metrics.R", sep =""))
+  source("/step4_operational_metrics.R")
   print("Step 4: Operational Metrics Computation and Scores Transformation.")
   
   ## Compute operational metrics and plot the rates of bad loans for various thresholds obtained through binning. 
@@ -128,7 +128,7 @@ loan_dev <- function(Loan,
     # Development directory that holds data to be used in Production. 
     DevModelDir <- LocalModelsDir
     
-    source(paste(getwd(),"/copy_dev_to_prod.R", sep =""))
+    source("./copy_dev_to_prod.R")
     copy_dev_to_prod(DevModelDir, ProdModelDir)
   } 
   

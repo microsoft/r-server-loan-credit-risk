@@ -104,7 +104,7 @@ training_evaluation <- function(LocalWorkDir,
     Logistic_Coeff <- data.frame(variable = names(coeff), coefficient = coeff, row.names = NULL)
     
     ## Order in decreasing order of absolute value of coefficients. 
-    Logistic_Coeff <- Logistic_Coeff[order(abs(Logistic_Coeff$coefficient), decreasing = T),]
+    Logistic_Coeff <- Logistic_Coeff[order(abs(Logistic_Coeff$coefficient), decreasing = TRUE),]
     
     # Save the coefficients table to the local edge node.
     saveRDS(Logistic_Coeff, file = paste(LocalModelsDir, "/Logistic_Coeff.rds", sep = ""))
@@ -139,7 +139,7 @@ training_evaluation <- function(LocalWorkDir,
   rxPredict(logistic_model, 
             data = Test_xdf, 
             outData = PredictionsLogistic_xdf, 
-            overwrite = T, 
+            overwrite = TRUE, 
             extraVarsToWrite = c("isBad", "loanId"))
   
   
@@ -171,7 +171,7 @@ training_evaluation <- function(LocalWorkDir,
       Predictions1 <- Predictions[Predictions$isBad ==1,]$isBad_Pred
       
       # Get the cumulative distribution of predicted probabilities (on a subset for faster computations). 
-      cdf0 <- ecdf(Predictions0[base::sample(seq(1, length(Predictions0)), replace = F, size = min(300000, length(Predictions0)))])
+      cdf0 <- ecdf(Predictions0[base::sample(seq(1, length(Predictions0)), replace = FALSE, size = min(300000, length(Predictions0)))])
       cdf1 <- ecdf(Predictions1)
       
       # Compute the KS statistic and the corresponding points on the KS plot. 
@@ -190,8 +190,8 @@ training_evaluation <- function(LocalWorkDir,
       y1 <- cdf1(x0) 
       
       # Plot the two cumulative distributions with the line between points of greatest distance. 
-      plot(cdf0, verticals = T, do.points = F, col = "blue", main = sprintf("KS Plot; KS = %s", round(KS, digits = 3)), ylab = "Cumulative Distribution Functions", xlab = "Predicted Probabilities") 
-      plot(cdf1, verticals = T, do.points = F, col = "green", add = T) 
+      plot(cdf0, verticals = TRUE, do.points = FALSE, col = "blue", main = sprintf("KS Plot; KS = %s", round(KS, digits = 3)), ylab = "Cumulative Distribution Functions", xlab = "Predicted Probabilities") 
+      plot(cdf1, verticals = TRUE, do.points = FALSE, col = "green", add = TRUE) 
       legend(0.3, 0.8, c("isBad == 0", "isBad == 1"), lty = c(1, 1),lwd = c(2.5, 2.5), col = c("blue", "green"))
       points(c(x0, x0), c(y0, y1), pch = 16, col = "red") 
       segments(x0, y0, x0, y1, col = "red", lty = "dotted") 

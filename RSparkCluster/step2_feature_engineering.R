@@ -68,7 +68,7 @@ feature_engineer <- function(LocalWorkDir,
                outFile = MergedLabeled_xdf, 
                overwrite = TRUE, 
                transforms = list(
-                 isBad = sample(c("0", "1"), size = .rxNumRows, replace = T)) 
+                 isBad = sample(c("0", "1"), size = .rxNumRows, replace = TRUE)) 
     )
   }
   
@@ -94,12 +94,6 @@ feature_engineer <- function(LocalWorkDir,
   ## The block below will compute (load for Production or Web-Scoring) the bins for various numeric variables.
   ## smbinning is applied in-memory to the training set loaded as a data frame. 
   ############################################################################################################################################
-  
-  # Names of the variables that will be bucketed.
-  smb_buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome", "dtiRatio", "lengthCreditHistory",
-                         "numTotalCreditLines", "numOpenCreditLines", "numOpenCreditLines1Year", "revolvingBalance",
-                         "revolvingUtilizationRate", "numDerogatoryRec", "numDelinquency2Years", "numChargeoff1year", 
-                         "numInquiries6Mon")
   
   # Development: We compute the global quantiles for various numeric variables.
   if(Stage == "Dev"){
@@ -141,7 +135,7 @@ feature_engineer <- function(LocalWorkDir,
       # Import the training set to be able to apply smbinning and set the type of the label to numeric. 
       Train_df <- rxImport(data, varsToKeep = c("isBad", name))
       ## We take a subset of the training set to speed up computations for very large data sets.
-      Train_df <- Train_df[sample(seq(1, nrow(Train_df)), replace = F, size = min(300000, nrow(Train_df))), ] 
+      Train_df <- Train_df[sample(seq(1, nrow(Train_df)), replace = FALSE, size = min(300000, nrow(Train_df))), ] 
       Train_df$isBad <- as.numeric(as.character(Train_df$isBad))
       
       # Compute the cutoffs with smbinning. 
@@ -155,12 +149,12 @@ feature_engineer <- function(LocalWorkDir,
     
     # We apply it in parallel on the variables accross the nodes of the cluster with the rxExec function. 
     rxOptions(numCoresToUse = -1) # use of the maximum number of cores.
-    bins_smb <- rxExec(compute_bins, name = rxElemArg(smb_buckets_names), data = Train_xdf)
-    names(bins_smb) <- smb_buckets_names
+    bins_smb <- rxExec(compute_bins, name = rxElemArg(names(bins)), data = Train_xdf)
+    names(bins_smb) <- names(bins)
     
     # Fill b with bins obtained in bins_smb with smbinning. 
     ## We replace the default values in bins if and only if smbinning returned a non NULL result. 
-    for(name in smb_buckets_names){
+    for(name in names(bins)){
       if (!is.null(bins_smb[[name]])){ 
         bins[[name]] <- bins_smb[[name]]
       }
@@ -189,24 +183,12 @@ feature_engineer <- function(LocalWorkDir,
   print("Bucketizing numeric variables...")
   
   # Function to bucketize numeric variables. It will be wrapped into rxDataStep. 
-  bucketize <- function(data) {
-    data <- data.frame(data)
-    for(name in  buckets_names){
-      # Deal with the last bin.
-      name2 <- paste(name, "Bucket", sep = "")
-      data[, name2] <- as.character(length(b2[[name]]) + 1)
-      # Deal with the first bin. 
-      rows <- which(data[, name] <= b2[[name]][[1]])
-      data[rows, name2] <- "1"
-      # Deal with the rest.
-      if(length(b2[[name]]) > 1){
-        for(i in seq(1, (length(b2[[name]]) - 1))){
-          rows <- which(data[, name] <= b2[[name]][[i + 1]] & data[, name] > b2[[name]][[i]])
-          data[rows, name2] <- as.character(i + 1)
-        }
-      }
+  bucketize <- function(data) { 
+    for(name in  names(b)) { 
+      name2 <- paste(name, "Bucket", sep = "") 
+      data[[name2]] <- as.character(as.numeric(cut(data[[name]], c(-Inf, b[[name]], Inf)))) 
     }
-    return(data)  
+    return(data) 
   }
   
   # Perform feature engineering on the cleaned data set.
@@ -220,8 +202,7 @@ feature_engineer <- function(LocalWorkDir,
              overwrite = TRUE, 
              transformFunc = bucketize,
              transformObjects =  list(
-               b2 = bins, buckets_names = smb_buckets_names)
-  )
+               b = bins))
   
   #############################################################################################################################################
   ## The block below will:
@@ -240,7 +221,7 @@ feature_engineer <- function(LocalWorkDir,
     # Add the newly created variables to a column_factor_info list to be used in rxFactors. 
     new_names <- paste(names(bins), "Bucket", sep = "")
     new_levels <- unlist(lapply(bins, function(x) length(x) + 1))
-    column_factor_info = mapply(function(i, new_levels){list(levels = as.character(seq(1, new_levels)) )}, 1:length(new_levels), new_levels,SIMPLIFY = F)
+    column_factor_info = mapply(function(i, new_levels){list(levels = as.character(seq(1, new_levels)) )}, 1:length(new_levels), new_levels,SIMPLIFY = FALSE)
     names(column_factor_info) <- new_names 
     
     # Convert the new features from character to factors. 
