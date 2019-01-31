@@ -3,7 +3,7 @@
 
 This site contains information for multiple versions of a solution.  Currently, the three pathways it shows are:
 
-1.  Azure SQL - deployed from Azure AI Gallery
+1.  Azure SQL - deployed using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
 2.  On-Premises SQL
 3.  HDInsight (in progress; currently commented out)
 
@@ -37,11 +37,11 @@ The third way to specify a path is through a parameter on the url:
     https://microsoft.github.io/r-server-loan-credit-risk?p=hdi
 ```
 
-The three values that can be specified are: `cig` (Azure AI Gallery), `onp` (On-Prem), `hdi` (HDInsight).  Any other values are ignored, which means the site stays in its current configuration.  The initial default for the site is `cig`.
+The three values that can be specified are: `cig` ('Deploy to Azure' button), `onp` (On-Prem), `hdi` (HDInsight).  Any other values are ignored, which means the site stays in its current configuration.  The initial default for the site is `cig`.
 
 ### Specifying Platform Specific Content
 
-When you have  some content that pertains to only one of the above solutions, add it to the page in a tag, setting the class to one of the three values: `cig` (Azure AI Gallery), `onp` (On-Prem), `hdi` (HDInsight).  The content inside these divs are visible only when the corresponding solution path is chosen.  For example, in the code below, only one of the sentences would ever be visible on the website:
+When you have  some content that pertains to only one of the above solutions, add it to the page in a tag, setting the class to one of the three values: `cig` ('Deploy to Azure' button), `onp` (On-Prem), `hdi` (HDInsight).  The content inside these divs are visible only when the corresponding solution path is chosen.  For example, in the code below, only one of the sentences would ever be visible on the website:
 
 ```html
 <div class="cig"> This sentence will only appear when the CIG solution has been chosen.</div>

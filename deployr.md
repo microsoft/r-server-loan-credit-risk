@@ -22,7 +22,7 @@ For instructions on how to use PuTTY to connect to your HDInsight Spark cluster,
 * **Linux, Unix, and OS X users**
 For instructions on how to use the terminal to connect to your HDInsight Spark cluster, visit this [Azure documentation](http://go.microsoft.com/fwlink/p/?LinkID=619886).  The edge node address is of the form `sshuser@CLUSTERNAME-ed-ssh.azurehdinsight.net`
 
-* **All platforms:** Your login name and password are the ones you created when you deployed this solution from the [Azure AI Gallery](http://aka.ms/loan-credit-risk-hdi)
+* **All platforms:** Your login name and password are the ones you created when you deployed this solution using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
 
 
 ## Configure Deployment Server

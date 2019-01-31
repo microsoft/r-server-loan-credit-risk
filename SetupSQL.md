@@ -22,7 +22,7 @@ solution.
     <div class="col-md-6">
         The instructions on this page will help you to add this solution to your on premises SQL Server 2017.  
         <p>
-        If you instead would like to try this solution out on a virtual machine, visit the <a href="{{ site.aka_url }}">Azure AI Gallery</a> and use the Deploy button.  All the configuration described below will be done for you, as well as the initial deployment of the solution. </p>
+        If you instead would like to try this solution out on a virtual machine, visit the <a href="START_HERE.html">Quick start</a> page and click the 'Deploy to Azure' button.  All the configuration described below will be done for you, as well as the initial deployment of the solution. </p>
     </div>
 </div>
 

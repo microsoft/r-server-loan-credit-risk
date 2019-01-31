@@ -12,7 +12,7 @@ solution.
 
 ## Setup for Local Code Execution
 
-You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by the Azure AI Gallery. But first you must perform the following steps. 
+You can execute code on your local computer and push the computations to the SQL Server on the VM  that was created by using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page. But first you must perform the following steps. 
 
 ## On the VM: Configure VM for Remote Access
 

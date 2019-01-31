@@ -25,8 +25,7 @@ solution.
         </div>
     </div>
     <div class="col-md-6">
-        If you have deployed a VM through the  
-        <a href="{{ site.deploy_url }}">Azure AI Gallery</a>, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?path=onp">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
+        If you have deployed a VM using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page, all the steps below have already been performed and your database on that machine has all the resulting tables and stored procedures.  Skip to the <a href="Typical.html?path=onp">Typical Workflow</a> for a description of how these files were first created in R by a Data Scientist and then deployed to SQL stored procedures.
     </div>
 </div>
 
