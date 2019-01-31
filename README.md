@@ -1,6 +1,10 @@
 <img src="Resources/images/loan.jpg" align="right" width="50%">
 
 # Loan Credit Risk 
+
+### Deploy to Azure on SQL Server
+[![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk_arm.json)
+
 ## Implemented on SQL Server 2016 R Services
 
 > Discover more examples at [Microsoft Machine Learning Server](https://github.com/Microsoft/ML-Server)
