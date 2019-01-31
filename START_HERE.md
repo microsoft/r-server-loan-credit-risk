@@ -10,7 +10,7 @@ title: Quick Start
 
 ## {{ site.cig_text }}
 * For **{{ site.cig_text }}**: Use the button below to deploy the solution. All necessary software will be installed and configured for you as well as the initial deployment of the solution.  You will be all set to follow along with the [Typical Workflow](Typical.html?platform=cig) on the deployed virtual machine.<br/>
-[![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk.json)
+[![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk.json)<br/>
 
 ## {{ site.onp_text }}
 * For an **{{ site.onp_text }}** installation, follow [these instructions](SetupSQL.html?platform=onp) to setup the server.    
