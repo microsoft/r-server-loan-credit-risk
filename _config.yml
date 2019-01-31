@@ -12,7 +12,7 @@ image_url: images/loan.jpg
 jupyter_name: Loan_Credit_Risk_Notebook.ipynb
 
 cig_text: SQL Server VM on Azure
-onp_text: SQL Server On-Prem 
+onp_text: SQL Server On-Premises
 hdi_text: HDInsight Spark 
 
 # urls, etc
