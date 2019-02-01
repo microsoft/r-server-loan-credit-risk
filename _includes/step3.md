@@ -24,7 +24,7 @@ You can find this script in the <strong>SQLR</strong> directory, and execute it 
 <p/>
 While this task is complete for the current set of borrowers, we will need to score new loans on an ongoing basis. 
 In the steps above, we saw the first way of scoring new data, using <strong>production_main.R</strong> script. 
-Debra may also create an analytic web service  with <a href="https://msdn.microsoft.com/en-us/microsoft-r/operationalize/about">R Server Operationalization</a> that incorporates these same steps: data processing, feature engineering, and scoring.
+Debra may also create an analytic web service  with <a href="https://docs.microsoft.com/en-us/machine-learning-server/what-is-operationalization">ML Server Operationalization</a> that incorporates these same steps: data processing, feature engineering, and scoring.
 <p/>
  <strong>deployment_main.R</strong> will create a web service and test it on the edge node.  
 <p/>
