@@ -22,8 +22,8 @@ training_evaluation <- function()
   # Set the compute context to SQL. 
   rxSetComputeContext(sql)
   
-  # Point to the input data, specifying that characters should be treated as factors with stringsAsFactors = T. 
-  Merged_Features_sql <- RxSqlServerData(table = "Merged_Features", connectionString = connection_string, stringsAsFactors = T)
+  # Point to the input data, specifying that characters should be treated as factors with stringsAsFactors = TRUE. 
+  Merged_Features_sql <- RxSqlServerData(table = "Merged_Features", connectionString = connection_string, stringsAsFactors = TRUE)
   
   ##########################################################################################################################################
   
@@ -35,7 +35,7 @@ training_evaluation <- function()
   
   # Get the column information. 
   print("Getting the variable information...")
-  column_info <- rxCreateColInfo(Merged_Features_sql, sortLevels = T)
+  column_info <- rxCreateColInfo(Merged_Features_sql, sortLevels = TRUE)
   
   # Set the compute context to local to export the column_info list to SQl. 
   rxSetComputeContext('local')
@@ -134,7 +134,7 @@ training_evaluation <- function()
   Logistic_Coeff <- data.frame(variable = names(coeff), coefficient = coeff, row.names = NULL)
   
   ## Order in decreasing order of absolute value of coefficients. 
-  Logistic_Coeff <- Logistic_Coeff[order(abs(Logistic_Coeff$coefficient), decreasing = T),]
+  Logistic_Coeff <- Logistic_Coeff[order(abs(Logistic_Coeff$coefficient), decreasing = TRUE),]
   
   # Write the table to SQL. Compute Context should be set to local. 
   rxSetComputeContext('local')
@@ -184,7 +184,7 @@ training_evaluation <- function()
   rxPredict(logistic_model, 
             data = Test_sql, 
             outData = Predictions_Logistic_sql, 
-            overwrite = T, 
+            overwrite = TRUE, 
             type = "response",  # If you used rxLogisticRegression, this argument should be removed.  
             extraVarsToWrite = c("isBad", "loanId"))
   
@@ -233,8 +233,8 @@ training_evaluation <- function()
     y1 <- cdf1(x0) 
     
     # Plot the two cumulative distributions with the line between points of greatest distance. 
-    plot(cdf0, verticals = T, do.points = F, col = "blue", main = sprintf("KS Plot; KS = %s", round(KS, digits = 3)), ylab = "Cumulative Distribution Functions", xlab = "Predicted Probabilities") 
-    plot(cdf1, verticals = T, do.points = F, col = "green", add = T) 
+    plot(cdf0, verticals = TRUE, do.points = FALSE, col = "blue", main = sprintf("KS Plot; KS = %s", round(KS, digits = 3)), ylab = "Cumulative Distribution Functions", xlab = "Predicted Probabilities") 
+    plot(cdf1, verticals = TRUE, do.points = FALSE, col = "green", add = TRUE) 
     legend(0.3, 0.8, c("isBad == 0", "isBad == 1"), lty = c(1, 1),lwd = c(2.5, 2.5), col = c("blue", "green"))
     points(c(x0, x0), c(y0, y1), pch = 16, col = "red") 
     segments(x0, y0, x0, y1, col = "red", lty = "dotted") 

@@ -88,7 +88,7 @@ in_memory_scoring <- function(Loan_df,
       # Replace numeric variables with the mean. 
       if(length(num_with_NA) > 0){
         for(i in 1:length(num_with_NA)){
-          row_na <- which(is.na(data[, num_with_NA[i]]) == TRUE) 
+          row_na <- which(is.na(data[, num_with_NA[i]]))
           data[row_na, num_with_NA[i]] <- num_NA_mean[i]
         }
       }
@@ -96,7 +96,7 @@ in_memory_scoring <- function(Loan_df,
       if(length(cat_with_NA) > 0){
         for(i in 1:length(cat_with_NA)){
           data[, cat_with_NA[i]] <- as.character(data[, cat_with_NA[i]])
-          row_na <- which(is.na(data[, cat_with_NA[i]]) == TRUE) 
+          row_na <- which(is.na(data[, cat_with_NA[i]])) 
           data[row_na, cat_with_NA[i]] <- cat_NA_mode[i]
           data[, cat_with_NA[i]] <- factor(data[, cat_with_NA[i]])
         }
@@ -111,7 +111,7 @@ in_memory_scoring <- function(Loan_df,
   ## The block below will perform feature engineering on the cleaned data set. 
   ############################################################################################################################################
   # Create an artificial target variable isBad. This is for rxPredict to work. 
-  MergedCleaned$isBad <- sample(c("0", "1"), size = nrow(MergedCleaned), replace = T)
+  MergedCleaned$isBad <- sample(c("0", "1"), size = nrow(MergedCleaned), replace = TRUE)
   
   # Bucketize variables.
   buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome", "dtiRatio", "lengthCreditHistory",
@@ -121,19 +121,8 @@ in_memory_scoring <- function(Loan_df,
   
   bucketize <- function(data) {
     for(name in  buckets_names){
-      # Deal with the last bin.
-      name2 <- paste(name, "Bucket", sep = "")
-      data[, name2] <- as.character(length(bins[[name]]) + 1)
-      # Deal with the first bin. 
-      rows <- which(data[, name] <= bins[[name]][[1]])
-      data[rows, name2] <- "1"
-      # Deal with the rest.
-      if(length(bins[[name]]) > 1){
-        for(i in seq(1, (length(bins[[name]]) - 1))){
-          rows <- which(data[, name] <= bins[[name]][[i + 1]] & data[, name] > bins[[name]][[i]])
-          data[rows, name2] <- as.character(i + 1)
-        }
-      }
+      name2 <- paste(name, "Bucket", sep = "") 
+      data[, name2] <- as.character(as.numeric(cut(data[[name]], c(-Inf, b[[name]], Inf)))) 
       # Factorize the new variable. 
       data[, name2] <- factor(data[, name2], levels = as.character(seq(1, (length(bins[[name]]) + 1))))
     }

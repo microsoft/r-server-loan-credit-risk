@@ -46,12 +46,6 @@ InputDataSet$isBad <- as.numeric(as.character(InputDataSet$isBad))
 ########################################################################################################################################## 
 ## Specify the default bins
 ########################################################################################################################################## 
-# Names of the variables for which we are going to look for the bins with smbinning. 
-smb_buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome", "dtiRatio", "lengthCreditHistory",
-                        "numTotalCreditLines", "numOpenCreditLines", "numOpenCreditLines1Year", "revolvingBalance",
-                        "revolvingUtilizationRate", "numDerogatoryRec", "numDelinquency2Years", "numChargeoff1year", 
-                        "numInquiries6Mon")
-  
 # Using the smbinning has some limitations, such as: 
 # - The variable should have more than 10 unique values. 
 # - If no significant splits are found, it does not output bins. 
@@ -99,18 +93,16 @@ compute_bins <- function(name, data){
 ## numCoresToUse = -1 will enable the use of the maximum number of cores.
 rxOptions(numCoresToUse = 3) # use 3 cores.
 rxSetComputeContext("localpar")
-q <- rxExec(compute_bins, name = rxElemArg(smb_buckets_names), data = InputDataSet)
-names(q) <- smb_buckets_names
+bins_smb <- rxExec(compute_bins, name = rxElemArg(names(bins)), data = InputDataSet)
+names(bins_smb) <- names(bins)
   
-# Fill bins with bins obtained in q with smbinning. 
-## We replace the default values in bins if and only if: 
-## - smbinning returned a non NULL result. 
-## - there is no repetition in the bins provided by smbinning. 
-for(name in smb_buckets_names){
-  if (!is.null(q[[name]]) & (length(unique(q[[name]])) == length(q[[name]]))){ 
-    bins[[name]] <- q[[name]]
+# Fill bins with bins obtained in bins_smb with smbinning. 
+## We replace the default values in bins if and only if smbinning returned a non NULL result. 
+  for(name in names(bins)){
+    if (!is.null(bins_smb[[name]])){ 
+      bins[[name]] <- bins_smb[[name]]
+    }
   }
-}
 
 ########################################################################################################################################## 
 ## Save the bins in SQL Server 
@@ -168,34 +160,15 @@ bins <- rxReadObject(OdbcModel, "Bin Info")
 ##########################################################################################################################################
 ##	Feature Engineering
 ##########################################################################################################################################		
-# Names of the variables to be bucketed. 
-buckets_names <- c("loanAmount", "interestRate", "monthlyPayment", "annualIncome", "dtiRatio", "lengthCreditHistory",
-                   "numTotalCreditLines", "numOpenCreditLines", "numOpenCreditLines1Year", "revolvingBalance",
-                   "revolvingUtilizationRate", "numDerogatoryRec", "numDelinquency2Years", "numChargeoff1year", 
-                   "numInquiries6Mon")
-
 # Function to bucketize numeric variables. It will be wrapped into rxDataStep. 
-  Bucketize <- function(data) {
-    data <- data.frame(data)
-    for(name in  buckets_names2){
-      # Deal with the last bin.
-      name2 <- paste(name, "Bucket", sep = "")
-      data[, name2] <- as.character(length(b[[name]]) + 1)
-      # Deal with the first bin. 
-      rows <- which(data[, name] <= b[[name]][[1]])
-      data[rows, name2] <- "1"
-      # Deal with the rest.
-      if(length(b[[name]]) > 1){
-        for(i in seq(1, (length(b[[name]]) - 1))){
-          rows <- which(data[, name] <= b[[name]][[i + 1]] & data[, name] > b[[name]][[i]])
-          data[rows, name2] <- as.character(i + 1)
-         }
-	  }
+  bucketize <- function(data) { 
+    for(name in  names(b) { 
+      name2 <- paste(name, "Bucket", sep = "") 
+      data[[name2]] <- as.character(as.numeric(cut(data[[name]], c(-Inf, b[[name]], Inf)))) 
     }
-    return(data)  
+    return(data) 
   }
   
-
 # Perform feature engineering on the cleaned data set.
    
 ## Point to the cleaned data set. 
@@ -210,9 +183,9 @@ Merged_Features_sql <- RxSqlServerData(table =  output, connectionString = conne
 rxDataStep(inData = Merged_Cleaned_sql,
            outFile = Merged_Features_sql, 
            overwrite = TRUE, 
-           transformFunc = Bucketize,
+           transformFunc = bucketize,
            transformObjects =  list(
-             b = bins, buckets_names2 = buckets_names),
+             b = bins),
 	       transforms = list(
              isBad = ifelse(loanStatus %in% c("Current"), "0", "1") 
             ))
@@ -278,7 +251,7 @@ Merged_Features_sql <- RxSqlServerData(sqlQuery = sprintf( "SELECT *  FROM [%s]"
 ########################################################################################################################################## 
 ## Get the variable information
 ########################################################################################################################################## 
-column_info <- rxCreateColInfo(Merged_Features_sql, sortLevels = T)
+column_info <- rxCreateColInfo(Merged_Features_sql, sortLevels = TRUE)
 
 ########################################################################################################################################## 
 ## Save the column info to SQL Server 
