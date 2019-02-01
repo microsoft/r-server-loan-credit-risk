@@ -37,7 +37,7 @@
         "autoUpgradeMinorVersion": false,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Microsoft/r-server-loan-credit-risk/master/Resources/ActionScripts/LoadCreditRiskSetup.ps1"
+            "https://raw.githubusercontent.com/Microsoft/r-server-loan-credit-risk/master/Resources/ActionScripts/LoanCreditRiskSetup.ps1"
           ],
           "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File LoadCreditRiskSetup.ps1 -serverName ',  parameters('vmName') ,' -username ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
         }
