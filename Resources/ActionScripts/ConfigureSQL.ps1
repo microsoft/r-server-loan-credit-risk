@@ -145,10 +145,13 @@ $CreateSQLObjects = "$ScriptPath\CreateSQLObjectsR.sql"
 $RStart = Get-Date
 
 		# upload csv files into SQL tables
-
+        Write-Host("bcp Borrower")
         invoke-expression "bcp Borrower in C:\Solutions\Loans\Data\Borrower.txt -S $ServerName -d $dbName -T -c"
+        Write-Host("bcp Loan")
         invoke-expression "bcp Loan in C:\Solutions\Loans\Data\Loan.txt -S $ServerName -d $dbName -T -c"
+        Write-Host("bcp Borrower_Prod")
         invoke-expression "bcp Borrower_Prod in C:\Solutions\Loans\Data\Borrower_Prod.txt -S $ServerName -d $dbName -T -k -c"
+        Write-Host("bcp Loan_Prod")
         invoke-expression "bcp Loan_Prod in C:\Solutions\Loans\Data\Loan_Prod.txt -S $ServerName -d $dbName -T -k -c"
 
 
