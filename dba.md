@@ -34,15 +34,15 @@ solution.
 When a financial institution examines a request for a loan, it is crucial to assess the risk of default to determine whether to grant it. This solution is based on simulated data for a small personal loan financial institution, containing the borrower's financial history as well as information about the requested loan.  View <a href="input_data.html">more information about the data.</a>
       <p/>
       <p>
- In this template, we implemented all steps in SQL stored procedures: data preprocessing is implemented in pure SQL, while feature engineering, model training, scoring and evaluation steps are implemented with SQL stored procedures with embedded R (Microsoft R Server) code.     
+ In this template, we implemented all steps in SQL stored procedures: data preprocessing is implemented in pure SQL, while feature engineering, model training, scoring and evaluation steps are implemented with SQL stored procedures with embedded R (Microsoft ML Server) code.     
       </p>
 
         </div>
 </div>
 
-<span class="onp">For businesses that prefers an on-prem solution, the implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+<span class="onp">For businesses that prefers an on-prem solution, the implementation with SQL Server ML Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft ML Server). 
 </span>
-<span class="cig">The implementation with SQL Server R Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft R Server). 
+<span class="cig">The implementation with SQL Server ML Services is a great option, which takes advantage of the power of SQL Server and RevoScaleR (Microsoft ML Server). 
 </span>
 
 <p/>
@@ -52,11 +52,11 @@ All the steps can be executed on SQL Server client environment (such as SQL Serv
 -----------------------
 
 The following are required to run these scripts:
- * SQL server (2016 or higher) with Microsoft R server (version 9.1.0 or above) installed and configured;
+ * SQL server (2016 or higher) with Microsoft ML server (version 9.1.0 or above) installed and configured;
  * The SQL user name and password, and the user is configured properly to execute R scripts in-memory;
  * SQL Database for which the user has write permission and can execute stored procedures (see create_user.sql);
  * Implied authentification is enabled so a connection string can be automatically created in R codes embedded into SQL Stored Procedures (see create_user.sql).
- * For more information about SQL server and R service, please visit: [What's New in SQL Server R Services](https://msdn.microsoft.com/en-us/library/mt604847.aspx)
+ * For more information about SQL server and ML service, please visit: [What's New in SQL Server ML Services](https://docs.microsoft.com/en-us/sql/advanced-analytics/what-s-new-in-sql-server-machine-learning-services)
 
 
 ## Workflow Automation

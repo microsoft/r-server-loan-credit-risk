@@ -33,7 +33,7 @@ This solution demonstrates the code with 1,000,000 borrowers for developing the 
 
 This solution uses:
 
- * [R Server for HDInsight](https://azure.microsoft.com/en-us/services/hdinsight/r-server/)
+ * [ML Server for HDInsight](https://azure.microsoft.com/en-us/services/hdinsight/r-server/)
 
 
 ## Cluster Maintenance

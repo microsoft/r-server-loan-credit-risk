@@ -36,13 +36,13 @@ On the VM created for you using the 'Deploy to Azure' button on the <a href="STA
 </div>
 
 <div class="onp">
-For customers who prefer an on-premise solution, the implementation with SQL Server R Services is a great option that takes advantage of the powerful combination of SQL Server and the R language.  A Windows PowerShell script to invoke the SQL scripts that execute the end-to-end modeling process is provided for convenience. 
+For customers who prefer an on-premise solution, the implementation with SQL Server ML Services is a great option that takes advantage of the powerful combination of SQL Server and the R language.  A Windows PowerShell script to invoke the SQL scripts that execute the end-to-end modeling process is provided for convenience. 
 <img src="images/diagramonp.jpg">
 
 </div>
 
 <div class="hdi">
-This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the  HDInsight Spark cluster with Microsoft R Server deployed from using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
+This solution shows how to pre-process data (cleaning and feature engineering), train prediction models, and perform scoring on the  HDInsight Spark cluster with Microsoft ML Server deployed from using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
 <p></p>
 <strong>HDInsight Spark cluster billing starts once a cluster is created and stops when the cluster is deleted. See <a href="hdinsight.html"> these instructions for important information</a> about deleting a cluster and re-using your files on a new cluster.</strong>
 <img src="images/diagramhdi.jpg">
