@@ -27,7 +27,7 @@
   "resources": [
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(parameters('vmName'),'/CampaignSetup')]",
+      "name": "[concat(parameters('vmName'),'/LoanCreditRiskSetup')]",
       "apiVersion": "2015-05-01-preview",
       "location": "[variables('location')]",
       "properties": {
@@ -37,7 +37,7 @@
         "autoUpgradeMinorVersion": false,
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/Microsoft//r-server-loan-credit-risk/master/Resources/ActionScripts/LoadCreditRiskSetup.ps1"
+            "https://raw.githubusercontent.com/Microsoft/r-server-loan-credit-risk/master/Resources/ActionScripts/LoadCreditRiskSetup.ps1"
           ],
           "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File LoadCreditRiskSetup.ps1 -serverName ',  parameters('vmName') ,' -username ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
         }
