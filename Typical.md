@@ -52,7 +52,7 @@ If you want to follow along and have *not* run the PowerShell script, you must t
 
 <div class="cig">
 <p/><p>
-This step has already been done on your the VM you deployed using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
+This step has already been done on the VM you deployed using the 'Deploy to Azure' button on the <a href="START_HERE.html">Quick start</a> page.
 </p>
 </div>
 
