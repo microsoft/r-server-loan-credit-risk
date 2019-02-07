@@ -1,7 +1,7 @@
 <img src="Resources/images/loan.jpg" align="right" width="50%">
 
 # Loan Credit Risk 
-
+Predict risk of customers defaulting on loans.
 ### Deploy to Azure on SQL Server
 [![Deploy to Azure (SQL Server)](https://raw.githubusercontent.com/Azure/Azure-CortanaIntelligence-SolutionAuthoringWorkspace/master/docs/images/DeployToAzure.PNG)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2Fr-server-loan-credit-risk%2Fmaster%2FArmTemplates%2Floancreditrisk.json)
 
